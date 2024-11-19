@@ -20,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="206dp"
-        android:text="BOTON de  PRUEBA"
+        android:text="BOTON  PRUEBA"
         android:textSize="16sp"
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
