@@ -15,15 +15,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="206dp"
-        android:text="BOTON  PRUEBA"
-        android:textSize="16sp"
-        android:visibility="visible"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="104dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
