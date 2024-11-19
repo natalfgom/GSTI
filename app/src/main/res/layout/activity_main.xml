@@ -17,10 +17,13 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="BOTON PRUEBA"
-        tools:layout_editor_absoluteX="104dp"
-        tools:layout_editor_absoluteY="206dp" />
+        android:layout_marginTop="206dp"
+        android:text="BOTON de  PRUEBA"
+        android:textSize="16sp"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="104dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
