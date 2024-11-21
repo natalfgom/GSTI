@@ -1,7 +1,12 @@
 <resources>
     <string name="title_orientation">ORIENTACIÓN</string>
+    <string name="app_name">Cognitiva</string>
     <string name="button_next">Siguiente</string>
     <string name="description_game_1">Le aparecerán 4 ilustraciones de relojes de aguja, marque la hora requerida en los siguientes relojes</string>
     <string name="description_game_2">En este juego deberá ordenar las palabras para formar una oración correcta</string>
     <string name="description_game_3">Seleccione las imágenes que representan emociones positivas</string>
+    <string name="question_text">¿Ha comprendido su familiar las instrucciones del juego?</string>
+    <string name="button_yes">Sí</string>
+    <string name="button_no">No</string>
+
 </resources>

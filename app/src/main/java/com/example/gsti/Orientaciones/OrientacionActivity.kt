@@ -1,5 +1,6 @@
 package com.example.gsti.Orientaciones
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -24,10 +25,10 @@ class OrientacionActivity : AppCompatActivity() {
         titleTextView.text = getString(R.string.title_orientation)
         descriptionTextView.text = gameDescription
 
-        // Configura el botón siguiente
-        //nextButton.setOnClickListener {
-            // Lógica para ir al siguiente juego
-           // startActivity(Intent(this, NextGameActivity::class.java))
-        //}
+        nextButton.setOnClickListener {
+            val intent = Intent(this, ComprensionActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 }
