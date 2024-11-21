@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">GSTI</string>
+    <string name="title_orientation">ORIENTACIÓN</string>
+    <string name="button_next">Siguiente</string>
+    <string name="description_game_1">Le aparecerán 4 ilustraciones de relojes de aguja, marque la hora requerida en los siguientes relojes</string>
+    <string name="description_game_2">En este juego deberá ordenar las palabras para formar una oración correcta</string>
+    <string name="description_game_3">Seleccione las imágenes que representan emociones positivas</string>
 </resources>
