@@ -13,8 +13,8 @@
         android:theme="@style/Theme.GSTI"
         tools:targetApi="31">
 
-        <activity android:name=".Orientaciones.OrientacionActivity" android:exported="true" />
-        <activity android:name=".Orientaciones.ComprensionActivity" android:exported="true" />
+        <activity android:name=".OrientacionActivity" android:exported="true" />
+        <activity android:name=".ComprensionActivity" android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
