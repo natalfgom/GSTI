@@ -8,5 +8,9 @@
     <string name="question_text">¿Ha comprendido su familiar las instrucciones del juego?</string>
     <string name="button_yes">Sí</string>
     <string name="button_no">No</string>
+    <string name="titulo_configuracion">Configuración juegos</string>
+    <string name="titulo_estadisticas">Estadísticas</string>
+    <string name="titulo_notificaciones">Notificaciones</string>
+    <string name="titulo_juegos">Juegos</string>
 
 </resources>

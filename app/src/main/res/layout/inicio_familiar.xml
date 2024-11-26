@@ -5,34 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#FFFFFF"
-    android:gravity="center">
-
-    <!-- Botón Juegos -->
-    <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="120dp"
-        android:orientation="vertical"
-        android:background="@drawable/rounded_button_background"
-        android:padding="8dp"
-        android:layout_marginBottom="16dp"
-        android:elevation="4dp"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_juegos"
-            android:contentDescription="@string/titulo_juegos" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/titulo_juegos"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:layout_marginTop="8dp" />
-    </LinearLayout>
+    android:gravity="center"
+    android:background="#FFFFFF">
 
     <!-- Botón Estadísticas -->
     <LinearLayout
@@ -49,7 +23,8 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_estadisticas"
-            android:contentDescription="@string/titulo_estadisticas" />
+            android:contentDescription="@string/titulo_estadisticas"
+            android:layout_gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,7 +32,8 @@
             android:text="@string/titulo_estadisticas"
             android:textColor="#000000"
             android:textSize="14sp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <!-- Botón Notificaciones -->
@@ -75,7 +51,8 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_notificaciones"
-            android:contentDescription="@string/titulo_notificaciones" />
+            android:contentDescription="@string/titulo_notificaciones"
+            android:layout_gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -83,7 +60,8 @@
             android:text="@string/titulo_notificaciones"
             android:textColor="#000000"
             android:textSize="14sp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center" />
     </LinearLayout>
 
 </LinearLayout>
