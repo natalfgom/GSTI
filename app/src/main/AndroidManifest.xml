@@ -6,17 +6,20 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/sobre_nosotros"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/sobre_nosotros"
         android:supportsRtl="true"
         android:theme="@style/Theme.GSTI"
         tools:targetApi="31">
 
         <activity android:name=".OrientacionActivity" android:exported="true" />
         <activity android:name=".ComprensionActivity" android:exported="true" />
+        <activity android:name=".menuInicio.InicioFamiliar" android:exported="true" />
+        <activity android:name=".menuInicio.InicioMedico" android:exported="true" />
+        <activity android:name=".menuInicio.InicioPaciente" android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

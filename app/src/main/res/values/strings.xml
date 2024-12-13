@@ -12,7 +12,10 @@
     <string name="titulo_estadisticas">Estadísticas</string>
     <string name="titulo_notificaciones">Notificaciones</string>
     <string name="titulo_juegos">Juegos</string>
-    <string name="ilustracion_sobre_nosotros">Ilustración sobre nosotros</string>
+    <string name="login">Acceder</string>
+    <string name="sign_up">Registrate</string>
+    <string name="passwd">Contraseña</string>
+    <string name="email">Email</string>
 
 
 </resources>
