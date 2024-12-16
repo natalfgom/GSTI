@@ -84,41 +84,62 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
+            // Coleccion en Firebase Database --> Pacientes
+            // id --> correo electromnico
+            //añadir tambien campo email con el correo
+
     private fun showHome(email: String) {
-        Log.d("AuthActivity", "Redirigiendo al usuario: $email")
+        Log.d("AuthActivity", "Buscando en Firestore con email: $email")
 
-        Firebase.firestore.collection("Medicos").document(email).get().addOnSuccessListener {
-            if(it.exists()){
-                Log.d("AuthActivity", "Redirigiendo a HomeMedicoActivity")
-                val intent = Intent(this, InicioMedico::class.java)
-                startActivity(intent)
-                finish()
-
-            }
-            else{
-                Firebase.firestore.collection("Familiares").document(email).get().addOnSuccessListener {
-                    if(it.exists()){
-                        Log.d("AuthActivity", "Redirigiendo a HomeMedicoActivity")
-                        val intent = Intent(this, InicioFamiliar::class.java)
-                        startActivity(intent)
-                        finish()
-
-                    }
-                    else{
-                        Log.d("AuthActivity", "Redirigiendo a HomePacienteActivity")
-                        val intent = Intent(this, InicioPaciente::class.java)
-                        startActivity(intent)
-                        finish()
-
-                    }
+        // Buscar en la colección "Medicos"
+        Firebase.firestore.collection("Medicos").document(email).get()
+            .addOnSuccessListener { medicoSnapshot ->
+                if (medicoSnapshot.exists()) {
+                    Log.d("AuthActivity", "El usuario es un Médico. Redirigiendo a InicioMedico.")
+                    val intent = Intent(this, InicioMedico::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    // Buscar en la colección "Familiares"
+                    Firebase.firestore.collection("Familiares").document(email).get()
+                        .addOnSuccessListener { familiarSnapshot ->
+                            if (familiarSnapshot.exists()) {
+                                Log.d("AuthActivity", "El usuario es un Familiar. Redirigiendo a InicioFamiliar.")
+                                val intent = Intent(this, InicioFamiliar::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                // Buscar en la colección "Pacientes"
+                                Firebase.firestore.collection("Pacientes").document(email).get()
+                                    .addOnSuccessListener { pacienteSnapshot ->
+                                        if (pacienteSnapshot.exists()) {
+                                            Log.d("AuthActivity", "El usuario es un Paciente. Redirigiendo a InicioPaciente.")
+                                            val intent = Intent(this, InicioPaciente::class.java)
+                                            startActivity(intent)
+                                            finish()
+                                        } else {
+                                            Log.e("AuthActivity", "El usuario no se encontró en ninguna colección.")
+                                            showAlert("Usuario no encontrado en la base de datos.")
+                                        }
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("AuthActivity", "Error buscando en Pacientes: ${e.message}")
+                                        showAlert("Error verificando datos del paciente.")
+                                    }
+                            }
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("AuthActivity", "Error buscando en Familiares: ${e.message}")
+                            showAlert("Error verificando datos del familiar.")
+                        }
                 }
-
             }
-        }
-
-
-
+            .addOnFailureListener { e ->
+                Log.e("AuthActivity", "Error buscando en Medicos: ${e.message}")
+                showAlert("Error verificando datos del médico.")
+            }
     }
+
 
 
 
