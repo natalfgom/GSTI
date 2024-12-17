@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
     android:background="#FFFFFF"
-    android:gravity="center">
+    android:gravity="center"
+    tools:ignore="ExtraText">
 
     <!-- Botón Configuración Juegos -->
     <LinearLayout
+        android:id="@+id/btnConfiguracionJuegos"
         android:layout_width="200dp"
         android:layout_height="120dp"
         android:orientation="vertical"
@@ -36,6 +39,7 @@
 
     <!-- Botón Estadísticas -->
     <LinearLayout
+        android:id="@+id/btnEstadisticas"
         android:layout_width="200dp"
         android:layout_height="120dp"
         android:orientation="vertical"
@@ -62,6 +66,7 @@
 
     <!-- Botón Notificaciones -->
     <LinearLayout
+        android:id="@+id/btnNotificaciones"
         android:layout_width="200dp"
         android:layout_height="120dp"
         android:orientation="vertical"
