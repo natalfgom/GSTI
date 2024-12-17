@@ -1,4 +1,6 @@
 <resources>
+    <string name="juego_nombre">Nombre del juego</string>
+    <string name="no_juegos_asignados">No hay juegos asignados</string>
     <string name="title_orientation">ORIENTACIÓN</string>
     <string name="app_name">Cognitiva</string>
     <string name="button_next">Siguiente</string>
