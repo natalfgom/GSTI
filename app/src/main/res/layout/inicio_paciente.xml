@@ -10,6 +10,7 @@
 
     <!-- Botón Juegos -->
     <LinearLayout
+        android:id="@+id/btnJuegos"
         android:layout_width="200dp"
         android:layout_height="120dp"
         android:orientation="vertical"
@@ -34,8 +35,10 @@
             android:layout_marginTop="8dp" />
     </LinearLayout>
 
+
     <!-- Botón Estadísticas -->
     <LinearLayout
+        android:id="@+id/btnEstadisticas"
         android:layout_width="200dp"
         android:layout_height="120dp"
         android:orientation="vertical"
@@ -62,6 +65,7 @@
 
     <!-- Botón Notificaciones -->
     <LinearLayout
+        android:id="@+id/btnNotificaciones"
         android:layout_width="200dp"
         android:layout_height="120dp"
         android:orientation="vertical"
