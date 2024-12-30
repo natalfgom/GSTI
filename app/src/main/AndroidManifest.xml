@@ -56,5 +56,9 @@
             android:name=".juegoAtencion.FailureActivity"
             android:exported="true" />
 
+        <!-- Nueva actividad para el registro -->
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="true" />
     </application>
 </manifest>

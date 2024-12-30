@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import com.example.gsti.menuInicio.InicioFamiliar
 import com.example.gsti.menuInicio.InicioMedico
 import com.example.gsti.menuInicio.InicioPaciente
+import com.example.gsti.RegisterActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -43,24 +44,11 @@ class AuthActivity : AppCompatActivity() {
     private fun setup() {
         // Lógica para el botón de Registro
         btnRegistro.setOnClickListener {
-            val emailText = email.text.toString().trim()
-            val passwordText = passwd.text.toString().trim()
-
-            if (emailText.isNotEmpty() && passwordText.isNotEmpty()) {
-                auth.createUserWithEmailAndPassword(emailText, passwordText)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show()
-                            limpiarCampos()
-                            showHome(emailText)
-                        } else {
-                            showAlert("Error al registrar: ${task.exception?.message}")
-                        }
-                    }
-            } else {
-                Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
-            }
+            // Redirige a la pantalla de registro
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
+
 
         // Lógica para el botón de Acceder
         btnAcceder.setOnClickListener {
@@ -114,6 +102,7 @@ class AuthActivity : AppCompatActivity() {
                                     .addOnSuccessListener { pacienteSnapshot ->
                                         if (pacienteSnapshot.exists()) {
                                             Log.d("AuthActivity", "El usuario es un Paciente. Redirigiendo a InicioPaciente.")
+
                                             val intent = Intent(this, InicioPaciente::class.java)
                                             startActivity(intent)
                                             finish()

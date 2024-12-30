@@ -29,6 +29,19 @@
     <string name="retry">Intentar de nuevo</string>
     <string name="go_to_menu">Ir al Menú Principal</string>
     <string name="star">Estrella</string>
+    <string name="name">Nombre</string>
+    <string name="surname">Apellidos</string>
+    <string name="birthday">Fecha de nacimiento</string>
+    <string name="telf">Teléfono</string>
+    <string name="sex">Sexo</string>
+    <string name="female">Femenino</string>
+    <string name="male">Masculino</string>
+    <string name="none">No especificar</string>
+    <string name="patient">Paciente</string>
+    <string name="family">Familiar</string>
+    <string name="doctor">Médico</string>
+    <string name="register">Registrar</string>
+
 
 
 </resources>

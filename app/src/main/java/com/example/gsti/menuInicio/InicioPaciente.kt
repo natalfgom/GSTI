@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.gsti.JuegosActivity
 import com.example.gsti.R
 
+
 class InicioPaciente : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
