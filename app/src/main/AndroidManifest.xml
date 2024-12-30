@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GSTI"
         tools:targetApi="31">
+
+        <!-- Actividades existentes -->
         <activity
             android:name=".JuegosActivity"
             android:exported="false" />
@@ -35,10 +37,24 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <!-- Nueva actividad para el juego de atención -->
+        <activity
+            android:name=".juegoAtencion.MecanicaAtencion"
+            android:exported="true" />
+
+        <!-- Actividad de éxito -->
+        <activity
+            android:name=".juegoAtencion.SuccessActivity"
+            android:exported="true" />
+
+        <!-- Actividad de fallo -->
+        <activity
+            android:name=".juegoAtencion.FailureActivity"
+            android:exported="true" />
+
+    </application>
 </manifest>
