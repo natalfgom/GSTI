@@ -1,13 +1,11 @@
 package com.example.gsti
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import java.text.SimpleDateFormat
-import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -30,59 +28,95 @@ class RegisterActivity : AppCompatActivity() {
         val birthdayField: EditText = findViewById(R.id.birthdayField)
         val phoneField: EditText = findViewById(R.id.phoneField)
         val typeGroup: RadioGroup = findViewById(R.id.typeGroup)
+        val pacienteContainer: LinearLayout = findViewById(R.id.pacienteContainer)
+        val familiarContainer: LinearLayout = findViewById(R.id.familiarContainer)
+        val doctorSpinner: Spinner = findViewById(R.id.doctorSpinner)
+        val patientSpinner: Spinner = findViewById(R.id.patientSpinner)
+        val confirmationCodeField: EditText = findViewById(R.id.confirmationCodeField)
         val registerButton: Button = findViewById(R.id.registerButton)
 
+        // Mostrar u ocultar campos dinámicos según el rol seleccionado
+        typeGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radioPaciente -> {
+                    pacienteContainer.visibility = View.VISIBLE
+                    familiarContainer.visibility = View.GONE
+                    loadDoctorsSpinner(doctorSpinner) // Cargar médicos en Spinner
+                }
+                R.id.radioFamiliar -> {
+                    pacienteContainer.visibility = View.GONE
+                    familiarContainer.visibility = View.VISIBLE
+                    loadPatientsSpinner(patientSpinner) // Cargar pacientes en Spinner
+                }
+                else -> {
+                    pacienteContainer.visibility = View.GONE
+                    familiarContainer.visibility = View.GONE
+                }
+            }
+        }
+
+        // Configurar el botón de registro
         registerButton.setOnClickListener {
             val email = emailField.text.toString().trim()
             val password = passwordField.text.toString().trim()
             val name = nameField.text.toString().trim()
             val surname = surnameField.text.toString().trim()
-            val birthdayText = birthdayField.text.toString().trim()
-            val phoneText = phoneField.text.toString().trim()
+            val birthday = birthdayField.text.toString().trim()
+            val phone = phoneField.text.toString().trim()
             val selectedTypeId = typeGroup.checkedRadioButtonId
             val type = findViewById<RadioButton>(selectedTypeId)?.text.toString()
 
-            // Validación de campos
-            if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty() && surname.isNotEmpty() && birthdayText.isNotEmpty() && phoneText.isNotEmpty() && type.isNotEmpty()) {
+            // Validar campos básicos
+            if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty() && surname.isNotEmpty() && birthday.isNotEmpty() && phone.isNotEmpty() && type.isNotEmpty()) {
+                val additionalData = hashMapOf<String, Any>(
+                    "name" to name,
+                    "surname" to surname,
+                    "birthday" to birthday,
+                    "phone" to phone,
+                    "type" to type,
+                    "email" to email
+                )
 
-                // Validar formato de fecha
-                val birthday: Date? = try {
-                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(birthdayText)
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Formato de fecha incorrecto. Use dd/MM/yyyy", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
+                // Validar campos adicionales según el rol
+                when (type) {
+                    getString(R.string.patient) -> {
+                        if (doctorSpinner.adapter == null || doctorSpinner.selectedItem == null) {
+                            Toast.makeText(this, "Por favor, selecciona un médico.", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener
+                        }
+                        val selectedDoctor = doctorSpinner.selectedItem.toString()
+                        additionalData["doctor"] = selectedDoctor
+                    }
+                    getString(R.string.family) -> {
+                        if (patientSpinner.adapter == null || patientSpinner.selectedItem == null) {
+                            Toast.makeText(this, "Por favor, selecciona un paciente.", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener
+                        }
+                        val selectedPatient = patientSpinner.selectedItem.toString()
+                        val confirmationCode = confirmationCodeField.text.toString().trim()
+
+                        if (confirmationCode.length != 4) {
+                            Toast.makeText(this, "El código de confirmación debe tener 4 dígitos", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener
+                        }
+
+                        additionalData["patient"] = selectedPatient
+                        additionalData["confirmationCode"] = confirmationCode
+                    }
                 }
 
-                // Validar número de teléfono
-                val phone: Int? = phoneText.toIntOrNull()
-                if (phone == null || phoneText.length != 9) {
-                    Toast.makeText(this, "Número de teléfono inválido. Debe contener 9 dígitos.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                // Registrar usuario en Firebase Authentication
+                // Registrar usuario en Firebase
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            // Guardar datos adicionales en Firestore
-                            val userMap = hashMapOf(
-                                "name" to name,
-                                "surname" to surname,
-                                "birthday" to birthday,
-                                "phone" to phone,
-                                "type" to type,
-                                "email" to email
-                            )
-
                             val collection = when (type) {
                                 getString(R.string.patient) -> "Pacientes"
                                 getString(R.string.family) -> "Familiares"
                                 getString(R.string.doctor) -> "Medicos"
                                 else -> "Usuarios"
                             }
-
                             firestore.collection(collection).document(email)
-                                .set(userMap)
+                                .set(additionalData)
                                 .addOnSuccessListener {
                                     Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
                                     finish()
@@ -98,5 +132,38 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    // Método para cargar médicos en Spinner
+    private fun loadDoctorsSpinner(spinner: Spinner) {
+        firestore.collection("Medicos")
+            .get()
+            .addOnSuccessListener { result ->
+                val doctors = result.mapNotNull { it.getString("name") }
+                updateSpinnerAdapter(spinner, doctors)
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error al cargar médicos: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    // Método para cargar pacientes en Spinner
+    private fun loadPatientsSpinner(spinner: Spinner) {
+        firestore.collection("Pacientes")
+            .get()
+            .addOnSuccessListener { result ->
+                val patients = result.mapNotNull { it.getString("name") }
+                updateSpinnerAdapter(spinner, patients)
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error al cargar pacientes: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    // Método para actualizar el adaptador de un Spinner
+    private fun updateSpinnerAdapter(spinner: Spinner, items: List<String>) {
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
     }
 }

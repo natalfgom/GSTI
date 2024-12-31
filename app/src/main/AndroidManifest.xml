@@ -18,12 +18,6 @@
             android:name=".JuegosActivity"
             android:exported="false" />
         <activity
-            android:name=".OrientacionActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ComprensionActivity"
-            android:exported="true" />
-        <activity
             android:name=".menuInicio.InicioFamiliar"
             android:exported="true" />
         <activity
@@ -40,6 +34,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Nueva actividad para la orientación del juego -->
+        <activity
+            android:name=".OrientacionActivity"
+            android:exported="true" />
+
+        <!-- Nueva actividad para la comprensión del juego -->
+        <activity
+            android:name=".ComprensionActivity"
+            android:exported="true" />
 
         <!-- Nueva actividad para el juego de atención -->
         <activity

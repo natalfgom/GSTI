@@ -10,9 +10,10 @@
     <EditText
         android:id="@+id/emailField"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
+        android:autofillHints="emailAddress"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,9 +23,10 @@
     <EditText
         android:id="@+id/passwordField"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="@string/passwd"
         android:inputType="textPassword"
+        android:autofillHints="password"
         app:layout_constraintTop_toBottomOf="@id/emailField"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,9 +36,10 @@
     <EditText
         android:id="@+id/nameField"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="@string/name"
         android:inputType="text"
+        android:autofillHints="name"
         app:layout_constraintTop_toBottomOf="@id/passwordField"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,9 +49,10 @@
     <EditText
         android:id="@+id/surnameField"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="@string/surname"
         android:inputType="text"
+        android:autofillHints="name"
         app:layout_constraintTop_toBottomOf="@id/nameField"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,9 +62,10 @@
     <EditText
         android:id="@+id/birthdayField"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="@string/birthday"
         android:inputType="date"
+        android:autofillHints="birthday"
         app:layout_constraintTop_toBottomOf="@id/surnameField"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,9 +75,10 @@
     <EditText
         android:id="@+id/phoneField"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="@string/telf"
         android:inputType="phone"
+        android:autofillHints="phone"
         app:layout_constraintTop_toBottomOf="@id/birthdayField"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,15 +114,91 @@
             android:text="@string/doctor" />
     </RadioGroup>
 
+    <!-- Contenedor dinámico para pacientes -->
+    <LinearLayout
+        android:id="@+id/pacienteContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/typeGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/pacienteLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_doctor"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <Spinner
+            android:id="@+id/doctorSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- Contenedor dinámico para familiares -->
+    <LinearLayout
+        android:id="@+id/familiarContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/typeGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/familiarLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_patient"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <Spinner
+            android:id="@+id/patientSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Campo para el código de confirmación -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/codeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confirmation_code"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/confirmationCodeField"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="@string/confirmation_code"
+                android:inputType="numberPassword"
+                android:maxLength="4" />
+        </LinearLayout>
+    </LinearLayout>
+
     <!-- Botón de registro -->
     <Button
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="168dp"
         android:text="@string/register"
-        app:layout_constraintTop_toBottomOf="@id/typeGroup"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp" />
-
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/typeGroup" />
 </androidx.constraintlayout.widget.ConstraintLayout>

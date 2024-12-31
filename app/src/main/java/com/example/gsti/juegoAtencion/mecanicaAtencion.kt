@@ -11,109 +11,116 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.gsti.R
 
 class MecanicaAtencion : AppCompatActivity() {
-    private lateinit var numberGrid: GridLayout
-    private lateinit var targetNumberText: TextView
-    private lateinit var timerText: TextView
 
-    private var targetNumber: Int = 0 // Número objetivo
-    private var correctTaps: Int = 0 // Número de selecciones correctas
-    private var totalTargetCount: Int = 0 // Total de números objetivo en la tabla
-    private var remainingTouches: Int = 5 // Máximo número de toques permitidos
-    private val timeLimit = 50000L // Tiempo límite en milisegundos (50 segundos)
-    private var gameRunning = false
-    private var currentLevel = 1 // Nivel actual (1 a 3)
-    private var totalStars = 0 // Número total de estrellas obtenidas
+    // Declaración de vistas y variables necesarias
+    private lateinit var numberGrid: GridLayout // Contenedor para los botones con números
+    private lateinit var targetNumberText: TextView // Texto que muestra el número objetivo
+    private lateinit var timerText: TextView // Texto que muestra el tiempo restante
 
-    private var timer: CountDownTimer? = null // Variable para manejar el temporizador
+    private var targetNumber: Int = 0 // Número objetivo que el jugador debe seleccionar
+    private var correctTaps: Int = 0 // Número de selecciones correctas realizadas por el jugador
+    private var totalTargetCount: Int = 0 // Número total de veces que el número objetivo aparece en la cuadrícula
+    private var remainingTouches: Int = 5 // Toques restantes permitidos
+    private val timeLimit = 50000L // Tiempo límite por nivel en milisegundos (50 segundos)
+    private var gameRunning = false // Indica si el juego está en ejecución
+    private var currentLevel = 1 // Nivel actual del juego (hay 3 niveles)
+    private var totalStars = 0 // Total de estrellas obtenidas al final del juego
+
+    private var timer: CountDownTimer? = null // Temporizador que controla el tiempo de cada nivel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.atencion)
 
-        // Inicializar vistas
+        // Vinculación de vistas
         numberGrid = findViewById(R.id.numberGrid)
         targetNumberText = findViewById(R.id.targetNumberText)
         timerText = findViewById(R.id.timerText)
 
-        // Iniciar el primer nivel del juego
+        // Iniciar el juego desde el primer nivel
         startGame()
     }
 
+    // Función para configurar y empezar cada nivel
     private fun startGame() {
         gameRunning = true
-        correctTaps = 0
-        totalTargetCount = 0
-        remainingTouches = 5 // Reiniciar el número de toques permitidos
+        correctTaps = 0 // Reinicia las selecciones correctas al comenzar un nuevo nivel
+        totalTargetCount = 0 // Reinicia el contador de números objetivos
+        remainingTouches = 5 // Reinicia los toques permitidos
 
-        // Cancelar el temporizador anterior si existe
+        // Cancelar cualquier temporizador previo antes de configurar uno nuevo
         timer?.cancel()
 
-        // Generar el número objetivo
+        // Generar un número objetivo aleatorio del 1 al 10
         targetNumber = (1..10).random()
         targetNumberText.text = "Selecciona el número: $targetNumber"
 
-        // Llenar la cuadrícula con números aleatorios asegurando que el número objetivo esté al menos 3 veces
-        numberGrid.removeAllViews()
-        val positions = (0 until 12).shuffled() // Generar posiciones aleatorias para los botones
-        val targetPositions = positions.take(3) // Seleccionar 3 posiciones para el número objetivo
+        // Configuración de la cuadrícula con botones numéricos
+        numberGrid.removeAllViews() // Limpia cualquier vista previa de la cuadrícula
+        val positions = (0 until 12).shuffled() // Genera una lista de posiciones aleatorias
+        val targetPositions = positions.take(3) // Selecciona 3 posiciones para el número objetivo
 
+        // Agregar botones a la cuadrícula
         for (i in 0 until 12) {
             val button = Button(this)
             val number = if (i in targetPositions) {
-                targetNumber // Asegurar que el número objetivo esté en estas posiciones
+                targetNumber // Asegura que el número objetivo aparezca en las posiciones seleccionadas
             } else {
-                (1..10).filter { it != targetNumber }.random() // Evitar duplicar el número objetivo en otras posiciones
+                (1..10).filter { it != targetNumber }.random() // Evita que se repita el número objetivo en posiciones no seleccionadas
             }
 
+            // Contador de cuántas veces aparece el número objetivo
             if (number == targetNumber) {
-                totalTargetCount++ // Incrementar el contador si es el número objetivo
+                totalTargetCount++
             }
 
-            button.text = number.toString()
-            button.textSize = 20f
-            button.setBackgroundColor(Color.LTGRAY)
+            button.text = number.toString() // Muestra el número en el botón
+            button.textSize = 20f // Tamaño del texto del botón
+            button.setBackgroundColor(Color.LTGRAY) // Color inicial del botón
 
-            // Asegurar que el botón responda a las selecciones
+            // Configuración del clic del botón
             button.setOnClickListener {
                 if (gameRunning) {
                     if (button.text.toString().toInt() == targetNumber) {
-                        correctTaps++
-                        button.setBackgroundColor(Color.GREEN)
-                        button.isEnabled = false
+                        correctTaps++ // Incrementa las selecciones correctas
+                        button.setBackgroundColor(Color.GREEN) // Cambia el color a verde si es correcto
+                        button.isEnabled = false // Desactiva el botón después de seleccionarlo
                     } else {
-                        button.setBackgroundColor(Color.RED)
-                        button.isEnabled = false
+                        button.setBackgroundColor(Color.RED) // Cambia el color a rojo si es incorrecto
+                        button.isEnabled = false // Desactiva el botón después de seleccionarlo
                     }
 
-                    remainingTouches--
+                    remainingTouches-- // Reduce el número de toques restantes
 
-                    // Finalizar el nivel si se alcanzan 5 toques o si se seleccionan todos los objetivos
+                    // Verifica si el nivel se completa (aciertos suficientes o se acabaron los toques)
                     if (correctTaps == totalTargetCount || remainingTouches == 0) {
                         gameRunning = false
-                        handleLevelCompletion()
+                        handleLevelCompletion() // Maneja el final del nivel
                     }
                 }
             }
 
-            // Configurar las dimensiones del botón en el GridLayout
+            // Configuración del diseño del botón en la cuadrícula
             val params = GridLayout.LayoutParams()
             params.width = 0
             params.height = 0
             params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
             params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
-            params.setMargins(8, 8, 8, 8) // Márgenes uniformes
+            params.setMargins(8, 8, 8, 8) // Establece márgenes uniformes
             button.layoutParams = params
 
-            numberGrid.addView(button)
+            numberGrid.addView(button) // Añade el botón a la cuadrícula
         }
 
-        // Iniciar el temporizador
+        // Configuración del temporizador para el nivel
         timer = object : CountDownTimer(timeLimit, 1000) {
             override fun onTick(millisUntilFinished: Long) {
+                // Actualiza el texto del temporizador
                 timerText.text = "Tiempo restante: ${millisUntilFinished / 1000}s"
             }
 
             override fun onFinish() {
+                // Si el tiempo termina y el juego sigue activo, se maneja el final del nivel
                 if (gameRunning) {
                     gameRunning = false
                     handleLevelCompletion()
@@ -122,39 +129,47 @@ class MecanicaAtencion : AppCompatActivity() {
         }.start()
     }
 
+    // Maneja lo que sucede al finalizar un nivel
     private fun handleLevelCompletion() {
-        // Determinar si el jugador logró un 100% de aciertos en este nivel
-        val accuracy = (correctTaps * 100) / totalTargetCount
+        val accuracy = (correctTaps * 100) / totalTargetCount // Calcula la precisión del jugador
         if (accuracy == 100) {
-            totalStars++ // Incrementar estrellas por cada nivel perfecto
+            totalStars++ // Incrementa las estrellas si el nivel fue completado perfectamente
         }
 
         if (currentLevel < 3) {
+            // Si no es el último nivel, pasa al siguiente nivel
             currentLevel++
-            startGame() // Ir al siguiente nivel
+            startGame()
         } else {
-            // Evaluar el resultado final después de 3 niveles
+            // Si es el último nivel, calcula el resultado final
             calculateStarsAndShowResult()
         }
     }
 
+    // Calcula las estrellas obtenidas y muestra la pantalla de resultado
     private fun calculateStarsAndShowResult() {
-        // Mostrar la pantalla de éxito con el número de estrellas
-        val intent = Intent(this, SuccessActivity::class.java)
-        intent.putExtra("stars", totalStars) // Pasar las estrellas obtenidas
-        startActivity(intent)
-        finish()
+        if (totalStars == 0) {
+            // Si no se obtuvo ninguna estrella, muestra la pantalla de fallo
+            showFailureScreen()
+        } else {
+            // Si se obtuvo al menos una estrella, muestra la pantalla de éxito
+            val intent = Intent(this, SuccessActivity::class.java)
+            intent.putExtra("stars", totalStars) // Pasa las estrellas obtenidas
+            startActivity(intent)
+            finish()
+        }
     }
 
+    // Muestra la pantalla de fallo
     private fun showFailureScreen() {
         val intent = Intent(this, FailureActivity::class.java)
         startActivity(intent)
         finish()
     }
 
+    // Cancela el temporizador cuando la actividad se destruye
     override fun onDestroy() {
         super.onDestroy()
-        // Cancelar el temporizador si la actividad se destruye
         timer?.cancel()
     }
 }

@@ -1,59 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/white"
     tools:context=".ComprensionActivity">
 
-    <!-- Pregunta centrada -->
-
-    <!-- Botón "Sí" -->
-
-
+    <!-- Pregunta -->
     <TextView
         android:id="@+id/questionTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:gravity="center"
+        android:layout_marginTop="100dp"
         android:text="@string/question_text"
-        android:textColor="@color/black"
-        android:textSize="28sp"
+        android:textAlignment="center"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/yesButton"
+    <!-- Campo de código de familiar -->
+    <EditText
+        android:id="@+id/codeField"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/blue"
-        android:text="@string/button_yes"
-        android:textColor="#212121"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@id/noButton"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:hint="@string/enter_confirmation_code"
+        android:inputType="numberPassword"
+        android:maxLength="4"
+        app:layout_constraintTop_toBottomOf="@id/questionTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/questionTextView" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Botón "Sí" -->
+
+    <!-- Botón "No" -->
 
     <Button
-        android:id="@+id/noButton"
-        android:layout_width="0dp"
+        android:id="@+id/yesButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="88dp"
-        android:backgroundTint="@color/blue"
-        android:text="@string/button_no"
-        android:textColor="#212121"
-        android:textSize="18sp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/button_yes"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/yesButton"
-        app:layout_constraintTop_toBottomOf="@id/questionTextView" />
+        app:layout_constraintHorizontal_bias="0.137"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/codeField" />
+
+    <Button
+        android:id="@+id/buttonNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:text="@string/button_no"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/codeField" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

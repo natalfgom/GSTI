@@ -7,6 +7,7 @@
     <string name="description_game_1">Le aparecerán 4 ilustraciones de relojes de aguja, marque la hora requerida en los siguientes relojes</string>
     <string name="description_game_2">En este juego deberá ordenar las palabras para formar una oración correcta</string>
     <string name="description_game_3">Seleccione las imágenes que representan emociones positivas</string>
+    <string name="juego_atencion">Encuentra y Selecciona un número objetivo dentro de una cuadrícula antes de que se acabe el tiempo.</string>
     <string name="question_text">¿Ha comprendido su familiar las instrucciones del juego?</string>
     <string name="button_yes">Sí</string>
     <string name="button_no">No</string>
@@ -41,6 +42,21 @@
     <string name="family">Familiar</string>
     <string name="doctor">Médico</string>
     <string name="register">Registrar</string>
+    <string name="error_no_doctors">No hay médicos disponibles en la base de datos.</string>
+    <string name="error_no_patients">No hay pacientes disponibles en la base de datos.</string>
+    <string name="success_registration">Registro exitoso.</string>
+    <string name="error_registration">Error al registrar el usuario.</string>
+    <string name="error_missing_fields">Por favor, completa todos los campos.</string>
+    <string name="error_invalid_date">Formato de fecha incorrecto. Usa dd/MM/yyyy.</string>
+    <string name="error_invalid_phone">Número de teléfono inválido. Debe contener 9 dígitos.</string>
+    <string name="select_doctor">Selecciona un médico:</string>
+    <string name="select_patient">Selecciona un paciente:</string>
+    <string name="confirmation_code">Código de Confirmación</string>
+    <string name="enter_confirmation_code">Introduce el código de confirmación</string>
+    <string name="invalid_code_message">El código debe tener 4 dígitos y coincidir con el del familiar del paciente</string>
+
+
+
 
 
 

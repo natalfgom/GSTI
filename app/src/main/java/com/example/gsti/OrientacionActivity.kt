@@ -3,16 +3,22 @@ package com.example.gsti
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.gsti.ComprensionActivity
+import com.example.gsti.R
 
 class OrientacionActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.orientacion)
+        setContentView(R.layout.orientacion_atencion)
 
+        val nextButton: Button = findViewById(R.id.nextButton)
 
+        // Navegar a la pantalla de Comprensión
+        nextButton.setOnClickListener {
+            val intent = Intent(this, ComprensionActivity::class.java)
+            startActivity(intent)
+            finish() // Opcional: Cierra la pantalla actual
         }
-
     }
+}

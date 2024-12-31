@@ -6,7 +6,9 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gsti.JuegosActivity
+import com.example.gsti.OrientacionActivity
 import com.example.gsti.R
+import com.example.gsti.juegoAtencion.MecanicaAtencion
 
 
 class InicioPaciente : AppCompatActivity() {
@@ -22,11 +24,11 @@ class InicioPaciente : AppCompatActivity() {
 
         // Acción para "Juegos"
         btnJuegos.setOnClickListener {
-            // TODO: Implementar navegación a JuegosActivity
-            Toast.makeText(this, "Ir a Juegos", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, JuegosActivity::class.java)
+            // Navegar a la pantalla de orientación antes del juego
+            val intent = Intent(this, OrientacionActivity::class.java)
             startActivity(intent)
         }
+
 
         // Acción para "Estadísticas"
         btnEstadisticas.setOnClickListener {
