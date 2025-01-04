@@ -64,5 +64,18 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="true" />
+
+
+        <!-- Actividades para el juego de memoria-->
+        <activity
+            android:name=".juegoMemoria.MecanicaMemoria"
+            android:exported="true" />
+        <activity android:name=".juegoMemoria.PantallaFinalActivity">
+            <!-- Puedes agregar configuraciones adicionales aquí -->
+        </activity>
+
+
+
+
     </application>
 </manifest>

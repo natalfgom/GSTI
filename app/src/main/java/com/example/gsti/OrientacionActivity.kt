@@ -6,17 +6,19 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gsti.ComprensionActivity
 import com.example.gsti.R
+import com.example.gsti.juegoMemoria.MecanicaMemoria
+
 
 class OrientacionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.orientacion_atencion)
+        setContentView(R.layout.orientacion_memoria)
 
         val nextButton: Button = findViewById(R.id.nextButton)
 
         // Navegar a la pantalla de Comprensión
         nextButton.setOnClickListener {
-            val intent = Intent(this, ComprensionActivity::class.java)
+            val intent = Intent(this, MecanicaMemoria::class.java)
             startActivity(intent)
             finish() // Opcional: Cierra la pantalla actual
         }

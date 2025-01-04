@@ -55,6 +55,24 @@
     <string name="enter_confirmation_code">Introduce el código de confirmación</string>
     <string name="invalid_code_message">El código debe tener 4 dígitos y coincidir con el del familiar del paciente</string>
 
+<!--Juego de memoria-->
+<string name="orientacion_memoria">Lea al paciente la lista de palabras que se presenta a continuación, dejando 2 segundos entre una
+y otra. Inmediatamente después de cada lectua, el paciente debe seleccionar las palabras que recuerde de entre las que se
+presenten en pantalla.</string>
+
+    <string name="instruccion_juego_memoria"> Memorice las palabras</string>
+
+    <string name="tiempo_restante_juego_memoria"> Tiempo restante:</string>
+
+    <string name="time_remaining">Tiempo restante: %1$d segundos</string>
+
+    <string name="correct_answers">Correctas: %1$d / %2$d</string>
+
+    <string name="game_completed">Juego completado</string>
+
+
+        <!-- Add this to your strings.xml file -->
+        <string name="final_scores_format">Puntuaciones por ronda:\nRonda 1: %1$d\nRonda 2: %2$d\nRonda 3: %3$d\n\nPuntuación total: %4$d</string>
 
 
 

@@ -3,4 +3,32 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#2196F3</color>
+
+    <!-- Colores principales -->
+    <color name="primary_blue">#3E5C76</color> <!-- Azul oscuro con un toque gris -->
+    <color name="secondary_blue">#5C7F94</color> <!-- Azul más claro, pero igualmente tranquilo -->
+    <color name="primary_purple">#6A4C9C</color> <!-- Morado apagado, sofisticado -->
+    <color name="secondary_purple">#8E6AA7</color> <!-- Morado más suave, armoniza bien con el principal -->
+
+    <!-- Colores para los botones -->
+    <color name="button_normal">#A3A9C4</color> <!-- Gris azulado suave para los botones -->
+    <color name="button_pressed">#4E5B74</color> <!-- Gris más oscuro cuando se presiona el botón -->
+    <color name="button_text">#FFFFFF</color> <!-- Blanco para texto de botones (para contrastar con fondo oscuro) -->
+
+    <!-- Colores para el texto -->
+    <color name="text_primary">#212121</color> <!-- Gris oscuro para texto principal -->
+    <color name="text_secondary">#B0BEC5</color> <!-- Gris muy suave para textos secundarios -->
+    <color name="text_inverted">#FFFFFF</color> <!-- Blanco para textos en fondos oscuros -->
+
+    <!-- Colores para retroalimentación -->
+    <color name="correct">#81C784</color> <!-- Verde suave para respuestas correctas -->
+    <color name="incorrect">#FF8A65</color> <!-- Naranja suave para respuestas incorrectas -->
+
+    <!-- Fondo -->
+    <color name="background">#F3F6FB</color> <!-- Fondo suave azul pastel para mantener un ambiente calmado -->
+    <color name="background_dark">#2C3E50</color> <!-- Fondo oscuro para áreas secundarias, ideal para textos blancos -->
+
+    <!-- Detalles adicionales -->
+    <color name="highlight">#9C27B0</color> <!-- Morado brillante para detalles, para resaltar cosas importantes -->
+
 </resources>

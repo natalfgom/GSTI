@@ -58,4 +58,7 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
 
+    // Agregar CardView con Kotlin DSL
+    implementation("androidx.cardview:cardview:1.0.0")
+
 }
