@@ -9,6 +9,7 @@ import com.example.gsti.JuegosActivity
 import com.example.gsti.OrientacionActivity
 import com.example.gsti.R
 import com.example.gsti.juegoAtencion.MecanicaAtencion
+import com.example.gsti.juegoLenguaje.OrientacionJuegoLenguajeActivity
 
 
 class InicioPaciente : AppCompatActivity() {
@@ -25,7 +26,7 @@ class InicioPaciente : AppCompatActivity() {
         // Acción para "Juegos"
         btnJuegos.setOnClickListener {
             // Navegar a la pantalla de orientación antes del juego
-            val intent = Intent(this, OrientacionActivity::class.java)
+            val intent = Intent(this, OrientacionJuegoLenguajeActivity::class.java)
             startActivity(intent)
         }
 

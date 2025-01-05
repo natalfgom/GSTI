@@ -7,6 +7,9 @@
     <string name="description_game_1">Le aparecerán 4 ilustraciones de relojes de aguja, marque la hora requerida en los siguientes relojes</string>
     <string name="description_game_2">En este juego deberá ordenar las palabras para formar una oración correcta</string>
     <string name="description_game_3">Seleccione las imágenes que representan emociones positivas</string>
+
+
+    <string name="juego_Lenguaje">En este juego, debes seleccionar la categoría correspondiente a la palabra que se te presenta."</string>
     <string name="juego_atencion">Encuentra y Selecciona un número objetivo dentro de una cuadrícula antes de que se acabe el tiempo.</string>
     <string name="question_text">¿Ha comprendido su familiar las instrucciones del juego?</string>
     <string name="button_yes">Sí</string>
@@ -57,7 +60,7 @@
 
 <!--Juego de memoria-->
 <string name="orientacion_memoria">Lea al paciente la lista de palabras que se presenta a continuación, dejando 2 segundos entre una
-y otra. Inmediatamente después de cada lectua, el paciente debe seleccionar las palabras que recuerde de entre las que se
+y otra. Inmediatamente después de cada lectura, el paciente debe seleccionar las palabras que recuerde de entre las que se
 presenten en pantalla.</string>
 
     <string name="instruccion_juego_memoria"> Memorice las palabras</string>
@@ -71,11 +74,17 @@ presenten en pantalla.</string>
     <string name="game_completed">Juego completado</string>
 
 
-        <!-- Add this to your strings.xml file -->
-        <string name="final_scores_format">Puntuaciones por ronda:\nRonda 1: %1$d\nRonda 2: %2$d\nRonda 3: %3$d\n\nPuntuación total: %4$d</string>
+
+    <string name="final_scores_format">Puntuaciones por ronda:\nRonda 1: %1$d\nRonda 2: %2$d\nRonda 3: %3$d\n\nPuntuación total: %4$d</string>
 
 
-
-
+    <string name="palabra_a_clasificar">Palabra a clasificar</string>
+    <string name="categoria_1">Categoría 1</string>
+    <string name="categoria_2">Categoría 2</string>
+    <string name="categoria_3">Categoría 3</string>
+    <string name="verificar_respuesta">Verificar Respuesta</string>
+    <string name="tiempo_50s">Tiempo: 50s</string>
+    <string name="felicidades_lenguaje">¡Felicidades! Has completado el juego con éxito.</string>
+    <string name="resultado_aciertos">Has acertado %1$d/5</string>
 
 </resources>

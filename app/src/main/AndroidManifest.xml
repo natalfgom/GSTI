@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Nueva actividad para la orientación del juego -->
+        <!-- Actividad para la orientación del juego -->
         <activity
             android:name=".OrientacionActivity"
             android:exported="true" />
@@ -71,8 +71,26 @@
             android:name=".juegoMemoria.MecanicaMemoria"
             android:exported="true" />
         <activity android:name=".juegoMemoria.PantallaFinalActivity">
-            <!-- Puedes agregar configuraciones adicionales aquí -->
         </activity>
+
+
+        <activity
+            android:name="com.example.gsti.juegoLenguaje.OrientacionJuegoLenguajeActivity"
+            android:exported="true" />
+
+
+
+        <!-- Actividad de mecánica del juego de lenguaje -->
+        <activity android:name="com.example.gsti.juegoLenguaje.MecanicaLenguaje"
+            android:label="Juego Lenguaje"
+            android:exported="true" />
+
+        <activity android:name=".juegoLenguaje.FelicitacionActivity" />
+
+
+        <activity android:name=".juegoLenguaje.IntentarDeNuevoActivity" />
+
+
 
 
 

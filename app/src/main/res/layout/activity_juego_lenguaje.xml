@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Texto para mostrar la palabra -->
+    <TextView
+        android:id="@+id/textViewPalabra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/palabra_a_clasificar"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:padding="16dp" />
+
+    <!-- Opciones de categorías -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/buttonCategoria1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/categoria_1" />
+
+        <Button
+            android:id="@+id/buttonCategoria2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/categoria_2" />
+
+        <Button
+            android:id="@+id/buttonCategoria3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/categoria_3" />
+    </LinearLayout>
+
+    <!-- Botón para verificar respuesta -->
+    <Button
+        android:id="@+id/buttonVerificar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/verificar_respuesta"
+        android:layout_marginTop="24dp"/>
+
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tiempo_50s"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        android:textColor="@android:color/black" />
+
+
+</LinearLayout>
