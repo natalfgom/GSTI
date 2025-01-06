@@ -50,6 +50,8 @@
             android:name=".juegoAtencion.MecanicaAtencion"
             android:exported="true" />
 
+        <activity android:name=".juegoAtencion.OrientacionAtencionActivity" />
+
         <!-- Actividad de éxito -->
         <activity
             android:name=".juegoAtencion.SuccessActivity"
@@ -72,22 +74,18 @@
             android:exported="true" />
         <activity android:name=".juegoMemoria.PantallaFinalActivity">
         </activity>
-
+        <activity android:name=".juegoMemoria.OrientacionMemoriaActivity" />
 
         <activity
             android:name="com.example.gsti.juegoLenguaje.OrientacionJuegoLenguajeActivity"
             android:exported="true" />
 
 
-
         <!-- Actividad de mecánica del juego de lenguaje -->
         <activity android:name="com.example.gsti.juegoLenguaje.MecanicaLenguaje"
             android:label="Juego Lenguaje"
             android:exported="true" />
-
         <activity android:name=".juegoLenguaje.FelicitacionActivity" />
-
-
         <activity android:name=".juegoLenguaje.IntentarDeNuevoActivity" />
 
         <!-- Actividad de asignación de juegos -->

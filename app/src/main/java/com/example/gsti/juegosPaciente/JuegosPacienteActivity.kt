@@ -86,21 +86,21 @@ class JuegosPacienteActivity : AppCompatActivity() {
                 // Aquí puedes iniciar la actividad correspondiente al juego de atención
                 Toast.makeText(this, "Iniciando Juego de Atención", Toast.LENGTH_SHORT).show()
                 // Ejemplo de iniciar la actividad del juego de atención
-                val intent = Intent(this,  com.example.gsti.juegoAtencion.MecanicaAtencion::class.java)
+                val intent = Intent(this,  com.example.gsti.juegoAtencion.OrientacionAtencionActivity::class.java)
                 startActivity(intent)
             }
             "Juego de Memoria" -> {
                 // Aquí puedes iniciar la actividad correspondiente al juego de memoria
                 Toast.makeText(this, "Iniciando Juego de Memoria", Toast.LENGTH_SHORT).show()
                 // Ejemplo de iniciar la actividad del juego de memoria
-                val intent = Intent(this, com.example.gsti.juegoMemoria.MecanicaMemoria::class.java)
+                val intent = Intent(this, com.example.gsti.juegoMemoria.OrientacionMemoriaActivity::class.java)
                 startActivity(intent)
             }
             "Juego de Lenguaje" -> {
                 // Aquí puedes iniciar la actividad correspondiente al juego de lenguaje
                 Toast.makeText(this, "Iniciando Juego de Lenguaje", Toast.LENGTH_SHORT).show()
                 // Ejemplo de iniciar la actividad del juego de lenguaje
-                val intent = Intent(this, com.example.gsti.juegoLenguaje.MecanicaLenguaje::class.java)
+                val intent = Intent(this, com.example.gsti.juegoLenguaje.OrientacionJuegoLenguajeActivity::class.java)
                 startActivity(intent)
             }
             else -> {
