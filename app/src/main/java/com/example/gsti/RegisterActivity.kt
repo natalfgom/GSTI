@@ -74,7 +74,10 @@ class RegisterActivity : AppCompatActivity() {
                     "birthday" to birthday,
                     "phone" to phone,
                     "type" to type,
-                    "email" to email
+                    "email" to email,
+                    "juegoMemoriaActivo" to false,
+                    "juegoLenguajeActivo" to false,
+                    "juegoAtencionActivo" to false // Agregar juegoActivo con valor inicial false
                 )
 
                 // Validar campos adicionales según el rol
@@ -110,20 +113,48 @@ class RegisterActivity : AppCompatActivity() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             val collection = when (type) {
-                                getString(R.string.patient) -> "Pacientes"
+                                getString(R.string.patient) -> "Pacientes" // Ahora creamos el paciente en la colección Pacientes
                                 getString(R.string.family) -> "Familiares"
                                 getString(R.string.doctor) -> "Medicos"
                                 else -> "Usuarios"
                             }
-                            firestore.collection(collection).document(email)
-                                .set(additionalData)
-                                .addOnSuccessListener {
-                                    Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                                    finish()
-                                }
-                                .addOnFailureListener { e ->
-                                    Toast.makeText(this, "Error al guardar datos: ${e.message}", Toast.LENGTH_SHORT).show()
-                                }
+
+                            if (type == getString(R.string.patient)) {
+                                // Cuando es paciente, registramos en la colección "Pacientes" y en la subcolección "Pacientes" dentro del médico
+                                val selectedDoctorEmail = additionalData["doctor"] as String // El correo del médico seleccionado
+
+                                // 1. Guardamos en la colección Pacientes
+                                firestore.collection("Pacientes").document(email) // Usamos el correo del paciente como ID
+                                    .set(additionalData)
+                                    .addOnSuccessListener {
+                                        // 2. Guardamos en la subcolección Pacientes dentro del documento del médico
+                                        firestore.collection("Medicos").document(selectedDoctorEmail) // Usamos el email del médico como ID
+                                            .collection("Pacientes") // Subcolección de pacientes
+                                            .document(email) // Usamos el correo del paciente como ID del documento
+                                            .set(additionalData)
+                                            .addOnSuccessListener {
+                                                Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                                                finish()
+                                            }
+                                            .addOnFailureListener { e ->
+                                                Toast.makeText(this, "Error al guardar datos en la subcolección del médico: ${e.message}", Toast.LENGTH_SHORT).show()
+                                            }
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(this, "Error al guardar datos en la colección Pacientes: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                            } else {
+                                // Registrar en otras colecciones (Familiares, Médicos)
+                                firestore.collection(collection).document(email)
+                                    .set(additionalData)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                                        finish()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(this, "Error al guardar datos: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                            }
                         } else {
                             Toast.makeText(this, "Error al registrar: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                         }
@@ -139,7 +170,7 @@ class RegisterActivity : AppCompatActivity() {
         firestore.collection("Medicos")
             .get()
             .addOnSuccessListener { result ->
-                val doctors = result.mapNotNull { it.getString("name") }
+                val doctors = result.mapNotNull { it.id } // Usar el ID del médico (que es su correo)
                 updateSpinnerAdapter(spinner, doctors)
             }
             .addOnFailureListener { e ->

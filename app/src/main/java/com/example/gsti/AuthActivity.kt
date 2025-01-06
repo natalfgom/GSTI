@@ -76,6 +76,7 @@ class AuthActivity : AppCompatActivity() {
             // id --> correo electromnico
             //añadir tambien campo email con el correo
 
+
     private fun showHome(email: String) {
         Log.d("AuthActivity", "Buscando en Firestore con email: $email")
 
@@ -83,43 +84,53 @@ class AuthActivity : AppCompatActivity() {
         Firebase.firestore.collection("Medicos").document(email).get()
             .addOnSuccessListener { medicoSnapshot ->
                 if (medicoSnapshot.exists()) {
+                    // El usuario es un médico
                     Log.d("AuthActivity", "El usuario es un Médico. Redirigiendo a InicioMedico.")
                     val intent = Intent(this, InicioMedico::class.java)
                     startActivity(intent)
                     finish()
                 } else {
-                    // Buscar en la colección "Familiares"
-                    Firebase.firestore.collection("Familiares").document(email).get()
-                        .addOnSuccessListener { familiarSnapshot ->
-                            if (familiarSnapshot.exists()) {
-                                Log.d("AuthActivity", "El usuario es un Familiar. Redirigiendo a InicioFamiliar.")
-                                val intent = Intent(this, InicioFamiliar::class.java)
-                                startActivity(intent)
-                                finish()
-                            } else {
-                                // Buscar en la colección "Pacientes"
-                                Firebase.firestore.collection("Pacientes").document(email).get()
+                    // El usuario no es un médico, buscar en la subcolección "Pacientes" de cada médico
+                    Firebase.firestore.collection("Medicos").get()
+                        .addOnSuccessListener { result ->
+                            var pacienteEncontrado = false
+                            for (medicoDoc in result) {
+                                val medicoEmail = medicoDoc.id
+
+                                // Buscar en la subcolección "Pacientes" de este médico
+                                Firebase.firestore.collection("Medicos")
+                                    .document(medicoEmail)
+                                    .collection("Pacientes")
+                                    .document(email)
+                                    .get()
                                     .addOnSuccessListener { pacienteSnapshot ->
                                         if (pacienteSnapshot.exists()) {
+                                            // Si el paciente existe en la subcolección
                                             Log.d("AuthActivity", "El usuario es un Paciente. Redirigiendo a InicioPaciente.")
-
                                             val intent = Intent(this, InicioPaciente::class.java)
                                             startActivity(intent)
                                             finish()
-                                        } else {
-                                            Log.e("AuthActivity", "El usuario no se encontró en ninguna colección.")
-                                            showAlert("Usuario no encontrado en la base de datos.")
+                                            pacienteEncontrado = true
                                         }
                                     }
                                     .addOnFailureListener { e ->
-                                        Log.e("AuthActivity", "Error buscando en Pacientes: ${e.message}")
-                                        showAlert("Error verificando datos del paciente.")
+                                        Log.e("AuthActivity", "Error buscando en la subcolección de pacientes: ${e.message}")
                                     }
+
+                                if (pacienteEncontrado) {
+                                    return@addOnSuccessListener // Detener la búsqueda si ya se encontró el paciente
+                                }
+                            }
+
+                            // Si el paciente no se encuentra en ninguna subcolección
+                            if (!pacienteEncontrado) {
+                                Log.e("AuthActivity", "El usuario no se encontró como paciente.")
+                                showAlert("Usuario no encontrado en la base de datos.")
                             }
                         }
                         .addOnFailureListener { e ->
-                            Log.e("AuthActivity", "Error buscando en Familiares: ${e.message}")
-                            showAlert("Error verificando datos del familiar.")
+                            Log.e("AuthActivity", "Error buscando en la colección de médicos: ${e.message}")
+                            showAlert("Error verificando datos de los médicos.")
                         }
                 }
             }

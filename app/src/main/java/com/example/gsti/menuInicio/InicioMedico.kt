@@ -1,10 +1,13 @@
 package com.example.gsti.menuInicio
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gsti.R
+import com.example.gsti.configuracionJuegos.ListaPacientesActivity
+import com.example.gsti.juegoLenguaje.OrientacionJuegoLenguajeActivity
 
 class InicioMedico : AppCompatActivity() {
 
@@ -31,6 +34,8 @@ class InicioMedico : AppCompatActivity() {
         btnConfiguracionJuegos.setOnClickListener {
             Toast.makeText(this, "Configuración de Juegos seleccionada", Toast.LENGTH_SHORT).show()
             // Aquí más adelante iniciaremos la pantalla Configuración de Juegos
+            val intent = Intent(this, ListaPacientesActivity::class.java)
+            startActivity(intent)
         }
 
         // Botón Estadísticas

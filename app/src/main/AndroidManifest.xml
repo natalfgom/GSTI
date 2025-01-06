@@ -90,10 +90,13 @@
 
         <activity android:name=".juegoLenguaje.IntentarDeNuevoActivity" />
 
+        <!-- Actividad de asignación de juegos -->
 
 
-
-
+        <!-- Agregar ListaPacientesActivity -->
+        <activity android:name=".configuracionJuegos.ListaPacientesActivity" />
+        <activity android:name=".configuracionJuegos.ConfiguracionJuegosPaciente" />
+        <activity android:name=".juegosPaciente.JuegosPacienteActivity" />
 
     </application>
 </manifest>
