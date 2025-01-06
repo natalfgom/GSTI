@@ -2,6 +2,7 @@ package com.example.gsti.juegosPaciente
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -24,13 +25,7 @@ class JuegosPacienteActivity : AppCompatActivity() {
         val pacienteId = FirebaseAuth.getInstance().currentUser?.email ?: "paciente@gmail.com"
 
         // Consultar los juegos del paciente
-//        val pacienteRef = db.collection("Medicos")
-//            .document(pacienteId) // Asumimos que el email del paciente es único para su documento
-//            .collection("Pacientes")
-//            .document(pacienteId) // El documento del paciente
-
         val pacienteRef = db.collection("Pacientes").document(pacienteId)
-
 
         pacienteRef.get().addOnSuccessListener { document ->
             if (document.exists()) {
@@ -47,18 +42,40 @@ class JuegosPacienteActivity : AppCompatActivity() {
 
                 // Mostrar los juegos activos
                 for ((juego, activo) in juegos) {
+                    // Crear un FrameLayout para contener cada juego dentro de un borde
+                    val juegoContainer = FrameLayout(this).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            marginStart = 16
+                            marginEnd = 16
+                            topMargin = 16
+                            bottomMargin = 16
+                        }
+                        // Añadir borde y relleno
+                        setBackgroundResource(R.drawable.border)
+                        setPadding(16, 16, 16, 16)  // Padding para mayor espacio
+                    }
+
+                    // Crear el TextView para el nombre del juego
                     val juegoTextView = TextView(this).apply {
                         text = juego
-                        setPadding(16, 16, 16, 16)
+                        setPadding(16, 16, 16, 16)  // Padding para evitar que el texto quede pegado al borde
                         textSize = 18f
                     }
 
-                    juegoTextView.setOnClickListener {
+                    // Agregar el TextView al FrameLayout
+                    juegoContainer.addView(juegoTextView)
+
+                    // Establecer el comportamiento de clic en el contenedor
+                    juegoContainer.setOnClickListener {
                         // Iniciar el juego correspondiente al clic
                         iniciarJuego(juego)
                     }
 
-                    juegosLayout.addView(juegoTextView)
+                    // Añadir el contenedor del juego al layout principal
+                    juegosLayout.addView(juegoContainer)
                 }
             } else {
                 // Si no se encuentran datos del paciente
@@ -83,23 +100,20 @@ class JuegosPacienteActivity : AppCompatActivity() {
     private fun iniciarJuego(juego: String) {
         when (juego) {
             "Juego de Atención" -> {
-                // Aquí puedes iniciar la actividad correspondiente al juego de atención
+                // Iniciar el juego de atención
                 Toast.makeText(this, "Iniciando Juego de Atención", Toast.LENGTH_SHORT).show()
-                // Ejemplo de iniciar la actividad del juego de atención
-                val intent = Intent(this,  com.example.gsti.juegoAtencion.OrientacionAtencionActivity::class.java)
+                val intent = Intent(this, com.example.gsti.juegoAtencion.OrientacionAtencionActivity::class.java)
                 startActivity(intent)
             }
             "Juego de Memoria" -> {
-                // Aquí puedes iniciar la actividad correspondiente al juego de memoria
+                // Iniciar el juego de memoria
                 Toast.makeText(this, "Iniciando Juego de Memoria", Toast.LENGTH_SHORT).show()
-                // Ejemplo de iniciar la actividad del juego de memoria
                 val intent = Intent(this, com.example.gsti.juegoMemoria.OrientacionMemoriaActivity::class.java)
                 startActivity(intent)
             }
             "Juego de Lenguaje" -> {
-                // Aquí puedes iniciar la actividad correspondiente al juego de lenguaje
+                // Iniciar el juego de lenguaje
                 Toast.makeText(this, "Iniciando Juego de Lenguaje", Toast.LENGTH_SHORT).show()
-                // Ejemplo de iniciar la actividad del juego de lenguaje
                 val intent = Intent(this, com.example.gsti.juegoLenguaje.OrientacionJuegoLenguajeActivity::class.java)
                 startActivity(intent)
             }

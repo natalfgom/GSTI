@@ -4,7 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:id="@+id/listaPacientesLayout"> <!-- Este es el ID que estamos usando -->
+    android:id="@+id/listaPacientesLayout">
+
+    <TextView
+        android:id="@+id/pacientesDisponiblesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pacientes"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"
+        android:paddingBottom="8dp"
+        android:layout_gravity="center_horizontal"/>
+
 
     <!-- Aquí se agregarán los TextViews dinámicamente para cada paciente -->
 </LinearLayout>

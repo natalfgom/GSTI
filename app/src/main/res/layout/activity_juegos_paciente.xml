@@ -5,4 +5,17 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:id="@+id/juegosLayout">
+
+    <!-- Título "Juegos disponibles" con mayor tamaño y negrita -->
+    <TextView
+        android:id="@+id/juegosDisponiblesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Juegos disponibles"
+        android:textSize="32sp"
+    android:textStyle="bold"
+    android:layout_marginBottom="16dp"
+    android:paddingBottom="8dp"
+    android:layout_gravity="center_horizontal"/>
+
 </LinearLayout>

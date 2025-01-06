@@ -5,10 +5,13 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.Gravity
 import android.widget.Button
 import android.widget.GridLayout
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gsti.R
 
@@ -18,6 +21,7 @@ class MecanicaMemoria : AppCompatActivity() {
     private lateinit var wordGrid: GridLayout // Contenedor para las palabras
     private lateinit var wordText: TextView // Texto que muestra las palabras
     private lateinit var timerText: TextView // Texto que muestra el tiempo restante
+    private lateinit var progressBar: ProgressBar
 
     private val lists = listOf(
         listOf("silla", "azul", "arena", "gorro", "gato"),
@@ -41,19 +45,18 @@ class MecanicaMemoria : AppCompatActivity() {
 
         // Vinculación de vistas
         wordGrid = findViewById(R.id.wordGrid)
-        wordText = findViewById(R.id.wordText)
         timerText = findViewById(R.id.timerText)
 
-        // Iniciar el juego con una lista aleatoria
+        // Iniciar el juego con la lista aleatoria
         startGame()
     }
 
     // Configura y empieza la ronda actual
     private fun startGame() {
         if (currentRound > 3) {
-            // Si se completaron las 3 rondas con la lista actual, seleccionamos una nueva lista aleatoria
-            currentRound = 1
-            currentList = lists.random() // Nueva lista aleatoria
+            // Si se completaron las 3 rondas, mostrar la pantalla de puntuaciones finales
+            showFinalScores()
+            return
         }
 
         // Mostrar las palabras de la lista seleccionada
@@ -76,9 +79,14 @@ class MecanicaMemoria : AppCompatActivity() {
         // Crear el ImageView dinámicamente
         val imageView = ImageView(this) // Crea un nuevo ImageView
         imageView.layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
+            LinearLayout.LayoutParams.MATCH_PARENT,  // Usar un tamaño fijo proporcional
+            700 // Altura fija,
+        ).apply {
+            setMargins(16, 16, 16, 16) // Márgenes alrededor de la imagen
+        }
+        imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE // Ajusta la imagen dentro del marco sin recortar
+        imageView.adjustViewBounds = true // Permite que las dimensiones se ajusten automáticamente
+        imageView.setBackgroundColor(Color.TRANSPARENT) // Establece el fondo como transparente
 
         // Crear el TextView dinámicamente para mostrar las palabras
         val wordTextView = TextView(this)
@@ -99,11 +107,12 @@ class MecanicaMemoria : AppCompatActivity() {
         timer = object : CountDownTimer(list.size * 2000L, 2000) {
             override fun onTick(millisUntilFinished: Long) {
                 if (index < list.size) {
-                    val word = list[index]
+                    val word = list[index].replaceFirstChar { it.uppercase() } // Capitaliza la primera letra
+                    val word2 = list[index]
                     wordTextView.text = word  // Mostrar la palabra en el TextView
 
                     // Obtener la imagen correspondiente a la palabra desde drawable
-                    val imageResId = resources.getIdentifier(word, "drawable", packageName)
+                    val imageResId = resources.getIdentifier(word2, "drawable", packageName)
 
                     // Verificar si la imagen existe
                     if (imageResId != 0) {
@@ -146,61 +155,87 @@ class MecanicaMemoria : AppCompatActivity() {
         wordGrid.columnCount = columnCount
 
         displayedWords.forEach { word ->
-            val gridItem = GridLayout(this)
-            gridItem.orientation = GridLayout.VERTICAL
-            gridItem.layoutParams = GridLayout.LayoutParams().apply {
-                // Ajustar las columnas y márgenes
-                width = 0
-                height = GridLayout.LayoutParams.WRAP_CONTENT
-                rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)  // Distribuir el espacio
-                columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f) // Hacer las celdas más grandes
+            // Crear el contenedor para la imagen y el nombre de la palabra
+            val cardLayout = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                layoutParams = GridLayout.LayoutParams().apply {
+                    width = 0
+                    height = GridLayout.LayoutParams.WRAP_CONTENT
+                    rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f) // Distribuir el espacio
+                    columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f) // Hacer las celdas más grandes
+                }
+                setPadding(16, 16, 16, 16) // Márgenes internos
+                gravity = Gravity.CENTER
+
+                // Fondo con borde alrededor del cardLayout
+                background = resources.getDrawable(R.drawable.border) // Usar un drawable con borde
             }
+
 
             // Agregar la imagen (debe haber una imagen para cada palabra en drawable)
             val imageView = ImageView(this)
             val imageResId = resources.getIdentifier(word, "drawable", packageName)
-            imageView.setImageResource(imageResId)
-            imageView.layoutParams = GridLayout.LayoutParams().apply {
-                width = GridLayout.LayoutParams.MATCH_PARENT
-                height = 150 // Ajustar el tamaño de la imagen
-                setMargins(8, 8, 8, 8) // Márgenes para que haya espacio alrededor de las imágenes
+            if (imageResId != 0) {
+                imageView.setImageResource(imageResId)
+            } else {
+                imageView.setImageResource(R.drawable.sobre_nosotros) // Imagen por defecto si no existe la imagen
             }
+            imageView.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                200 // Ajustar el tamaño de la imagen
+            ).apply {
+                setMargins(0, 0, 0, 8) // Márgenes para separar la imagen del texto
+            }
+            imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE // Para centrar la imagen dentro del recuadro
 
-            // Agregar el botón con la palabra
-            val button = Button(this)
-            button.text = word
-            button.setBackgroundColor(Color.LTGRAY)
-            button.setTextColor(Color.BLACK) // Color de texto legible
-            button.textSize = 18f // Aumentar tamaño de texto para mejor visibilidad
-            button.setPadding(16, 16, 16, 16) // Asegurar que haya espacio alrededor del texto
+            // Agregar el texto con el nombre de la palabra
+            val button = Button(this).apply {
+                text = word
+                setBackgroundColor(Color.LTGRAY)
+                setTextColor(Color.BLACK)
+                textSize = 18f
+                setPadding(16, 16, 16, 16)
+            }
 
             // Configurar clic del botón
             button.setOnClickListener {
-                if (selectedWords.contains(word)) {
-                    selectedWords.remove(word)
-                    button.setBackgroundColor(Color.LTGRAY)
-                } else {
-                    selectedWords.add(word)
-                    if (list.contains(word)) {
-                        button.setBackgroundColor(Color.GREEN)  // Correcto, color verde
+                if (selectedWords.size < 5) { // Limitar a 5 selecciones
+                    if (selectedWords.contains(word)) {
+                        selectedWords.remove(word)
+                        button.setBackgroundColor(Color.LTGRAY)
                     } else {
-                        button.setBackgroundColor(Color.RED)  // Incorrecto, color rojo
+                        selectedWords.add(word)
+                        // Obtener los colores desde los recursos
+                        val correctColor = resources.getColor(R.color.correct, null)
+                        val incorrectColor = resources.getColor(R.color.incorrect, null)
+
+                        if (list.contains(word)) {
+                            button.setBackgroundColor(correctColor)  // Correcto, color verde
+                        } else {
+                            button.setBackgroundColor(incorrectColor)  // Incorrecto, color rojo
+                        }
+                    }
+                } else {
+                    // No permitir seleccionar más de 5 palabras
+                    Toast.makeText(this, "Solo puedes seleccionar 5 palabras", Toast.LENGTH_SHORT).show()
+                    if (selectedWords.contains(word)) {
+                        selectedWords.remove(word)
+                        button.setBackgroundColor(Color.LTGRAY)
                     }
                 }
             }
 
-            // Configuración del layout para los elementos
-            gridItem.addView(imageView)
-            gridItem.addView(button)
+            // Añadir la imagen y el botón al contenedor cardLayout
+            cardLayout.addView(imageView)
+            cardLayout.addView(button)
 
-            // Añadir el gridItem al GridLayout principal
-            wordGrid.addView(gridItem)
+            // Añadir el cardLayout al GridLayout
+            wordGrid.addView(cardLayout)
         }
 
         // Iniciar el temporizador para la selección
         startSelectionTimer()
     }
-
 
     // Temporizador para la selección de palabras
     private fun startSelectionTimer() {
@@ -224,8 +259,7 @@ class MecanicaMemoria : AppCompatActivity() {
         // Guardar la puntuación de la ronda
         roundScores.add(correctSelections.size)
 
-        // Mostrar el resultado de la ronda
-        wordText.text = getString(R.string.correct_answers, correctSelections.size, correctAnswers.size)
+        // Aumentar la ronda
         currentRound++
 
         // Si se completaron las 3 rondas, muestra la puntuación final

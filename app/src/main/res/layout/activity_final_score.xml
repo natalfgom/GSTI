@@ -1,89 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".juegoMemoria.PantallaFinalActivity">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
 
-    <!-- Título -->
     <TextView
         android:id="@+id/scoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="¡Juego Completado!"
-        android:textSize="24sp"
+        android:textSize="36sp"
+        android:textStyle="bold"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/round1ScoreText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        />
 
-    <!-- Puntuación Ronda 1 -->
     <TextView
         android:id="@+id/round1ScoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Puntuación Ronda 1: 0/5"
+        android:text="Puntuación Ronda 1: 0"
         android:textSize="18sp"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@+id/scoreText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!-- Puntuación Ronda 2 -->
     <TextView
         android:id="@+id/round2ScoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Puntuación Ronda 2: 0/5"
+        android:text="Puntuación Ronda 2: 0"
         android:textSize="18sp"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@+id/round1ScoreText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!-- Puntuación Ronda 3 -->
     <TextView
         android:id="@+id/round3ScoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Puntuación Ronda 3: 0/5"
+        android:text="Puntuación Ronda 3: 0"
         android:textSize="18sp"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@+id/round2ScoreText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!-- Puntuación Total -->
     <TextView
         android:id="@+id/totalScoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Puntuación Total: 0/15"
-        android:textSize="18sp"
+        android:text="Puntuación Total: 0"
+        android:textSize="20sp"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@+id/round3ScoreText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!-- Botón para reiniciar -->
     <Button
         android:id="@+id/restartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reiniciar Juego"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/totalScoreText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp"/>
+        android:text="Reiniciar"
+        android:layout_marginTop="32dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/menuButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menú"
+        android:layout_marginTop="32dp"/>
+
+</LinearLayout>

@@ -40,7 +40,7 @@
         android:gravity="center"
         android:text="@string/orientacion_memoria"
         android:textColor="@color/black"
-        android:textSize="34sp"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />

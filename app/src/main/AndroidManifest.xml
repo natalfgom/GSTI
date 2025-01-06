@@ -75,7 +75,6 @@
         <activity android:name=".juegoMemoria.PantallaFinalActivity">
         </activity>
         <activity android:name=".juegoMemoria.OrientacionMemoriaActivity" />
-
         <activity
             android:name="com.example.gsti.juegoLenguaje.OrientacionJuegoLenguajeActivity"
             android:exported="true" />
@@ -89,9 +88,6 @@
         <activity android:name=".juegoLenguaje.IntentarDeNuevoActivity" />
 
         <!-- Actividad de asignación de juegos -->
-
-
-        <!-- Agregar ListaPacientesActivity -->
         <activity android:name=".configuracionJuegos.ListaPacientesActivity" />
         <activity android:name=".configuracionJuegos.ConfiguracionJuegosPaciente" />
         <activity android:name=".juegosPaciente.JuegosPacienteActivity" />

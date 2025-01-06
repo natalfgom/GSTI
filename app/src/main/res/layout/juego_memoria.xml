@@ -7,19 +7,6 @@
     android:padding="16dp"
     android:background="#ECECEC">
 
-    <!-- Texto para mostrar las instrucciones o mensajes -->
-    <TextView
-        android:id="@+id/wordText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/instruccion_juego_memoria"
-        android:textSize="30sp"
-        android:textColor="#744CAF"
-        android:textAlignment="center"
-        android:layout_marginBottom="32dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center" />
-
     <!-- Texto para mostrar el temporizador -->
     <TextView
         android:id="@+id/timerText"
@@ -27,10 +14,11 @@
         android:layout_height="wrap_content"
         android:text="@string/tiempo_restante_juego_memoria"
         android:textSize="22sp"
-        android:textColor="#FF4081"
+        android:textColor="@color/highlight"
         android:textAlignment="center"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="10dp"
         android:fontFamily="sans-serif-medium"/>
+
 
     <!-- Layout para mostrar las palabras con imagen encima -->
     <LinearLayout
@@ -49,13 +37,14 @@
         android:layout_height="wrap_content"
         android:columnCount="3"
         android:orientation="horizontal"
-        android:padding="8dp"
+        android:padding="5dp"
         android:background="#FFFFFF"
-        android:layout_marginTop="16dp"
-        android:columnOrderPreserved="false"
-        android:gravity="center"
-        android:layout_gravity="center">
-    </GridLayout>
+    android:layout_marginTop="16dp"
+    android:columnOrderPreserved="false"
+    android:gravity="center"
+    android:layout_gravity="center">
+</GridLayout>
 
 
-</LinearLayout>
+
+    </LinearLayout>

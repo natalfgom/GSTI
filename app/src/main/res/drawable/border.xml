@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fondo blanco dentro del contenedor -->
+    <solid android:color="@android:color/white" />
+
+    <stroke android:color="@color/highlight" android:width="2dp"/>
+
+    <!-- Bordes redondeados -->
+    <corners android:radius="16dp"/>
+</shape>

@@ -21,8 +21,10 @@
     <color name="text_inverted">#FFFFFF</color> <!-- Blanco para textos en fondos oscuros -->
 
     <!-- Colores para retroalimentación -->
-    <color name="correct">#81C784</color> <!-- Verde suave para respuestas correctas -->
-    <color name="incorrect">#FF8A65</color> <!-- Naranja suave para respuestas incorrectas -->
+    <color name="correct">#AED999</color> <!-- Verde suave para respuestas correctas -->
+    <color name="incorrect">#EB9076</color> <!-- Naranja suave para respuestas incorrectas -->
+    <color name="correct2">#4CAF50</color> <!-- Verde suave para respuestas correctas -->
+
 
     <!-- Fondo -->
     <color name="background">#F3F6FB</color> <!-- Fondo suave azul pastel para mantener un ambiente calmado -->
