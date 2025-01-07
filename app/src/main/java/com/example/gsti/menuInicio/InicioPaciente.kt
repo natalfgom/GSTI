@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+
+import com.example.gsti.EstadisticasActivity
+
 import com.example.gsti.JuegosActivity
 import com.example.gsti.OrientacionActivity
 import com.example.gsti.R
@@ -34,8 +37,9 @@ class InicioPaciente : AppCompatActivity() {
 
         // Acción para "Estadísticas"
         btnEstadisticas.setOnClickListener {
-            // TODO: Implementar navegación a EstadisticasActivity
-            Toast.makeText(this, "Ir a Estadísticas", Toast.LENGTH_SHORT).show()
+            // Navegar a EstadisticasActivity
+            val intent = Intent(this, EstadisticasActivity::class.java)
+            startActivity(intent)
         }
 
         // Acción para "Notificaciones"

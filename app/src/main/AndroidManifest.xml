@@ -67,6 +67,11 @@
             android:name=".RegisterActivity"
             android:exported="true" />
 
+        <!-- Actividad para estadísticas -->
+        <activity
+            android:name=".EstadisticasActivity"
+            android:exported="true"
+            android:label="Estadísticas" />
 
         <!-- Actividades para el juego de memoria-->
         <activity
@@ -78,7 +83,6 @@
         <activity
             android:name="com.example.gsti.juegoLenguaje.OrientacionJuegoLenguajeActivity"
             android:exported="true" />
-
 
         <!-- Actividad de mecánica del juego de lenguaje -->
         <activity android:name="com.example.gsti.juegoLenguaje.MecanicaLenguaje"

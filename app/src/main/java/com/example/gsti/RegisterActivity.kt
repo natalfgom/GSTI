@@ -1,5 +1,6 @@
 package com.example.gsti
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -77,7 +78,7 @@ class RegisterActivity : AppCompatActivity() {
                     "email" to email,
                     "juegoMemoriaActivo" to false,
                     "juegoLenguajeActivo" to false,
-                    "juegoAtencionActivo" to false // Agregar juegoActivo con valor inicial false
+                    "juegoAtencionActivo" to false
                 )
 
                 // Validar campos adicionales según el rol
@@ -113,38 +114,47 @@ class RegisterActivity : AppCompatActivity() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             val collection = when (type) {
-                                getString(R.string.patient) -> "Pacientes" // Ahora creamos el paciente en la colección Pacientes
+                                getString(R.string.patient) -> "Pacientes"
                                 getString(R.string.family) -> "Familiares"
                                 getString(R.string.doctor) -> "Medicos"
                                 else -> "Usuarios"
                             }
 
                             if (type == getString(R.string.patient)) {
-                                // Cuando es paciente, registramos en la colección "Pacientes" y en la subcolección "Pacientes" dentro del médico
-                                val selectedDoctorEmail = additionalData["doctor"] as String // El correo del médico seleccionado
-
-                                // 1. Guardamos en la colección Pacientes
-                                firestore.collection("Pacientes").document(email) // Usamos el correo del paciente como ID
+                                // Guardar en la colección Pacientes y crear subcolección en Médicos
+                                firestore.collection("Pacientes").document(email)
                                     .set(additionalData)
                                     .addOnSuccessListener {
-                                        // 2. Guardamos en la subcolección Pacientes dentro del documento del médico
-                                        firestore.collection("Medicos").document(selectedDoctorEmail) // Usamos el email del médico como ID
-                                            .collection("Pacientes") // Subcolección de pacientes
-                                            .document(email) // Usamos el correo del paciente como ID del documento
+                                        val selectedDoctor = additionalData["doctor"] as String
+                                        firestore.collection("Medicos").document(selectedDoctor)
+                                            .collection("Pacientes")
+                                            .document(email)
                                             .set(additionalData)
                                             .addOnSuccessListener {
-                                                Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                                                finish()
+                                                // Crear subcolección Estadisticas vacía
+                                                firestore.collection("Pacientes").document(email)
+                                                    .collection("Estadisticas")
+                                                    .document("PlantillaInicial")
+                                                    .set(mapOf("mensaje" to "Subcolección creada automáticamente"))
+                                                    .addOnSuccessListener {
+                                                        Toast.makeText(this, "Registro exitoso y subcolección creada.", Toast.LENGTH_SHORT).show()
+                                                        val intent = Intent(this, AuthActivity::class.java)
+                                                        startActivity(intent)
+                                                        finish()
+                                                    }
+                                                    .addOnFailureListener { e ->
+                                                        Toast.makeText(this, "Error al crear subcolección: ${e.message}", Toast.LENGTH_SHORT).show()
+                                                    }
                                             }
                                             .addOnFailureListener { e ->
-                                                Toast.makeText(this, "Error al guardar datos en la subcolección del médico: ${e.message}", Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(this, "Error al asociar paciente con médico: ${e.message}", Toast.LENGTH_SHORT).show()
                                             }
                                     }
                                     .addOnFailureListener { e ->
-                                        Toast.makeText(this, "Error al guardar datos en la colección Pacientes: ${e.message}", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this, "Error al registrar paciente: ${e.message}", Toast.LENGTH_SHORT).show()
                                     }
                             } else {
-                                // Registrar en otras colecciones (Familiares, Médicos)
+                                // Guardar para otros roles
                                 firestore.collection(collection).document(email)
                                     .set(additionalData)
                                     .addOnSuccessListener {
@@ -165,12 +175,10 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    // Método para cargar médicos en Spinner
     private fun loadDoctorsSpinner(spinner: Spinner) {
-        firestore.collection("Medicos")
-            .get()
+        firestore.collection("Medicos").get()
             .addOnSuccessListener { result ->
-                val doctors = result.mapNotNull { it.id } // Usar el ID del médico (que es su correo)
+                val doctors = result.mapNotNull { it.id }
                 updateSpinnerAdapter(spinner, doctors)
             }
             .addOnFailureListener { e ->
@@ -178,10 +186,8 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
-    // Método para cargar pacientes en Spinner
     private fun loadPatientsSpinner(spinner: Spinner) {
-        firestore.collection("Pacientes")
-            .get()
+        firestore.collection("Pacientes").get()
             .addOnSuccessListener { result ->
                 val patients = result.mapNotNull { it.getString("name") }
                 updateSpinnerAdapter(spinner, patients)
@@ -191,7 +197,6 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
-    // Método para actualizar el adaptador de un Spinner
     private fun updateSpinnerAdapter(spinner: Spinner, items: List<String>) {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
