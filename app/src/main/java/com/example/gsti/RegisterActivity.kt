@@ -197,7 +197,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun loadPatientsSpinner(spinner: Spinner) {
         firestore.collection("Pacientes").get()
             .addOnSuccessListener { result ->
-                val patients = result.mapNotNull { it.getString("name") }
+                val patients = result.mapNotNull { it.getString("email") }
                 updateSpinnerAdapter(spinner, patients)
             }
             .addOnFailureListener { e ->

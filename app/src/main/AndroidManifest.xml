@@ -47,6 +47,11 @@
             android:name=".Estadisticas.EstadisticasPacienteActivity"
             android:exported="true"
             android:label="Estadísticas" />
+        <activity
+            android:name=".Estadisticas.EstadisticasFamiliarActivity"
+            android:exported="true"
+            android:label="Estadísticas del Familiar" />
+
 
         <!-- Actividades del juego de atención -->
         <activity

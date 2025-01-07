@@ -28,6 +28,7 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChartAtencion"
                 android:layout_width="match_parent"
+                android:layout_marginTop="24dp"
                 android:layout_height="300dp"
                 android:background="#FFFFFF" />
         </LinearLayout>
@@ -51,6 +52,7 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChartMemoria"
                 android:layout_width="match_parent"
+                android:layout_marginTop="24dp"
                 android:layout_height="300dp"
                 android:background="#FFFFFF" />
         </LinearLayout>
@@ -74,6 +76,7 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChartLenguaje"
                 android:layout_width="match_parent"
+                android:layout_marginTop="24dp"
                 android:layout_height="300dp"
                 android:background="#FFFFFF" />
         </LinearLayout>

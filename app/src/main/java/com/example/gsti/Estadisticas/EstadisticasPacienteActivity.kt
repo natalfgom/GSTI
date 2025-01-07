@@ -1,10 +1,14 @@
 package com.example.gsti.Estadisticas
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gsti.R
+import com.example.gsti.menuInicio.InicioFamiliar
+import com.example.gsti.menuInicio.InicioMedico
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -38,6 +42,15 @@ class EstadisticasPacienteActivity : AppCompatActivity() {
         birthdayPacienteTextView = findViewById(R.id.birthdayPacienteTextView)
         phonePacienteTextView = findViewById(R.id.phonePacienteTextView)
         emailPacienteTextView = findViewById(R.id.emailPacienteTextView)
+
+        val buttonVolverMenu: Button = findViewById(R.id.buttonVolverMenu)
+
+        // Configuración del botón "Volver al Menú"
+        buttonVolverMenu.setOnClickListener {
+            val intent = Intent(this, InicioMedico::class.java)
+            startActivity(intent)
+            finish() // Finaliza esta actividad
+        }
 
         // Obtener el email del paciente desde el intent
         val emailPaciente = intent.getStringExtra("EMAIL_PACIENTE")
