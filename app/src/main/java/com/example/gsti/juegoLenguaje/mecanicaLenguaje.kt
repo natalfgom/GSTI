@@ -8,6 +8,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gsti.R
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.type.Date
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class MecanicaLenguaje : AppCompatActivity() {
 
@@ -49,6 +55,33 @@ class MecanicaLenguaje : AppCompatActivity() {
         // Iniciamos la primera ronda
         iniciarRonda()
     }
+    private fun guardarEstadisticasFinales(totalScore: Int) {
+        val firestore = FirebaseFirestore.getInstance()
+        val pacienteId = FirebaseAuth.getInstance().currentUser?.email // ID del paciente actual
+        val fecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(java.util.Date()) // Formato de fecha
+
+        if (pacienteId != null) {
+            val estadisticasFinales = hashMapOf(
+                "total" to totalScore,
+                "fecha" to Timestamp.now()
+            )
+
+            firestore.collection("Pacientes")
+                .document(pacienteId)
+                .collection("Estadisticas")
+                .document("Lenguaje") // Subcolección "Lenguaje"
+                .collection("Partidas") // Subcolección "Partidas"
+                .document(fecha) // Documento con la fecha como ID
+                .set(estadisticasFinales)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Estadísticas guardadas correctamente.", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error al guardar estadísticas: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
 
     // Función para iniciar una nueva ronda
     private fun iniciarRonda() {
@@ -161,6 +194,9 @@ class MecanicaLenguaje : AppCompatActivity() {
     private fun finalizarJuego() {
         // Cancelamos el temporizador
         countDownTimer.cancel()
+
+        // Guardar estadísticas finales
+        guardarEstadisticasFinales(aciertos)
 
         // Verificar si el jugador ha ganado o perdido
         if (aciertos >= 3) {

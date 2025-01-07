@@ -3,6 +3,7 @@ package com.example.gsti.juegoMemoria
 import android.widget.LinearLayout
 import android.content.Intent
 import android.graphics.Color
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.Gravity
@@ -14,6 +15,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gsti.R
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Date
+import java.util.Locale
+
 
 class MecanicaMemoria : AppCompatActivity() {
 
@@ -277,6 +284,9 @@ class MecanicaMemoria : AppCompatActivity() {
         val round2 = roundScores.getOrElse(1) { 0 }
         val round3 = roundScores.getOrElse(2) { 0 }
 
+        // Guardar las estadísticas finales
+        guardarEstadisticasFinales(totalScore)
+
         // Redirigir a PantallaFinalActivity y pasar las puntuaciones
         val intent = Intent(this, PantallaFinalActivity::class.java)
         intent.putExtra("ROUND_1_SCORE", round1)
@@ -293,6 +303,33 @@ class MecanicaMemoria : AppCompatActivity() {
     private fun endGame() {
         wordText.text = getString(R.string.game_completed)
         timer?.cancel()
+    }
+
+    private fun guardarEstadisticasFinales(totalScore: Int) {
+        val firestore = FirebaseFirestore.getInstance()
+        val pacienteId = FirebaseAuth.getInstance().currentUser?.email // ID del paciente actual
+        val fecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()) // Formato de fecha
+
+        if (pacienteId != null) {
+            val estadisticasFinales = hashMapOf(
+                "total" to totalScore,
+                "fecha" to Timestamp.now()
+            )
+
+            firestore.collection("Pacientes")
+                .document(pacienteId)
+                .collection("Estadisticas")
+                .document("Memoria") // Subcolección "Memoria"
+                .collection("Partidas") // Subcolección "Partidas"
+                .document(fecha) // Documento con la fecha como ID
+                .set(estadisticasFinales)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Estadísticas guardadas correctamente.", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error al guardar estadísticas: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     override fun onDestroy() {

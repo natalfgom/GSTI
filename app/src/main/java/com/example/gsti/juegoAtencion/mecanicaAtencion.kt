@@ -160,10 +160,12 @@ class MecanicaAtencion : AppCompatActivity() {
             firestore.collection("Pacientes")
                 .document(pacienteId)
                 .collection("Estadisticas")
-                .document(fecha) // Guardar por fecha
+                .document("Atencion") // Subcolección específica para Atencion
+                .collection("Partidas") // Subcolección para guardar cada partida por fecha
+                .document(fecha) // Guardar partida con la fecha como ID
                 .set(estadisticasFinales)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Estadísticas guardadas correctamente.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Estadísticas guardadas correctamente en 'Atencion'.", Toast.LENGTH_SHORT).show()
                     // Mostrar pantalla de resultados
                     val intent = Intent(this, SuccessActivity::class.java)
                     intent.putExtra("stars", estrellas)
@@ -173,8 +175,11 @@ class MecanicaAtencion : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "Error al guardar estadísticas: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
+        } else {
+            Toast.makeText(this, "No se pudo identificar al paciente.", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

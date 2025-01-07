@@ -1,29 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp"
     android:background="#F9F9F9">
 
-    <!-- Título separado claramente -->
-    <TextView
-        android:id="@+id/titleTextView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Progreso de Estrellas - Juego de Atención"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="16dp" />
+        android:orientation="vertical">
 
-    <!-- Gráfica -->
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineChart"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="#FFFFFF"
-        android:layout_marginTop="8dp"
-        android:padding="8dp" />
-</LinearLayout>
+        <!-- Sección Atención -->
+        <LinearLayout
+            android:id="@+id/sectionAtencion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleAtencion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progreso de Atención"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChartAtencion"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="#FFFFFF" />
+        </LinearLayout>
+
+        <!-- Sección Memoria -->
+        <LinearLayout
+            android:id="@+id/sectionMemoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleMemoria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progreso de Memoria"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChartMemoria"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="#FFFFFF" />
+        </LinearLayout>
+
+        <!-- Sección Lenguaje -->
+        <LinearLayout
+            android:id="@+id/sectionLenguaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleLenguaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progreso de Lenguaje"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChartLenguaje"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="#FFFFFF" />
+        </LinearLayout>
+
+        <!-- Botón para volver al menú -->
+        <Button
+            android:id="@+id/buttonVolverMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volver al Menú"
+            android:layout_marginTop="32dp"
+            android:layout_gravity="center"
+            android:padding="12dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

@@ -2,6 +2,7 @@ package com.example.gsti
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -131,20 +132,27 @@ class RegisterActivity : AppCompatActivity() {
                                             .document(email)
                                             .set(additionalData)
                                             .addOnSuccessListener {
-                                                // Crear subcolección Estadisticas vacía
-                                                firestore.collection("Pacientes").document(email)
-                                                    .collection("Estadisticas")
-                                                    .document("PlantillaInicial")
-                                                    .set(mapOf("mensaje" to "Subcolección creada automáticamente"))
-                                                    .addOnSuccessListener {
-                                                        Toast.makeText(this, "Registro exitoso y subcolección creada.", Toast.LENGTH_SHORT).show()
-                                                        val intent = Intent(this, AuthActivity::class.java)
-                                                        startActivity(intent)
-                                                        finish()
-                                                    }
-                                                    .addOnFailureListener { e ->
-                                                        Toast.makeText(this, "Error al crear subcolección: ${e.message}", Toast.LENGTH_SHORT).show()
-                                                    }
+                                                // Crear subcolección Estadisticas con tres subcolecciones: Atencion, Memoria, Lenguaje
+                                                val estadisticasRef = firestore.collection("Pacientes").document(email).collection("Estadisticas")
+
+                                                val estadisticasIniciales = listOf("Atencion", "Memoria", "Lenguaje")
+
+                                                estadisticasIniciales.forEach { juego ->
+                                                    estadisticasRef.document(juego)
+                                                        .set(mapOf("mensaje" to "Subcolección $juego creada automáticamente"))
+                                                        .addOnSuccessListener {
+                                                            // Opcional: Logs para verificar la creación
+                                                            Log.d("Firestore", "Subcolección $juego creada correctamente.")
+                                                        }
+                                                        .addOnFailureListener { e ->
+                                                            Log.e("Firestore", "Error al crear subcolección $juego: ${e.message}")
+                                                        }
+                                                }
+
+                                                Toast.makeText(this, "Registro exitoso y subcolecciones creadas.", Toast.LENGTH_SHORT).show()
+                                                val intent = Intent(this, AuthActivity::class.java)
+                                                startActivity(intent)
+                                                finish()
                                             }
                                             .addOnFailureListener { e ->
                                                 Toast.makeText(this, "Error al asociar paciente con médico: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -153,7 +161,7 @@ class RegisterActivity : AppCompatActivity() {
                                     .addOnFailureListener { e ->
                                         Toast.makeText(this, "Error al registrar paciente: ${e.message}", Toast.LENGTH_SHORT).show()
                                     }
-                            } else {
+                            }else {
                                 // Guardar para otros roles
                                 firestore.collection(collection).document(email)
                                     .set(additionalData)
