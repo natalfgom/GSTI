@@ -1,38 +1,45 @@
 <resources>
     <string name="juego_nombre">Nombre del juego</string>
     <string name="no_juegos_asignados">No hay juegos asignados</string>
+
     <string name="title_orientation">ORIENTACIÓN</string>
     <string name="app_name">Cognitiva</string>
     <string name="button_next">Siguiente</string>
+
     <string name="description_game_1">Le aparecerán 4 ilustraciones de relojes de aguja, marque la hora requerida en los siguientes relojes</string>
     <string name="description_game_2">En este juego deberá ordenar las palabras para formar una oración correcta</string>
     <string name="description_game_3">Seleccione las imágenes que representan emociones positivas</string>
-
 
     <string name="juego_Lenguaje">En este juego, debes seleccionar la categoría correspondiente a la palabra que se te presenta."</string>
     <string name="juego_atencion">Encuentra y Selecciona un número objetivo dentro de una cuadrícula antes de que se acabe el tiempo.</string>
     <string name="question_text">¿Ha comprendido su familiar las instrucciones del juego?</string>
     <string name="button_yes">Sí</string>
     <string name="button_no">No</string>
+
     <string name="titulo_configuracion">Configuración juegos</string>
     <string name="titulo_estadisticas">Estadísticas</string>
     <string name="titulo_notificaciones">Notificaciones</string>
     <string name="titulo_juegos">Juegos</string>
+
     <string name="login">Acceder</string>
     <string name="sign_up">Registrate</string>
     <string name="passwd">Contraseña</string>
     <string name="email">Email</string>
+
     <string name="select_number">Selecciona el número:</string>
     <string name="remaining_time">Tiempo restante: 50s</string>
     <string name="count_hits">Cuenta los golpes:</string>
     <string name="enter_hits">Introduce el número de golpes</string>
+
     <string name="submit">Enviar</string>
+
     <string name="success_message">¡Felicidades! Has completado el juego con éxito.</string>
     <string name="failure_message">Lo sentimos. No completaste el juego.</string>
     <string name="restart">Reiniciar</string>
     <string name="retry">Intentar de nuevo</string>
     <string name="go_to_menu">Ir al Menú Principal</string>
     <string name="star">Estrella</string>
+
     <string name="name">Nombre</string>
     <string name="surname">Apellidos</string>
     <string name="birthday">Fecha de nacimiento</string>
@@ -45,8 +52,10 @@
     <string name="family">Familiar</string>
     <string name="doctor">Médico</string>
     <string name="register">Registrar</string>
+
     <string name="error_no_doctors">No hay médicos disponibles en la base de datos.</string>
     <string name="error_no_patients">No hay pacientes disponibles en la base de datos.</string>
+
     <string name="success_registration">Registro exitoso.</string>
     <string name="error_registration">Error al registrar el usuario.</string>
     <string name="error_missing_fields">Por favor, completa todos los campos.</string>
@@ -73,18 +82,20 @@ presenten en pantalla.</string>
 
     <string name="game_completed">Juego completado</string>
 
-
-
     <string name="final_scores_format">Puntuaciones por ronda:\nRonda 1: %1$d\nRonda 2: %2$d\nRonda 3: %3$d\n\nPuntuación total: %4$d</string>
 
-
+    <!--Juego de Lenguaje-->
     <string name="palabra_a_clasificar">Palabra a clasificar</string>
     <string name="categoria_1">Categoría 1</string>
     <string name="categoria_2">Categoría 2</string>
     <string name="categoria_3">Categoría 3</string>
+
     <string name="verificar_respuesta">Verificar Respuesta</string>
+
     <string name="tiempo_50s">Tiempo: 50s</string>
+
     <string name="felicidades_lenguaje">¡Felicidades! Has completado el juego con éxito.</string>
     <string name="resultado_aciertos">Has acertado %1$d/5</string>
+    <string name="error_obtencion_juegos">Error al obtener los juegos.</string>
 
 </resources>

@@ -80,7 +80,7 @@ class JuegosPacienteActivity : AppCompatActivity() {
             } else {
                 // Si no se encuentran datos del paciente
                 val noJuegosText = TextView(this).apply {
-                    text = "No se encontraron juegos para este paciente."
+                    text = context.getString(R.string.no_juegos_asignados)
                     setPadding(16, 16, 16, 16)
                     textSize = 18f
                 }
@@ -89,7 +89,7 @@ class JuegosPacienteActivity : AppCompatActivity() {
         }.addOnFailureListener { exception ->
             // Manejo de errores
             val errorText = TextView(this).apply {
-                text = "Error al obtener los juegos."
+                text = context.getString(R.string.error_obtencion_juegos)
                 setPadding(16, 16, 16, 16)
                 textSize = 18f
             }
