@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.gsti.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.android.gms.tasks.Tasks
 
 class ConfiguracionJuegosPaciente : AppCompatActivity() {
 
@@ -22,8 +23,11 @@ class ConfiguracionJuegosPaciente : AppCompatActivity() {
         val pacienteId = intent.getStringExtra("PACIENTE_ID") ?: return
         val juegosLayout: LinearLayout = findViewById(R.id.configuracionjuegosLayout)
 
-        // TextView para mostrar el email del paciente
+        // TextViews para mostrar los datos del paciente
+        val nombrePacienteTextView: TextView = findViewById(R.id.nombrePacienteTextView)
         val emailPacienteTextView: TextView = findViewById(R.id.emailPacienteTextView)
+        val birthdayPacienteTextView: TextView = findViewById(R.id.birthdayPacienteTextView)
+        val phonePacienteTextView: TextView = findViewById(R.id.phonePacienteTextView)
 
         // Obtener los switches para los juegos
         val switchAtencion: Switch = findViewById(R.id.switchAtencion)
@@ -47,10 +51,18 @@ class ConfiguracionJuegosPaciente : AppCompatActivity() {
 
         pacienteRef.get().addOnSuccessListener { document ->
             if (document.exists()) {
-                // Obtener el email del paciente
-                val emailPaciente = document.getString("email") ?: "No disponible"
-                // Establecer el email en el TextView
+                // Obtener el nombre, apellido, email, fecha de nacimiento y teléfono del paciente
+                val nombrePaciente = document.getString("name") ?: "Nombre no disponible"
+                val apellidoPaciente = document.getString("surname") ?: "Apellido no disponible"
+                val emailPaciente = document.getString("email") ?: "Email no disponible"
+                val birthdayPaciente = document.getString("birthday") ?: "Fecha de nacimiento no disponible"
+                val phonePaciente = document.getString("phone") ?: "Teléfono no disponible"
+
+                // Establecer los datos en los TextViews
+                nombrePacienteTextView.text = "$nombrePaciente $apellidoPaciente"
                 emailPacienteTextView.text = "Email: $emailPaciente"
+                birthdayPacienteTextView.text = "Fecha de nacimiento: $birthdayPaciente"
+                phonePacienteTextView.text = "Teléfono: $phonePaciente"
 
                 // Leer los campos de los juegos
                 val juegoAtencionActivo = document.getBoolean("juegoAtencionActivo") ?: false
@@ -77,21 +89,19 @@ class ConfiguracionJuegosPaciente : AppCompatActivity() {
                     )
 
                     // Guardar los nuevos estados en Firestore
+                    val actualizaciones = listOf(
+                        pacienteRef.update(cambios), // Subcolección del médico
+                        db.collection("Pacientes").document(pacienteId).update(cambios) // Colección global
+                    )
 
-                    // 1. Actualizar la subcolección "Pacientes" dentro del médico
-                    pacienteRef.update(cambios).addOnSuccessListener {
-                        Log.d("ConfiguracionJuegosPaciente", "Cambios guardados con éxito en subcolección del médico.")
-                    }.addOnFailureListener { exception ->
-                        Log.e("ConfiguracionJuegosPaciente", "Error al guardar los cambios en la subcolección del médico", exception)
-                    }
-
-                    // 2. Actualizar la colección global "Pacientes"
-                    val pacienteGlobalRef = db.collection("Pacientes").document(pacienteId)
-
-                    pacienteGlobalRef.update(cambios).addOnSuccessListener {
-                        Log.d("ConfiguracionJuegosPaciente", "Cambios guardados con éxito en la colección global de Pacientes.")
-                    }.addOnFailureListener { exception ->
-                        Log.e("ConfiguracionJuegosPaciente", "Error al guardar los cambios en la colección global de pacientes", exception)
+                    // Ejecutar todas las actualizaciones
+                    Tasks.whenAllComplete(actualizaciones).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d("ConfiguracionJuegosPaciente", "Cambios guardados con éxito.")
+                        } else {
+                            Log.e("ConfiguracionJuegosPaciente", "Error al guardar los cambios.")
+                        }
+                        finish() // Cerrar la actividad después de guardar los cambios
                     }
                 }
             } else {
