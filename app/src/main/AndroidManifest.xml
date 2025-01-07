@@ -13,19 +13,7 @@
         android:theme="@style/Theme.GSTI"
         tools:targetApi="31">
 
-        <!-- Actividades existentes -->
-        <activity
-            android:name=".JuegosActivity"
-            android:exported="false" />
-        <activity
-            android:name=".menuInicio.InicioFamiliar"
-            android:exported="true" />
-        <activity
-            android:name=".menuInicio.InicioMedico"
-            android:exported="true" />
-        <activity
-            android:name=".menuInicio.InicioPaciente"
-            android:exported="true" />
+        <!-- Actividad principal (Launcher) -->
         <activity
             android:name=".AuthActivity"
             android:exported="true">
@@ -35,66 +23,98 @@
             </intent-filter>
         </activity>
 
-        <!-- Actividad para la orientación del juego -->
+        <!-- Actividades del menú de inicio -->
         <activity
-            android:name=".OrientacionActivity"
+            android:name=".menuInicio.InicioPaciente"
+            android:exported="true" />
+        <activity
+            android:name=".menuInicio.InicioMedico"
+            android:exported="true" />
+        <activity
+            android:name=".menuInicio.InicioFamiliar"
             android:exported="true" />
 
-        <!-- Nueva actividad para la comprensión del juego -->
-        <activity
-            android:name=".ComprensionActivity"
-            android:exported="true" />
-
-        <!-- Nueva actividad para el juego de atención -->
-        <activity
-            android:name=".juegoAtencion.MecanicaAtencion"
-            android:exported="true" />
-
-        <activity android:name=".juegoAtencion.OrientacionAtencionActivity" />
-
-        <!-- Actividad de éxito -->
-        <activity
-            android:name=".juegoAtencion.SuccessActivity"
-            android:exported="true" />
-
-        <!-- Actividad de fallo -->
-        <activity
-            android:name=".juegoAtencion.FailureActivity"
-            android:exported="true" />
-
-        <!-- Nueva actividad para el registro -->
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="true" />
-
-        <!-- Actividad para estadísticas -->
+        <!-- Actividades para estadísticas -->
         <activity
             android:name=".EstadisticasActivity"
             android:exported="true"
             android:label="Estadísticas" />
+        <activity
+            android:name=".Estadisticas.ListaPacientesEstadisticasActivity"
+            android:exported="true"
+            android:label="Lista de Pacientes (Estadísticas)" />
+        <activity
+            android:name=".Estadisticas.EstadisticasPacienteActivity"
+            android:exported="true"
+            android:label="Estadísticas" />
 
-        <!-- Actividades para el juego de memoria-->
+        <!-- Actividades del juego de atención -->
+        <activity
+            android:name=".juegoAtencion.MecanicaAtencion"
+            android:exported="true" />
+        <activity
+            android:name=".juegoAtencion.OrientacionAtencionActivity"
+            android:exported="true" />
+        <activity
+            android:name=".juegoAtencion.SuccessActivity"
+            android:exported="true" />
+        <activity
+            android:name=".juegoAtencion.FailureActivity"
+            android:exported="true" />
+
+        <!-- Actividades del juego de memoria -->
         <activity
             android:name=".juegoMemoria.MecanicaMemoria"
             android:exported="true" />
-        <activity android:name=".juegoMemoria.PantallaFinalActivity">
-        </activity>
-        <activity android:name=".juegoMemoria.OrientacionMemoriaActivity" />
+        <activity
+            android:name=".juegoMemoria.PantallaFinalActivity"
+            android:exported="true" />
+        <activity
+            android:name=".juegoMemoria.OrientacionMemoriaActivity"
+            android:exported="true" />
+
+        <!-- Actividades del juego de lenguaje -->
+        <activity
+            android:name="com.example.gsti.juegoLenguaje.MecanicaLenguaje"
+            android:label="Juego Lenguaje"
+            android:exported="true" />
         <activity
             android:name="com.example.gsti.juegoLenguaje.OrientacionJuegoLenguajeActivity"
             android:exported="true" />
-
-        <!-- Actividad de mecánica del juego de lenguaje -->
-        <activity android:name="com.example.gsti.juegoLenguaje.MecanicaLenguaje"
-            android:label="Juego Lenguaje"
+        <activity
+            android:name=".juegoLenguaje.FelicitacionActivity"
             android:exported="true" />
-        <activity android:name=".juegoLenguaje.FelicitacionActivity" />
-        <activity android:name=".juegoLenguaje.IntentarDeNuevoActivity" />
+        <activity
+            android:name=".juegoLenguaje.IntentarDeNuevoActivity"
+            android:exported="true" />
 
-        <!-- Actividad de asignación de juegos -->
-        <activity android:name=".configuracionJuegos.ListaPacientesActivity" />
-        <activity android:name=".configuracionJuegos.ConfiguracionJuegosPaciente" />
-        <activity android:name=".juegosPaciente.JuegosPacienteActivity" />
+        <!-- Actividad para configuración de juegos -->
+        <activity
+            android:name=".configuracionJuegos.ListaPacientesActivity"
+            android:exported="true"
+            android:label="Lista de Pacientes (Configuración de Juegos)" />
+        <activity
+            android:name=".configuracionJuegos.ConfiguracionJuegosPaciente"
+            android:exported="true" />
+
+        <!-- Actividad para registro de usuarios -->
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="true" />
+
+        <!-- Otras actividades -->
+        <activity
+            android:name=".JuegosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OrientacionActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ComprensionActivity"
+            android:exported="true" />
+        <activity
+            android:name=".juegosPaciente.JuegosPacienteActivity"
+            android:exported="true" />
 
     </application>
 </manifest>

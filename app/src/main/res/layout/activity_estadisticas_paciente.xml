@@ -1,0 +1,163 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Título para el nombre del paciente en negrita y más grande -->
+        <TextView
+            android:id="@+id/nombrePacienteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre del paciente"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Recuadro para los datos personales -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:padding="16dp">
+
+            <!-- Título de la sección "Datos Personales" -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Datos Personales"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
+
+            <!-- TextView para mostrar la fecha de nacimiento -->
+            <TextView
+                android:id="@+id/birthdayPacienteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha de nacimiento"
+                android:textSize="16sp"
+                android:paddingTop="8dp" />
+
+            <!-- TextView para mostrar el teléfono -->
+            <TextView
+                android:id="@+id/phonePacienteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Teléfono"
+                android:textSize="16sp"
+                android:paddingTop="8dp" />
+
+            <!-- TextView para mostrar el email del paciente -->
+            <TextView
+                android:id="@+id/emailPacienteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textSize="16sp"
+                android:paddingTop="8dp" />
+        </LinearLayout>
+
+        <!-- Sección Atención -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="Estadísticas del Paciente"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/sectionAtencion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleAtencion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progreso de Atención"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChartAtencion"
+                android:layout_width="match_parent"
+                android:layout_marginTop="24dp"
+                android:layout_height="300dp"
+                android:background="#FFFFFF" />
+        </LinearLayout>
+
+        <!-- Sección Memoria -->
+        <LinearLayout
+            android:id="@+id/sectionMemoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleMemoria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progreso de Memoria"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChartMemoria"
+                android:layout_marginTop="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="#FFFFFF" />
+        </LinearLayout>
+
+        <!-- Sección Lenguaje -->
+        <LinearLayout
+            android:id="@+id/sectionLenguaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleLenguaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progreso de Lenguaje"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChartLenguaje"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="24dp"
+                android:background="#FFFFFF" />
+        </LinearLayout>
+
+        <!-- Botón para volver al menú -->
+        <Button
+            android:id="@+id/buttonVolverMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volver al Menú"
+            android:layout_marginTop="32dp"
+            android:layout_gravity="center"
+            android:padding="12dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>
