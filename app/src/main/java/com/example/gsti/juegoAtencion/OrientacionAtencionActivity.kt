@@ -16,7 +16,7 @@ class OrientacionAtencionActivity : AppCompatActivity() {
 
         // Navegar a la pantalla de Comprensión
         nextButton.setOnClickListener {
-            val intent = Intent(this, MecanicaAtencion::class.java)
+            val intent = Intent(this, ComprensionAtencionActivity::class.java)
             startActivity(intent)
             finish() // Opcional: Cierra la pantalla actual
         }

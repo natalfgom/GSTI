@@ -67,6 +67,9 @@
             android:name=".juegoAtencion.FailureActivity"
             android:exported="true" />
 
+        <activity android:name=".juegoAtencion.ComprensionAtencionActivity">
+
+        </activity>
         <!-- Actividades del juego de memoria -->
         <activity
             android:name=".juegoMemoria.MecanicaMemoria"
@@ -76,6 +79,10 @@
             android:exported="true" />
         <activity
             android:name=".juegoMemoria.OrientacionMemoriaActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".juegoMemoria.ComprensionMemoriaActivity"
             android:exported="true" />
 
         <!-- Actividades del juego de lenguaje -->
@@ -91,6 +98,10 @@
             android:exported="true" />
         <activity
             android:name=".juegoLenguaje.IntentarDeNuevoActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".juegoLenguaje.ComprensionLenguajeActivity"
             android:exported="true" />
 
         <!-- Actividad para configuración de juegos -->

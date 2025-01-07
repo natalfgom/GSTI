@@ -18,7 +18,7 @@ class OrientacionJuegoLenguajeActivity : AppCompatActivity() {
         val nextButton: Button = findViewById(R.id.nextButton)
 
         nextButton.setOnClickListener {
-            val intent = Intent(this, MecanicaLenguaje::class.java)
+            val intent = Intent(this, ComprensionLenguajeActivity::class.java)
             startActivity(intent)
             finish()
         }

@@ -15,7 +15,7 @@ class OrientacionMemoriaActivity : AppCompatActivity() {
 
         // Navegar a la pantalla de Comprensión
         nextButton.setOnClickListener {
-            val intent = Intent(this, MecanicaMemoria::class.java)
+            val intent = Intent(this, ComprensionMemoriaActivity::class.java)
             startActivity(intent)
             finish() // Opcional: Cierra la pantalla actual
         }
