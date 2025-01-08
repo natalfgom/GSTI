@@ -67,8 +67,8 @@
     <string name="enter_confirmation_code">Introduce el código de confirmación</string>
     <string name="invalid_code_message">El código debe tener 4 dígitos y coincidir con el del familiar del paciente</string>
 
-<!--Juego de memoria-->
-<string name="orientacion_memoria">Lea al paciente la lista de palabras que se presenta a continuación, dejando 2 segundos entre una
+    <!--Juego de memoria-->
+    <string name="orientacion_memoria">Lea al paciente la lista de palabras que se presenta a continuación, dejando 2 segundos entre una
 y otra. Inmediatamente después de cada lectura, el paciente debe seleccionar las palabras que recuerde de entre las que se
 presenten en pantalla.</string>
 
@@ -97,5 +97,13 @@ presenten en pantalla.</string>
     <string name="felicidades_lenguaje">¡Felicidades! Has completado el juego con éxito.</string>
     <string name="resultado_aciertos">Has acertado %1$d/5</string>
     <string name="error_obtencion_juegos">Error al obtener los juegos.</string>
+    <string name="Titulo_toolbar">App Cognitiva</string>
+    <string name="descripcioon_sobre_nosotros">Ilustración sobre nosotros</string>
+    <string name="sobre_nosotros">Sobre Nosotros</string>
+    <string name="Descripcion_sobre_nostros">Cognitiva es una aplicación diseñada para estimular cognitivamente a personas con Alzheimer a través de juegos interactivos y actividades personalizadas. Nuestro objetivo es mejorar la calidad de vida de los pacientes al fortalecer sus funciones mentales de manera lúdica y accesible. Cognitiva permite a los médicos configurar y personalizar los juegos según las necesidades de cada paciente, y monitorear su progreso a través de estadísticas claras y sencillas.</string>
+    <string name="descripcion_interfaz_cognitiva">Con una interfaz amigable y fácil de usar, Cognitiva ofrece una herramienta efectiva para apoyar el tratamiento de trastornos cognitivos de manera innovadora.</string>
+    <string name="menu_principal">Menú Principal</string>
+    <string name="informacion_personal">Información Personal</string>
+    <string name="actualizar">Actualizar</string>
 
 </resources>

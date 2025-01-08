@@ -4,65 +4,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center"
     android:background="#FFFFFF">
 
-    <!-- Botón Estadísticas -->
+    <!-- Toolbar -->
+    <include
+        layout="@menu/toolbar" />
+
+    <!-- Contenido Principal -->
     <LinearLayout
-        android:id="@+id/btnEstadisticas"
-        android:layout_width="200dp"
-        android:layout_height="120dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/rounded_button_background"
-        android:elevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="16dp">
 
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/titulo_estadisticas"
-            android:src="@drawable/ic_estadisticas" />
+        <!-- Botón Estadísticas -->
+        <LinearLayout
+            android:id="@+id/btnEstadisticas"
+            android:layout_width="200dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_button_background"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="8dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:text="@string/titulo_estadisticas"
-            android:textColor="#000000"
-            android:textSize="14sp" />
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/titulo_estadisticas"
+                android:src="@drawable/ic_estadisticas" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:text="@string/titulo_estadisticas"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Botón Notificaciones -->
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="120dp"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_button_background"
+            android:padding="8dp"
+            android:layout_marginBottom="16dp"
+            android:elevation="4dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_notificaciones"
+                android:contentDescription="@string/titulo_notificaciones"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/titulo_notificaciones"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
     </LinearLayout>
-
-    <!-- Botón Notificaciones -->
-    <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="120dp"
-        android:orientation="vertical"
-        android:background="@drawable/rounded_button_background"
-        android:padding="8dp"
-        android:layout_marginBottom="16dp"
-        android:elevation="4dp"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_notificaciones"
-            android:contentDescription="@string/titulo_notificaciones"
-            android:layout_gravity="center" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/titulo_notificaciones"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center" />
-    </LinearLayout>
-
 </LinearLayout>

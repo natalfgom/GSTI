@@ -13,17 +13,17 @@
         android:theme="@style/Theme.GSTI"
         tools:targetApi="31">
 
-        <!-- Actividad principal (Launcher) -->
+
         <activity
             android:name=".AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
-        <!-- Actividades del menú de inicio -->
+        </activity> <!-- Actividades del menú de inicio -->
         <activity
             android:name=".menuInicio.InicioPaciente"
             android:exported="true" />
@@ -52,7 +52,6 @@
             android:exported="true"
             android:label="Estadísticas del Familiar" />
 
-
         <!-- Actividades del juego de atención -->
         <activity
             android:name=".juegoAtencion.MecanicaAtencion"
@@ -66,11 +65,7 @@
         <activity
             android:name=".juegoAtencion.FailureActivity"
             android:exported="true" />
-
-        <activity android:name=".juegoAtencion.ComprensionAtencionActivity">
-
-        </activity>
-        <!-- Actividades del juego de memoria -->
+        <activity android:name=".juegoAtencion.ComprensionAtencionActivity" /> <!-- Actividades del juego de memoria -->
         <activity
             android:name=".juegoMemoria.MecanicaMemoria"
             android:exported="true" />
@@ -80,18 +75,17 @@
         <activity
             android:name=".juegoMemoria.OrientacionMemoriaActivity"
             android:exported="true" />
-
         <activity
             android:name=".juegoMemoria.ComprensionMemoriaActivity"
             android:exported="true" />
 
         <!-- Actividades del juego de lenguaje -->
         <activity
-            android:name="com.example.gsti.juegoLenguaje.MecanicaLenguaje"
-            android:label="Juego Lenguaje"
-            android:exported="true" />
+            android:name=".juegoLenguaje.MecanicaLenguaje"
+            android:exported="true"
+            android:label="Juego Lenguaje" />
         <activity
-            android:name="com.example.gsti.juegoLenguaje.OrientacionJuegoLenguajeActivity"
+            android:name=".juegoLenguaje.OrientacionJuegoLenguajeActivity"
             android:exported="true" />
         <activity
             android:name=".juegoLenguaje.FelicitacionActivity"
@@ -99,7 +93,6 @@
         <activity
             android:name=".juegoLenguaje.IntentarDeNuevoActivity"
             android:exported="true" />
-
         <activity
             android:name=".juegoLenguaje.ComprensionLenguajeActivity"
             android:exported="true" />
@@ -129,8 +122,14 @@
             android:name=".ComprensionActivity"
             android:exported="true" />
         <activity
+            android:name=".InformacionPersonalActivity"
+            android:exported="true" />
+        <activity
             android:name=".juegosPaciente.JuegosPacienteActivity"
             android:exported="true" />
-
+        <activity
+            android:name=".SobreNosotros"
+            android:exported="true" />
     </application>
+
 </manifest>
