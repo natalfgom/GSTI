@@ -32,6 +32,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
+    <!-- Campo de confirmación de contraseña -->
+    <EditText
+        android:id="@+id/confirmPasswordField"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:hint="@string/confirmar_contrase_a"
+        android:inputType="textPassword"
+        android:autofillHints="password"
+        app:layout_constraintTop_toBottomOf="@id/passwordField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
     <!-- Campo de nombre -->
     <EditText
         android:id="@+id/nameField"
@@ -40,7 +53,7 @@
         android:hint="@string/name"
         android:inputType="text"
         android:autofillHints="name"
-        app:layout_constraintTop_toBottomOf="@id/passwordField"
+        app:layout_constraintTop_toBottomOf="@id/confirmPasswordField"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
@@ -195,10 +208,11 @@
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
+        android:layout_marginTop="100dp"
         android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/typeGroup" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

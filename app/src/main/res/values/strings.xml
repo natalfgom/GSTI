@@ -105,5 +105,6 @@ presenten en pantalla.</string>
     <string name="menu_principal">Menú Principal</string>
     <string name="informacion_personal">Información Personal</string>
     <string name="actualizar">Actualizar</string>
+    <string name="confirmar_contrase_a">Confirmar contraseña</string>
 
 </resources>

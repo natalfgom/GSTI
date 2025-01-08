@@ -8,6 +8,8 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -25,6 +27,7 @@ class RegisterActivity : AppCompatActivity() {
         // Inicializar vistas
         val emailField: EditText = findViewById(R.id.emailField)
         val passwordField: EditText = findViewById(R.id.passwordField)
+        val confirmPasswordField: EditText = findViewById(R.id.confirmPasswordField) // Nuevo campo
         val nameField: EditText = findViewById(R.id.nameField)
         val surnameField: EditText = findViewById(R.id.surnameField)
         val birthdayField: EditText = findViewById(R.id.birthdayField)
@@ -61,6 +64,7 @@ class RegisterActivity : AppCompatActivity() {
         registerButton.setOnClickListener {
             val email = emailField.text.toString().trim()
             val password = passwordField.text.toString().trim()
+            val confirmPassword = confirmPasswordField.text.toString().trim() // Nuevo campo
             val name = nameField.text.toString().trim()
             val surname = surnameField.text.toString().trim()
             val birthday = birthdayField.text.toString().trim()
@@ -69,7 +73,37 @@ class RegisterActivity : AppCompatActivity() {
             val type = findViewById<RadioButton>(selectedTypeId)?.text.toString()
 
             // Validar campos básicos
-            if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty() && surname.isNotEmpty() && birthday.isNotEmpty() && phone.isNotEmpty() && type.isNotEmpty()) {
+            if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() &&
+                name.isNotEmpty() && surname.isNotEmpty() && birthday.isNotEmpty() &&
+                phone.isNotEmpty() && type.isNotEmpty()
+            ) {
+
+                // Validar que las contraseñas coincidan
+                if (password != confirmPassword) {
+                    Toast.makeText(this, "Las contraseñas no coinciden.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                // Validar que el número de teléfono sea válido (exactamente 9 dígitos)
+                if (!phone.matches(Regex("\\d{9}"))) {
+                    Toast.makeText(this, "El número de teléfono debe tener 9 dígitos.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                // Validar que la fecha de nacimiento sea válida y anterior a hoy
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                try {
+                    val birthDate = sdf.parse(birthday)
+                    val today = Calendar.getInstance().time
+                    if (birthDate.after(today)) {
+                        Toast.makeText(this, "La fecha de nacimiento debe ser anterior a hoy.", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Formato de fecha incorrecto. Usa dd/MM/yyyy.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 val additionalData = hashMapOf<String, Any>(
                     "name" to name,
                     "surname" to surname,
@@ -121,64 +155,22 @@ class RegisterActivity : AppCompatActivity() {
                                 else -> "Usuarios"
                             }
 
-                            if (type == getString(R.string.patient)) {
-                                // Guardar en la colección Pacientes y crear subcolección en Médicos
-                                firestore.collection("Pacientes").document(email)
-                                    .set(additionalData)
-                                    .addOnSuccessListener {
-                                        val selectedDoctor = additionalData["doctor"] as String
-                                        firestore.collection("Medicos").document(selectedDoctor)
-                                            .collection("Pacientes")
-                                            .document(email)
-                                            .set(additionalData)
-                                            .addOnSuccessListener {
-                                                // Crear subcolección Estadisticas con tres subcolecciones: Atencion, Memoria, Lenguaje
-                                                val estadisticasRef = firestore.collection("Pacientes").document(email).collection("Estadisticas")
-
-                                                val estadisticasIniciales = listOf("Atencion", "Memoria", "Lenguaje")
-
-                                                estadisticasIniciales.forEach { juego ->
-                                                    estadisticasRef.document(juego)
-                                                        .set(mapOf("mensaje" to "Subcolección $juego creada automáticamente"))
-                                                        .addOnSuccessListener {
-                                                            // Opcional: Logs para verificar la creación
-                                                            Log.d("Firestore", "Subcolección $juego creada correctamente.")
-                                                        }
-                                                        .addOnFailureListener { e ->
-                                                            Log.e("Firestore", "Error al crear subcolección $juego: ${e.message}")
-                                                        }
-                                                }
-
-                                                Toast.makeText(this, "Registro exitoso y subcolecciones creadas.", Toast.LENGTH_SHORT).show()
-                                                val intent = Intent(this, AuthActivity::class.java)
-                                                startActivity(intent)
-                                                finish()
-                                            }
-                                            .addOnFailureListener { e ->
-                                                Toast.makeText(this, "Error al asociar paciente con médico: ${e.message}", Toast.LENGTH_SHORT).show()
-                                            }
-                                    }
-                                    .addOnFailureListener { e ->
-                                        Toast.makeText(this, "Error al registrar paciente: ${e.message}", Toast.LENGTH_SHORT).show()
-                                    }
-                            }else {
-                                // Guardar para otros roles
-                                firestore.collection(collection).document(email)
-                                    .set(additionalData)
-                                    .addOnSuccessListener {
-                                        Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                                        finish()
-                                    }
-                                    .addOnFailureListener { e ->
-                                        Toast.makeText(this, "Error al guardar datos: ${e.message}", Toast.LENGTH_SHORT).show()
-                                    }
-                            }
+                            // Guardar datos adicionales en Firestore
+                            firestore.collection(collection).document(email)
+                                .set(additionalData)
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                                    finish()
+                                }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(this, "Error al guardar datos: ${e.message}", Toast.LENGTH_SHORT).show()
+                                }
                         } else {
                             Toast.makeText(this, "Error al registrar: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
             } else {
-                Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show()
             }
         }
     }
