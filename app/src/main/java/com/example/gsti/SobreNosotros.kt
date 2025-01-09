@@ -1,5 +1,6 @@
 package com.example.gsti
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -10,13 +11,8 @@ import androidx.appcompat.widget.Toolbar
 import com.example.gsti.menuInicio.InicioFamiliar
 import com.example.gsti.menuInicio.InicioMedico
 import com.example.gsti.menuInicio.InicioPaciente
-import com.example.gsti.R
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 class SobreNosotros : AppCompatActivity() {
-
-    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +34,8 @@ class SobreNosotros : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_principal -> {
-                // Redirigir al menú principal según la colección del usuario
-                redirigirSegunColeccion()
+                // Redirigir al menú principal según el rol almacenado en SharedPreferences
+                redirigirAlMenuPrincipal()
                 true
             }
             R.id.menu_informacion_personal -> {
@@ -57,48 +53,36 @@ class SobreNosotros : AppCompatActivity() {
         }
     }
 
-    // Función para redirigir al menú principal según la colección del usuario
-    private fun redirigirSegunColeccion() {
-        val user = FirebaseAuth.getInstance().currentUser
-        val uid = user?.uid
+    // Función para redirigir al menú principal según el rol del usuario
+    private fun redirigirAlMenuPrincipal() {
+        val userRole = getUserRole()
 
-        if (uid != null) {
-            // Check for the 'medicos' collection first
-            db.collection("Medicos").document(uid).get().addOnSuccessListener { document ->
-                if (document.exists()) {
-                    // If the user is a doctor, navigate to InicioMedico
-                    val intent = Intent(this, InicioMedico::class.java)
-                    startActivity(intent)
-                    return@addOnSuccessListener
-                }
-                // Check for the 'pacientes' collection if not found in 'medicos'
-                db.collection("Pacientes").document(uid).get().addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        // If the user is a patient, navigate to InicioPaciente
-                        val intent = Intent(this, InicioPaciente::class.java)
-                        startActivity(intent)
-                        return@addOnSuccessListener
-                    }
-                    // Check for the 'familiares' collection if not found in 'pacientes'
-                    db.collection("Familiares").document(uid).get().addOnSuccessListener { document ->
-                        if (document.exists()) {
-                            // If the user is a family member, navigate to InicioFamiliar
-                            val intent = Intent(this, InicioFamiliar::class.java)
-                            startActivity(intent)
-                        } else {
-                            // If no valid collection is found
-                            Toast.makeText(
-                                this,
-                                "No se pudo determinar el tipo de usuario.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }
+        when (userRole) {
+            "medico" -> {
+                // Redirigir al menú principal del médico
+                val intent = Intent(this, InicioMedico::class.java)
+                startActivity(intent)
             }
-        } else {
-            Toast.makeText(this, "Usuario no autenticado", Toast.LENGTH_SHORT).show()
+            "paciente" -> {
+                // Redirigir al menú principal del paciente
+                val intent = Intent(this, InicioPaciente::class.java)
+                startActivity(intent)
+            }
+            "familiar" -> {
+                // Redirigir al menú principal del familiar
+                val intent = Intent(this, InicioFamiliar::class.java)
+                startActivity(intent)
+            }
+            else -> {
+                // Mostrar mensaje de error si no se puede determinar el rol
+                Toast.makeText(this, "No se pudo determinar el tipo de usuario.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
+    // Obtener el rol del usuario desde SharedPreferences
+    private fun getUserRole(): String? {
+        val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("USER_ROLE", null)
+    }
 }

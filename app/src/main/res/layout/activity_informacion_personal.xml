@@ -6,20 +6,22 @@
     android:layout_height="match_parent">
 
     <!-- EditText Nombre -->
+
+    <!-- EditText Apellidos -->
     <EditText
         android:id="@+id/nombre"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="76dp"
         android:ems="10"
         android:hint="@string/name"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- EditText Apellidos -->
     <EditText
         android:id="@+id/apellidos"
         android:layout_width="0dp"

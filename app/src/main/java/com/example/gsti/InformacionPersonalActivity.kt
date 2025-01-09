@@ -1,5 +1,6 @@
 package com.example.gsti
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -26,7 +27,7 @@ class InformacionPersonalActivity : AppCompatActivity() {
     private lateinit var emailTextView: TextView
     private lateinit var fechaNacimientoTextView: TextView
 
-    // Inicializar Firestore
+    // Firestore
     private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,19 +37,19 @@ class InformacionPersonalActivity : AppCompatActivity() {
         // Configurar Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) // Botón de "Atrás" si es necesario
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) // Botón de "Atrás"
 
-        // Asignación de vistas a variables
+        // Asignar vistas a variables
         nombreEditText = findViewById(R.id.nombre)
         apellidosEditText = findViewById(R.id.apellidos)
         telefonoEditText = findViewById(R.id.telefono)
         emailTextView = findViewById(R.id.email)
         fechaNacimientoTextView = findViewById(R.id.fecha_nacimiento)
 
-        // Cargar la información del usuario desde Firestore
+        // Cargar datos del usuario desde Firebase
         cargarDatosUsuario()
 
-        // Configurar el botón para actualizar la información
+        // Configurar botón para actualizar la información
         val botonActualizar: Button = findViewById(R.id.actualizar)
         botonActualizar.setOnClickListener {
             actualizarInformacion(it)
@@ -57,25 +58,23 @@ class InformacionPersonalActivity : AppCompatActivity() {
 
     // Inflar el menú en el Toolbar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)  // Inflar el menú desde el archivo XML
+        menuInflater.inflate(R.menu.menu_toolbar, menu) // Inflar el menú desde XML
         return true
     }
 
-    // Manejo de las acciones de los ítems del menú
+    // Manejar acciones del menú
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_principal -> {
-                // Redirigir dinámicamente según la colección del usuario
-                redirigirSegunColeccion()
+                // Redirigir según el rol del usuario almacenado en SharedPreferences
+                redirigirAlMenuPrincipal()
                 true
             }
             R.id.menu_informacion_personal -> {
-                // Ya estás en esta pantalla
                 Toast.makeText(this, "Ya estás en Información Personal", Toast.LENGTH_SHORT).show()
                 true
             }
             R.id.menu_sobre_nosotros -> {
-                // Redirigir a la actividad Sobre Nosotros
                 val intent = Intent(this, SobreNosotros::class.java)
                 startActivity(intent)
                 true
@@ -84,123 +83,135 @@ class InformacionPersonalActivity : AppCompatActivity() {
         }
     }
 
-    // Función para redirigir según la colección en Firestore
-    private fun redirigirSegunColeccion() {
-        val user = FirebaseAuth.getInstance().currentUser
-        val uid = user?.uid
+    // Función para redirigir al menú principal según el rol
+    private fun redirigirAlMenuPrincipal() {
+        val userRole = getUserRole()
 
-        if (uid != null) {
-            // Consultar si el UID existe en la colección "medicos"
-            db.collection("Medicos").document(uid)
-                .get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        // Es médico, redirigir a InicioMedico
-                        val intent = Intent(this, InicioMedico::class.java)
-                        startActivity(intent)
-                    } else {
-                        // Si no está en "medicos", verificar "pacientes"
-                        db.collection("Pacientes").document(uid)
-                            .get()
-                            .addOnSuccessListener { documentPaciente ->
-                                if (documentPaciente.exists()) {
-                                    // Es paciente, redirigir a InicioPaciente
-                                    val intent = Intent(this, InicioPaciente::class.java)
-                                    startActivity(intent)
-                                } else {
-                                    // Si no está en "pacientes", verificar "familiares"
-                                    db.collection("Familiares").document(uid)
-                                        .get()
-                                        .addOnSuccessListener { documentFamiliar ->
-                                            if (documentFamiliar.exists()) {
-                                                // Es familiar, redirigir a InicioFamiliar
-                                                val intent = Intent(this, InicioFamiliar::class.java)
-                                                startActivity(intent)
-                                            } else {
-                                                // Si no pertenece a ninguna colección, mostrar mensaje
-                                                Toast.makeText(
-                                                    this,
-                                                    "No se encontró información del usuario",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                            }
-                                        }
-                                        .addOnFailureListener { exception ->
-                                            Log.e("Firestore", "Error verificando familiares", exception)
-                                        }
-                                }
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.e("Firestore", "Error verificando pacientes", exception)
-                            }
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.e("Firestore", "Error verificando médicos", exception)
-                }
-        } else {
-            Toast.makeText(this, "Usuario no autenticado", Toast.LENGTH_SHORT).show()
+        when (userRole) {
+            "medico" -> {
+                val intent = Intent(this, InicioMedico::class.java)
+                startActivity(intent)
+            }
+            "paciente" -> {
+                val intent = Intent(this, InicioPaciente::class.java)
+                startActivity(intent)
+            }
+            "familiar" -> {
+                val intent = Intent(this, InicioFamiliar::class.java)
+                startActivity(intent)
+            }
+            else -> {
+                Toast.makeText(this, "No se pudo determinar el tipo de usuario.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    // Función para cargar datos de Firestore y mostrarlos en los EditText y TextView
+    // Obtener el rol del usuario desde SharedPreferences
+    private fun getUserRole(): String? {
+        val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("USER_ROLE", null)
+    }
+
+    // Cargar datos del usuario desde Firebase
     private fun cargarDatosUsuario() {
         val user = FirebaseAuth.getInstance().currentUser
-        val uid = user?.uid
+        val email = user?.email
 
-        if (uid != null) {
-            db.collection("usuarios").document(uid)
+        if (email != null) {
+            buscarUsuarioEnColecciones(email)
+        } else {
+            Log.e("FirebaseAuth", "No se pudo obtener el email del usuario autenticado")
+            Toast.makeText(this, "Error al obtener email del usuario", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun buscarUsuarioEnColecciones(email: String) {
+        val colecciones = listOf("Medicos", "Pacientes", "Familiares")
+        var encontrado = false
+
+        for (coleccion in colecciones) {
+            if (encontrado) break
+
+            db.collection(coleccion)
+                .whereEqualTo("email", email)
                 .get()
-                .addOnSuccessListener { document ->
-                    if (document != null && document.exists()) {
-                        val nombre = document.getString("nombre")
-                        val apellidos = document.getString("apellidos")
-                        val telefono = document.getString("telefono")
-                        val email = document.getString("email")
-                        val fechaNacimiento = document.getTimestamp("fechaNacimiento")
+                .addOnSuccessListener { querySnapshot ->
+                    if (!querySnapshot.isEmpty) {
+                        encontrado = true
+                        Log.d("Firestore", "Usuario encontrado en la colección $coleccion")
+                        val documento = querySnapshot.documents[0]
+                        val nombre = documento.getString("nombre")
+                        val apellidos = documento.getString("apellidos")
+                        val telefono = documento.getString("telefono")
+                        val fechaNacimiento = documento.getString("fechaNacimiento")
 
+                        // Mostrar los datos en los campos correspondientes
                         nombreEditText.setText(nombre)
                         apellidosEditText.setText(apellidos)
                         telefonoEditText.setText(telefono)
                         emailTextView.text = email
-                        fechaNacimientoTextView.text = fechaNacimiento?.toDate()?.toString()
+                        fechaNacimientoTextView.text = fechaNacimiento
+                    } else {
+                        Log.d("Firestore", "No se encontraron datos en la colección $coleccion")
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Log.w("Firestore", "Error al obtener documento", exception)
+                    Log.e("Firestore", "Error al consultar la colección $coleccion: ${exception.message}")
                 }
         }
     }
 
-    // Función para actualizar la información del usuario en Firestore
+
+    // Actualizar datos del usuario en Firestore
     fun actualizarInformacion(view: View) {
         val user = FirebaseAuth.getInstance().currentUser
-        val uid = user?.uid
+        val email = user?.email
 
-        if (uid != null) {
+        if (email != null) {
             val nombre = nombreEditText.text.toString()
             val apellidos = apellidosEditText.text.toString()
             val telefono = telefonoEditText.text.toString()
 
             if (nombre.isEmpty() || apellidos.isEmpty() || telefono.isEmpty()) {
-                Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor complete todos los campos.", Toast.LENGTH_SHORT).show()
                 return
             }
 
-            val usuarioActualizado: MutableMap<String, Any> = hashMapOf(
+            val datosActualizados = hashMapOf(
                 "nombre" to nombre,
                 "apellidos" to apellidos,
                 "telefono" to telefono
             )
 
-            db.collection("usuarios").document(uid)
-                .update(usuarioActualizado)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "Información actualizada", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error al actualizar: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
+            // Actualizar datos en la colección correspondiente
+            val colecciones = listOf("Medicos", "Pacientes", "Familiares")
+
+            for (coleccion in colecciones) {
+                db.collection(coleccion)
+                    .whereEqualTo("email", email)
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        if (!querySnapshot.isEmpty) {
+                            val documento = querySnapshot.documents[0]
+                            val idDocumento = documento.id
+                            db.collection(coleccion).document(idDocumento)
+                                .update(datosActualizados as Map<String, Any>)
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "Información actualizada correctamente.", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.e("Firestore", "Error al actualizar información", exception)
+                                    Toast.makeText(this, "Error al actualizar la información.", Toast.LENGTH_SHORT).show()
+                                }
+                            return@addOnSuccessListener
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("Firestore", "Error al buscar documento para actualizar", exception)
+                    }
+            }
+        } else {
+            Toast.makeText(this, "Usuario no autenticado.", Toast.LENGTH_SHORT).show()
         }
     }
 }
