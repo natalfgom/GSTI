@@ -16,8 +16,13 @@ import androidx.appcompat.widget.Toolbar
 import com.example.gsti.menuInicio.InicioFamiliar
 import com.example.gsti.menuInicio.InicioMedico
 import com.example.gsti.menuInicio.InicioPaciente
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.DocumentSnapshot
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class InformacionPersonalActivity : AppCompatActivity() {
 
@@ -26,6 +31,7 @@ class InformacionPersonalActivity : AppCompatActivity() {
     private lateinit var telefonoEditText: EditText
     private lateinit var emailTextView: TextView
     private lateinit var fechaNacimientoTextView: TextView
+    private lateinit var botonActualizar: Button
 
     // Firestore
     private val db = FirebaseFirestore.getInstance()
@@ -45,12 +51,12 @@ class InformacionPersonalActivity : AppCompatActivity() {
         telefonoEditText = findViewById(R.id.telefono)
         emailTextView = findViewById(R.id.email)
         fechaNacimientoTextView = findViewById(R.id.fecha_nacimiento)
+        botonActualizar = findViewById(R.id.actualizar)
 
         // Cargar datos del usuario desde Firebase
         cargarDatosUsuario()
 
         // Configurar botón para actualizar la información
-        val botonActualizar: Button = findViewById(R.id.actualizar)
         botonActualizar.setOnClickListener {
             actualizarInformacion(it)
         }
@@ -66,7 +72,6 @@ class InformacionPersonalActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_principal -> {
-                // Redirigir según el rol del usuario almacenado en SharedPreferences
                 redirigirAlMenuPrincipal()
                 true
             }
@@ -83,26 +88,15 @@ class InformacionPersonalActivity : AppCompatActivity() {
         }
     }
 
-    // Función para redirigir al menú principal según el rol
+    // Redirigir al menú principal según el rol del usuario
     private fun redirigirAlMenuPrincipal() {
         val userRole = getUserRole()
 
         when (userRole) {
-            "medico" -> {
-                val intent = Intent(this, InicioMedico::class.java)
-                startActivity(intent)
-            }
-            "paciente" -> {
-                val intent = Intent(this, InicioPaciente::class.java)
-                startActivity(intent)
-            }
-            "familiar" -> {
-                val intent = Intent(this, InicioFamiliar::class.java)
-                startActivity(intent)
-            }
-            else -> {
-                Toast.makeText(this, "No se pudo determinar el tipo de usuario.", Toast.LENGTH_SHORT).show()
-            }
+            "medico" -> startActivity(Intent(this, InicioMedico::class.java))
+            "paciente" -> startActivity(Intent(this, InicioPaciente::class.java))
+            "familiar" -> startActivity(Intent(this, InicioFamiliar::class.java))
+            else -> Toast.makeText(this, "No se pudo determinar el tipo de usuario.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -115,59 +109,64 @@ class InformacionPersonalActivity : AppCompatActivity() {
     // Cargar datos del usuario desde Firebase
     private fun cargarDatosUsuario() {
         val user = FirebaseAuth.getInstance().currentUser
-        val email = user?.email
+        val emailUsuario = user?.email
 
-        if (email != null) {
-            buscarUsuarioEnColecciones(email)
+        if (emailUsuario != null) {
+            buscarUsuarioEnSubcoleccion(emailUsuario)
         } else {
             Log.e("FirebaseAuth", "No se pudo obtener el email del usuario autenticado")
             Toast.makeText(this, "Error al obtener email del usuario", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun buscarUsuarioEnColecciones(email: String) {
-        val colecciones = listOf("Medicos", "Pacientes", "Familiares")
-        var encontrado = false
+    // Buscar al usuario en la subcolección
+    private fun buscarUsuarioEnSubcoleccion(emailUsuario: String) {
+        val medicoEmail = FirebaseAuth.getInstance().currentUser?.email ?: return
+        val pacienteRef = db.collection("Medicos")
+            .document(medicoEmail)
+            .collection("Pacientes")
+            .whereEqualTo("email", emailUsuario)
 
-        for (coleccion in colecciones) {
-            if (encontrado) break
-
-            db.collection(coleccion)
-                .whereEqualTo("email", email)
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    if (!querySnapshot.isEmpty) {
-                        encontrado = true
-                        Log.d("Firestore", "Usuario encontrado en la colección $coleccion")
-                        val documento = querySnapshot.documents[0]
-                        val nombre = documento.getString("nombre")
-                        val apellidos = documento.getString("apellidos")
-                        val telefono = documento.getString("telefono")
-                        val fechaNacimiento = documento.getString("fechaNacimiento")
-
-                        // Mostrar los datos en los campos correspondientes
-                        nombreEditText.setText(nombre)
-                        apellidosEditText.setText(apellidos)
-                        telefonoEditText.setText(telefono)
-                        emailTextView.text = email
-                        fechaNacimientoTextView.text = fechaNacimiento
-                    } else {
-                        Log.d("Firestore", "No se encontraron datos en la colección $coleccion")
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.e("Firestore", "Error al consultar la colección $coleccion: ${exception.message}")
-                }
+        pacienteRef.get().addOnSuccessListener { querySnapshot ->
+            if (!querySnapshot.isEmpty) {
+                val documento = querySnapshot.documents[0]
+                mostrarDatosUsuario(documento)
+            } else {
+                Toast.makeText(this, "No se encontraron datos del usuario.", Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener { exception ->
+            Log.e("Firestore", "Error al consultar datos: ", exception)
         }
     }
 
+    // Mostrar datos del usuario en los campos
+    private fun mostrarDatosUsuario(document: DocumentSnapshot) {
+        val nombre = document.getString("nombre") ?: "Nombre no disponible"
+        val apellidos = document.getString("apellidos") ?: "Apellidos no disponibles"
+        val telefono = document.getString("telefono") ?: "Teléfono no disponible"
+        val fechaNacimientoTimestamp = document.getTimestamp("fechaNacimiento")
+
+        // Convertir Timestamp a formato de fecha legible
+        val fechaNacimiento = if (fechaNacimientoTimestamp != null) {
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            sdf.format(fechaNacimientoTimestamp.toDate())
+        } else {
+            "Fecha no disponible"
+        }
+
+        nombreEditText.setText(nombre)
+        apellidosEditText.setText(apellidos)
+        telefonoEditText.setText(telefono)
+        emailTextView.text = document.getString("email")
+        fechaNacimientoTextView.text = fechaNacimiento
+    }
 
     // Actualizar datos del usuario en Firestore
-    fun actualizarInformacion(view: View) {
+    private fun actualizarInformacion(view: View) {
         val user = FirebaseAuth.getInstance().currentUser
-        val email = user?.email
+        val emailUsuario = user?.email
 
-        if (email != null) {
+        if (emailUsuario != null) {
             val nombre = nombreEditText.text.toString()
             val apellidos = apellidosEditText.text.toString()
             val telefono = telefonoEditText.text.toString()
@@ -177,38 +176,44 @@ class InformacionPersonalActivity : AppCompatActivity() {
                 return
             }
 
-            val datosActualizados = hashMapOf(
+            val datosActualizados = mapOf(
                 "nombre" to nombre,
                 "apellidos" to apellidos,
                 "telefono" to telefono
             )
 
-            // Actualizar datos en la colección correspondiente
-            val colecciones = listOf("Medicos", "Pacientes", "Familiares")
+            botonActualizar.isEnabled = false // Deshabilitar botón durante la operación
 
-            for (coleccion in colecciones) {
-                db.collection(coleccion)
-                    .whereEqualTo("email", email)
-                    .get()
-                    .addOnSuccessListener { querySnapshot ->
-                        if (!querySnapshot.isEmpty) {
-                            val documento = querySnapshot.documents[0]
-                            val idDocumento = documento.id
-                            db.collection(coleccion).document(idDocumento)
-                                .update(datosActualizados as Map<String, Any>)
-                                .addOnSuccessListener {
-                                    Toast.makeText(this, "Información actualizada correctamente.", Toast.LENGTH_SHORT).show()
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.e("Firestore", "Error al actualizar información", exception)
-                                    Toast.makeText(this, "Error al actualizar la información.", Toast.LENGTH_SHORT).show()
-                                }
-                            return@addOnSuccessListener
+            // Actualizar datos en Firestore
+            val medicoEmail = FirebaseAuth.getInstance().currentUser?.email ?: return
+            val pacienteRef = db.collection("Medicos")
+                .document(medicoEmail)
+                .collection("Pacientes")
+                .whereEqualTo("email", emailUsuario)
+
+            pacienteRef.get().addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    val documento = querySnapshot.documents[0]
+                    val actualizaciones = listOf(
+                        db.collection("Medicos")
+                            .document(medicoEmail)
+                            .collection("Pacientes")
+                            .document(documento.id)
+                            .update(datosActualizados)
+                    )
+
+                    Tasks.whenAllComplete(actualizaciones).addOnCompleteListener { task ->
+                        botonActualizar.isEnabled = true // Rehabilitar botón
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Información actualizada correctamente.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Error al actualizar información.", Toast.LENGTH_SHORT).show()
                         }
                     }
-                    .addOnFailureListener { exception ->
-                        Log.e("Firestore", "Error al buscar documento para actualizar", exception)
-                    }
+                }
+            }.addOnFailureListener { exception ->
+                botonActualizar.isEnabled = true // Rehabilitar botón en caso de error
+                Log.e("Firestore", "Error al actualizar datos: ", exception)
             }
         } else {
             Toast.makeText(this, "Usuario no autenticado.", Toast.LENGTH_SHORT).show()

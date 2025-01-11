@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,7 +28,7 @@ class RegisterActivity : AppCompatActivity() {
         // Inicializar vistas
         val emailField: EditText = findViewById(R.id.emailField)
         val passwordField: EditText = findViewById(R.id.passwordField)
-        val confirmPasswordField: EditText = findViewById(R.id.confirmPasswordField) // Nuevo campo
+        val confirmPasswordField: EditText = findViewById(R.id.confirmPasswordField)
         val nameField: EditText = findViewById(R.id.nameField)
         val surnameField: EditText = findViewById(R.id.surnameField)
         val birthdayField: EditText = findViewById(R.id.birthdayField)
@@ -46,12 +47,12 @@ class RegisterActivity : AppCompatActivity() {
                 R.id.radioPaciente -> {
                     pacienteContainer.visibility = View.VISIBLE
                     familiarContainer.visibility = View.GONE
-                    loadDoctorsSpinner(doctorSpinner) // Cargar médicos en Spinner
+                    loadDoctorsSpinner(doctorSpinner)
                 }
                 R.id.radioFamiliar -> {
                     pacienteContainer.visibility = View.GONE
                     familiarContainer.visibility = View.VISIBLE
-                    loadPatientsSpinner(patientSpinner) // Cargar pacientes en Spinner
+                    loadPatientsSpinner(patientSpinner)
                 }
                 else -> {
                     pacienteContainer.visibility = View.GONE
@@ -64,7 +65,7 @@ class RegisterActivity : AppCompatActivity() {
         registerButton.setOnClickListener {
             val email = emailField.text.toString().trim()
             val password = passwordField.text.toString().trim()
-            val confirmPassword = confirmPasswordField.text.toString().trim() // Nuevo campo
+            val confirmPassword = confirmPasswordField.text.toString().trim()
             val name = nameField.text.toString().trim()
             val surname = surnameField.text.toString().trim()
             val birthday = birthdayField.text.toString().trim()
@@ -90,24 +91,26 @@ class RegisterActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                // Validar que la fecha de nacimiento sea válida y anterior a hoy
+                // Validar que la fecha de nacimiento sea válida
                 val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val birthDate: Date
                 try {
-                    val birthDate = sdf.parse(birthday)
-                    val today = Calendar.getInstance().time
-                    if (birthDate.after(today)) {
-                        Toast.makeText(this, "La fecha de nacimiento debe ser anterior a hoy.", Toast.LENGTH_SHORT).show()
-                        return@setOnClickListener
-                    }
+                    birthDate = sdf.parse(birthday) ?: throw Exception("Fecha inválida")
                 } catch (e: Exception) {
                     Toast.makeText(this, "Formato de fecha incorrecto. Usa dd/MM/yyyy.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val today = Calendar.getInstance().time
+                if (birthDate.after(today)) {
+                    Toast.makeText(this, "La fecha de nacimiento debe ser anterior a hoy.", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
                 val additionalData = hashMapOf<String, Any>(
                     "name" to name,
                     "surname" to surname,
-                    "birthday" to birthday,
+                    "birthday" to Timestamp(birthDate), // Guardar como Timestamp
                     "phone" to phone,
                     "type" to type,
                     "email" to email,
