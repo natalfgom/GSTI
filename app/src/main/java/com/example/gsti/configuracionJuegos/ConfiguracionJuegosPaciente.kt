@@ -10,10 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.gsti.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.Timestamp
 import com.google.android.gms.tasks.Tasks
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ConfiguracionJuegosPaciente : AppCompatActivity() {
 
@@ -44,7 +41,7 @@ class ConfiguracionJuegosPaciente : AppCompatActivity() {
         val medicoId = FirebaseAuth.getInstance().currentUser?.email ?: "medico@gmail.com"
         Log.d("ConfiguracionJuegosPaciente", "ID Médico: $medicoId")
 
-        // Referencia al documento del paciente
+        // Consultar la información del paciente
         val pacienteRef = db.collection("Medicos")
             .document(medicoId) // Documento del médico
             .collection("Pacientes") // Subcolección de pacientes
@@ -54,20 +51,12 @@ class ConfiguracionJuegosPaciente : AppCompatActivity() {
 
         pacienteRef.get().addOnSuccessListener { document ->
             if (document.exists()) {
-                // Obtener los datos del paciente
+                // Obtener el nombre, apellido, email, fecha de nacimiento y teléfono del paciente
                 val nombrePaciente = document.getString("name") ?: "Nombre no disponible"
                 val apellidoPaciente = document.getString("surname") ?: "Apellido no disponible"
                 val emailPaciente = document.getString("email") ?: "Email no disponible"
+                val birthdayPaciente = document.getString("birthday") ?: "Fecha de nacimiento no disponible"
                 val phonePaciente = document.getString("phone") ?: "Teléfono no disponible"
-
-                // Obtener la fecha de nacimiento como Timestamp y formatearla
-                val birthdayTimestamp = document.getTimestamp("birthday")
-                val birthdayPaciente = if (birthdayTimestamp != null) {
-                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    sdf.format(birthdayTimestamp.toDate())
-                } else {
-                    "Fecha de nacimiento no disponible"
-                }
 
                 // Establecer los datos en los TextViews
                 nombrePacienteTextView.text = "$nombrePaciente $apellidoPaciente"

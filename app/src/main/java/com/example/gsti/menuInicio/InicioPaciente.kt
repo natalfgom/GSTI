@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.gsti.EstadisticasActivity
+import com.example.gsti.InformacionPersonal.InformacionPacienteActivity
 import com.example.gsti.InformacionPersonalActivity
 import com.example.gsti.R
 import com.example.gsti.SobreNosotros
@@ -85,7 +86,7 @@ class InicioPaciente : AppCompatActivity() {
             }
             R.id.menu_informacion_personal -> {
                 // Redirigir a la actividad de información personal
-                val intent = Intent(this, InformacionPersonalActivity::class.java)
+                val intent = Intent(this, InformacionPacienteActivity::class.java)
                 startActivity(intent)
                 true
             }

@@ -45,13 +45,13 @@ class InformacionPersonalActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // Botón de "Atrás"
 
-        // Asignar vistas a variables
-        nombreEditText = findViewById(R.id.nombre)
-        apellidosEditText = findViewById(R.id.apellidos)
-        telefonoEditText = findViewById(R.id.telefono)
-        emailTextView = findViewById(R.id.email)
-        fechaNacimientoTextView = findViewById(R.id.fecha_nacimiento)
-        botonActualizar = findViewById(R.id.actualizar)
+//        // Asignar vistas a variables
+//        nombreEditText = findViewById(R.id.nombre)
+//        apellidosEditText = findViewById(R.id.apellidos)
+//        telefonoEditText = findViewById(R.id.telefono)
+//        emailTextView = findViewById(R.id.email)
+//        fechaNacimientoTextView = findViewById(R.id.fecha_nacimiento)
+//        botonActualizar = findViewById(R.id.actualizar)
 
         // Cargar datos del usuario desde Firebase
         cargarDatosUsuario()

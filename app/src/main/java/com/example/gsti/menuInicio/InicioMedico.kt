@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.gsti.Estadisticas.ListaPacientesEstadisticasActivity
+import com.example.gsti.InformacionPersonal.InformacionMedicoActivity
 import com.example.gsti.InformacionPersonalActivity
 import com.example.gsti.R
 import com.example.gsti.SobreNosotros
@@ -32,7 +33,6 @@ class InicioMedico : AppCompatActivity() {
         // Configurar Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)  // Botón de "Atrás" si es necesario
 
         // Inicializar vistas
         btnConfiguracionJuegos = findViewById(R.id.btnConfiguracionJuegos)
@@ -46,26 +46,23 @@ class InicioMedico : AppCompatActivity() {
     private fun setupButtonListeners() {
         // Botón Configuración de Juegos
         btnConfiguracionJuegos.setOnClickListener {
-            val intent = Intent(this, ListaPacientesActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, ListaPacientesActivity::class.java))
         }
 
         // Botón Estadísticas
         btnEstadisticas.setOnClickListener {
-            val intent = Intent(this, ListaPacientesEstadisticasActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, ListaPacientesEstadisticasActivity::class.java))
         }
 
         // Botón Notificaciones
         btnNotificaciones.setOnClickListener {
             Toast.makeText(this, "Notificaciones seleccionada", Toast.LENGTH_SHORT).show()
-            // Aquí más adelante iniciaremos la pantalla Comunicaciones o Notificaciones
         }
     }
 
     // Inflar el menú en el Toolbar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)  // Inflar el menú desde el archivo XML
+        menuInflater.inflate(R.menu.menu_toolbar, menu) // Inflar el menú desde el archivo XML
         return true
     }
 
@@ -73,18 +70,17 @@ class InicioMedico : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_principal -> {
-                // Redirigir al menú principal según la colección del usuario
-                redirigirSegunColeccion()
+                redirigirSegunColeccion() // Redirigir al menú principal
                 true
             }
             R.id.menu_informacion_personal -> {
-                val intent = Intent(this, InformacionPersonalActivity::class.java)
-                startActivity(intent)
+                // Abrir la actividad de Información Personal
+                startActivity(Intent(this, InformacionMedicoActivity::class.java))
                 true
             }
             R.id.menu_sobre_nosotros -> {
-                val intent = Intent(this, SobreNosotros::class.java)
-                startActivity(intent)
+                // Abrir la actividad Sobre Nosotros
+                startActivity(Intent(this, SobreNosotros::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -94,39 +90,50 @@ class InicioMedico : AppCompatActivity() {
     // Función para redirigir al menú principal según la colección del usuario
     private fun redirigirSegunColeccion() {
         val user = FirebaseAuth.getInstance().currentUser
-        val uid = user?.uid
 
-        if (uid != null) {
-            db.collection("Medicos").document(uid).get().addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val intent = Intent(this, InicioMedico::class.java)
-                    startActivity(intent)
-                    return@addOnSuccessListener
-                }
+        if (user == null) {
+            Toast.makeText(this, "Usuario no autenticado", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-                db.collection("Pacientes").document(uid).get().addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        val intent = Intent(this, InicioPaciente::class.java)
-                        startActivity(intent)
-                        return@addOnSuccessListener
-                    }
+        val uid = user.uid
 
-                    db.collection("Familiares").document(uid).get().addOnSuccessListener { document ->
-                        if (document.exists()) {
-                            val intent = Intent(this, InicioFamiliar::class.java)
-                            startActivity(intent)
-                        } else {
-                            Toast.makeText(
-                                this,
-                                "No se pudo determinar el tipo de usuario.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
+        db.collection("Medicos").document(uid).get()
+            .addOnSuccessListener { document ->
+                when {
+                    document.exists() -> startActivity(Intent(this, InicioMedico::class.java))
+                    else -> redirigirPacienteOFamiliar(uid)
                 }
             }
-        } else {
-            Toast.makeText(this, "Usuario no autenticado", Toast.LENGTH_SHORT).show()
-        }
+            .addOnFailureListener {
+                Toast.makeText(this, "Error al consultar la base de datos.", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun redirigirPacienteOFamiliar(uid: String) {
+        db.collection("Pacientes").document(uid).get()
+            .addOnSuccessListener { document ->
+                when {
+                    document.exists() -> startActivity(Intent(this, InicioPaciente::class.java))
+                    else -> redirigirFamiliar(uid)
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Error al consultar la base de datos.", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun redirigirFamiliar(uid: String) {
+        db.collection("Familiares").document(uid).get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    startActivity(Intent(this, InicioFamiliar::class.java))
+                } else {
+                    Toast.makeText(this, "No se pudo determinar el tipo de usuario.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Error al consultar la base de datos.", Toast.LENGTH_SHORT).show()
+            }
     }
 }
