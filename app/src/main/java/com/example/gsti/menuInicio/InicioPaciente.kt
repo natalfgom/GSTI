@@ -79,7 +79,7 @@ class InicioPaciente : AppCompatActivity() {
                 true
             }
             R.id.menu_informacion_personal -> {
-                // Redirigir a la actividad de información personal
+                // Redirigir a la acti vidad de información personal
                 val intent = Intent(this, InformacionPacienteActivity::class.java)
                 startActivity(intent)
                 true
