@@ -1,165 +1,181 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/configuracionjuegosLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
-    <!-- Título para el nombre del paciente en negrita y más grande -->
-    <TextView
-        android:id="@+id/nombrePacienteTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nombre del paciente"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+    <!-- Toolbar -->
+    <include
+        layout="@menu/toolbar" />
 
-    <!-- Recuadro para los datos personales -->
+    <!-- Contenido Principal -->
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/configuracionjuegosLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Título de la sección "Datos Personales" -->
+        <!-- Título para el nombre del paciente en negrita y más grande -->
         <TextView
+            android:id="@+id/nombrePacienteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Datos Personales"
+            android:text="Nombre del paciente"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Recuadro para los datos personales -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:padding="16dp">
+
+            <!-- Título de la sección "Datos Personales" -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Datos Personales"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
+
+            <!-- TextView para mostrar la fecha de nacimiento -->
+            <TextView
+                android:id="@+id/birthdayPacienteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha de nacimiento"
+                android:textSize="16sp"
+                android:paddingTop="8dp" />
+
+            <!-- TextView para mostrar el teléfono -->
+            <TextView
+                android:id="@+id/phonePacienteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Teléfono"
+                android:textSize="16sp"
+                android:paddingTop="8dp" />
+
+            <!-- TextView para mostrar el email del paciente -->
+            <TextView
+                android:id="@+id/emailPacienteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textSize="16sp"
+                android:paddingTop="8dp" />
+        </LinearLayout>
+
+        <!-- Título de la sección "Configuración de Juegos" -->
+        <TextView
+            android:id="@+id/configuracionJuegosTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Configuración de Juegos"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp" />
 
-        <!-- TextView para mostrar la fecha de nacimiento -->
-        <TextView
-            android:id="@+id/birthdayPacienteTextView"
+        <!-- Sección para el juego de Atención -->
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fecha de nacimiento"
-            android:textSize="16sp"
-            android:paddingTop="8dp"/>
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/border"
+            android:padding="16dp">
 
-        <!-- TextView para mostrar el teléfono -->
-        <TextView
-            android:id="@+id/phonePacienteTextView"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Atención"
+                    android:textSize="18sp"
+                    android:layout_weight="1" />
+
+                <Switch
+                    android:id="@+id/switchAtencion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- Sección para el juego de Memoria -->
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Teléfono"
-            android:textSize="16sp"
-            android:paddingTop="8dp"/>
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/border"
+            android:padding="16dp">
 
-        <!-- TextView para mostrar el email del paciente -->
-        <TextView
-            android:id="@+id/emailPacienteTextView"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Memoria"
+                    android:textSize="18sp"
+                    android:layout_weight="1" />
+
+                <Switch
+                    android:id="@+id/switchMemoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- Sección para el juego de Lenguaje -->
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email"
-            android:textSize="16sp"
-            android:paddingTop="8dp"/>
-    </LinearLayout>
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/border"
+            android:padding="16dp">
 
-    <!-- Título de la sección "Configuración de Juegos" -->
-    <TextView
-        android:id="@+id/configuracionJuegosTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Configuración de Juegos"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="12dp"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Lenguaje"
+                    android:textSize="18sp"
+                    android:layout_weight="1" />
 
-    <!-- Sección para el juego de Atención -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-    android:layout_marginTop="24dp"
-    android:background="@drawable/border"
-    android:padding="16dp"> <!-- Padding interno -->
+                <Switch
+                    android:id="@+id/switchLenguaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </FrameLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"> <!-- Padding interno para el LinearLayout -->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Atención"
-            android:textSize="18sp"
-            android:layout_weight="1" />
-        <Switch
-            android:id="@+id/switchAtencion"
+        <!-- Botón para guardar los cambios -->
+        <Button
+            android:id="@+id/btnGuardar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center" />
     </LinearLayout>
-</FrameLayout>
-
-    <!-- Sección para el juego de Memoria -->
-<FrameLayout
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginBottom="24dp"
-    android:layout_marginTop="24dp"
-    android:background="@drawable/border"
-    android:padding="16dp"> <!-- Padding interno -->
-
-<LinearLayout
-android:orientation="horizontal"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:padding="8dp"> <!-- Padding interno para el LinearLayout -->
-<TextView
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="Memoria"
-    android:textSize="18sp"
-    android:layout_weight="1" />
-<Switch
-    android:id="@+id/switchMemoria"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
 </LinearLayout>
-    </FrameLayout>
-
-    <!-- Sección para el juego de Lenguaje -->
-<FrameLayout
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginBottom="24dp"
-    android:layout_marginTop="24dp"
-    android:background="@drawable/border"
-    android:padding="16dp"> <!-- Padding interno -->
-
-<LinearLayout
-android:orientation="horizontal"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:padding="8dp"> <!-- Padding interno para el LinearLayout -->
-<TextView
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="Lenguaje"
-    android:textSize="18sp"
-    android:layout_weight="1" />
-<Switch
-    android:id="@+id/switchLenguaje"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
-</LinearLayout>
-    </FrameLayout>
-
-    <!-- Botón para guardar los cambios -->
-<Button
-android:id="@+id/btnGuardar"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Guardar"
-android:layout_marginTop="24dp"
-android:layout_gravity="center" />
-
-    </LinearLayout>

@@ -101,7 +101,7 @@
         <activity
             android:name=".configuracionJuegos.ListaPacientesActivity"
             android:exported="true"
-            android:label="Lista de Pacientes (Configuración de Juegos)" />
+             />
         <activity
             android:name=".configuracionJuegos.ConfiguracionJuegosPaciente"
             android:exported="true" />

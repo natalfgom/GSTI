@@ -13,13 +13,51 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.EditText
+import androidx.appcompat.widget.Toolbar
+import com.example.gsti.InformacionPersonal.InformacionMedicoActivity
+import com.example.gsti.InformacionPersonal.InformacionPacienteActivity
+import com.example.gsti.SobreNosotros
+import com.example.gsti.menuInicio.InicioMedico
+import com.example.gsti.menuInicio.InicioPaciente
 
 
 class ListaPacientesActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
     private val pacientes = mutableListOf<Map<String, String>>() // Lista de pacientes en memoria
+
+    // Inflar el menú en el Toolbar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)  // Asegúrate de que `menu_toolbar` existe
+        return true
+    }
+
+    // Acciones al seleccionar un ítem del menú
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_principal -> {
+                val intent = Intent(this, InicioMedico::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
+                true
+            }
+            R.id.menu_informacion_personal -> {
+                val intent = Intent(this, InformacionMedicoActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_sobre_nosotros -> {
+                val intent = Intent(this, SobreNosotros::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +69,12 @@ class ListaPacientesActivity : AppCompatActivity() {
         val medicoId = FirebaseAuth.getInstance().currentUser?.email ?: "medico@gmail.com"
 
         val pacientesRef = db.collection("Medicos").document(medicoId).collection("Pacientes")
+
+        // Configurar el Toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+
 
         // Obtener pacientes de Firebase
         pacientesRef.get().addOnSuccessListener { snapshot ->
@@ -110,4 +154,7 @@ class ListaPacientesActivity : AppCompatActivity() {
             layout.addView(pacienteContainer)
         }
     }
+
+
+
 }

@@ -21,8 +21,7 @@ class SobreNosotros : AppCompatActivity() {
         // Configurar el Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)  // Botón de "Atrás" si es necesario
-    }
+        }
 
     // Inflar el menú en el Toolbar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

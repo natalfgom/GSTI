@@ -1,13 +1,21 @@
 package com.example.gsti.configuracionJuegos
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.example.gsti.InformacionPersonal.InformacionMedicoActivity
 import com.example.gsti.R
+import com.example.gsti.SobreNosotros
+import com.example.gsti.menuInicio.InicioMedico
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.android.gms.tasks.Tasks
@@ -117,5 +125,36 @@ class ConfiguracionJuegosPaciente : AppCompatActivity() {
         }.addOnFailureListener { exception ->
             Log.e("ConfiguracionJuegosPaciente", "Error al consultar datos del paciente: ", exception)
         }
+        // Configurar el Toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
     }
+
+    // Inflar el menú en el Toolbar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu) // Inflar el menú desde el archivo XML
+        return true
+    }
+
+    // Acciones cuando se selecciona un ítem del menú
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_principal -> {
+                startActivity(Intent(this, InicioMedico::class.java))
+                true
+            }
+            R.id.menu_informacion_personal -> {
+                // Abrir la actividad de Información Personal
+                startActivity(Intent(this, InformacionMedicoActivity::class.java))
+                true
+            }
+            R.id.menu_sobre_nosotros -> {
+                // Abrir la actividad Sobre Nosotros
+                startActivity(Intent(this, SobreNosotros::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 }
