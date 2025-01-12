@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.gsti.Estadisticas.EstadisticasPacienteActivity
+import com.example.gsti.Estadisticas.ListaPacientesEstadisticasActivity
 import com.example.gsti.InformacionPersonal.InformacionFamiliarActivity
 import com.example.gsti.R
 import com.example.gsti.SobreNosotros
@@ -19,6 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 class InicioFamiliar : AppCompatActivity() {
 
     private lateinit var btnEstadisticas: LinearLayout
+    private lateinit var btnCambiarPin: LinearLayout
+
     private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +35,7 @@ class InicioFamiliar : AppCompatActivity() {
 
         // Referencias a botones usando sus IDs
         btnEstadisticas = findViewById(R.id.btnEstadisticas)
+        btnCambiarPin = findViewById(R.id.btnNotificaciones)
 
         // Obtener el paciente asociado del intent
         val pacienteAsociado = intent.getStringExtra("PACIENTE_ASOCIADO")
@@ -50,6 +54,10 @@ class InicioFamiliar : AppCompatActivity() {
                 ).show()
             }
         }
+
+        // Botón Notificaciones
+        btnCambiarPin.setOnClickListener {
+            startActivity(Intent(this, CambiarPin::class.java))        }
     }
 
     // Inflar el menú en el Toolbar
