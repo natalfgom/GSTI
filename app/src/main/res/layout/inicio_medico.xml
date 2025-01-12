@@ -50,20 +50,7 @@
                 android:text="@string/titulo_estadisticas" />
         </LinearLayout>
 
-        <!-- Botón Notificaciones -->
-        <LinearLayout
-            style="@style/BotonEstandar"
-            android:id="@+id/btnNotificaciones">
 
-            <ImageView
-                style="@style/IconoEstandar"
-                android:src="@drawable/ic_notificaciones"
-                android:contentDescription="@string/titulo_notificaciones" />
-
-            <TextView
-                style="@style/TextoEstandar"
-                android:text="@string/titulo_notificaciones" />
-        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

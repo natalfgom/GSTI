@@ -37,7 +37,6 @@ class InicioMedico : AppCompatActivity() {
         // Inicializar vistas
         btnConfiguracionJuegos = findViewById(R.id.btnConfiguracionJuegos)
         btnEstadisticas = findViewById(R.id.btnEstadisticas)
-        btnNotificaciones = findViewById(R.id.btnNotificaciones)
 
         // Configurar listeners para los botones
         setupButtonListeners()
@@ -54,10 +53,7 @@ class InicioMedico : AppCompatActivity() {
             startActivity(Intent(this, ListaPacientesEstadisticasActivity::class.java))
         }
 
-        // Botón Notificaciones
-        btnNotificaciones.setOnClickListener {
-            Toast.makeText(this, "Notificaciones seleccionada", Toast.LENGTH_SHORT).show()
-        }
+
     }
 
     // Inflar el menú en el Toolbar

@@ -1,12 +1,18 @@
 package com.example.gsti.menuInicio
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.example.gsti.InformacionPersonal.InformacionFamiliarActivity
 import com.example.gsti.R
+import com.example.gsti.SobreNosotros
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,6 +30,10 @@ class CambiarPin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_confirmation_code)
+
+        // Configurar el toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         // Inicializar Firebase Authentication y Firestore
         mAuth = FirebaseAuth.getInstance()
@@ -91,4 +101,37 @@ class CambiarPin : AppCompatActivity() {
                 Toast.makeText(this, "Error al actualizar el código: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    // Inflar el menú en el Toolbar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu) // Asegúrate de que `menu_toolbar` existe
+        return true
+    }
+
+    // Acciones al seleccionar un ítem del menú
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_principal -> {
+                // Redirigir al menú principal
+                val intent = Intent(this, InicioFamiliar::class.java)
+                startActivity(intent)
+                finish()
+                true
+            }
+            R.id.menu_informacion_personal -> {
+                val intent = Intent(this, InformacionFamiliarActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_sobre_nosotros -> {
+                // Redirigir a la actividad "Sobre Nosotros"
+                val intent = Intent(this, SobreNosotros::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
 }

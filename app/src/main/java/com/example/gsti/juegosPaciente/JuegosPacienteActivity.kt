@@ -1,13 +1,21 @@
 package com.example.gsti.juegosPaciente
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.example.gsti.InformacionPersonal.InformacionPacienteActivity
+
 import com.example.gsti.R
+import com.example.gsti.SobreNosotros
+import com.example.gsti.menuInicio.InicioPaciente
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -15,9 +23,14 @@ class JuegosPacienteActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_juegos_paciente)
+
+        // Configurar el Toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         val juegosLayout: LinearLayout = findViewById(R.id.juegosLayout)
 
@@ -120,6 +133,36 @@ class JuegosPacienteActivity : AppCompatActivity() {
             else -> {
                 Toast.makeText(this, "Juego no disponible", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    // Inflar el menú en el Toolbar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu) // Asegúrate de que `menu_toolbar` existe
+        return true
+    }
+
+    // Acciones al seleccionar un ítem del menú
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_principal -> {
+                val intent = Intent(this, InicioPaciente::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_informacion_personal -> {
+                // Redirigir a la actividad de información personal
+                val intent = Intent(this, InformacionPacienteActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_sobre_nosotros -> {
+                // Redirigir a la actividad "Sobre Nosotros"
+                val intent = Intent(this, SobreNosotros::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

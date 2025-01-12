@@ -6,15 +6,14 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.gsti.InformacionPersonal.InformacionFamiliarActivity
-import com.example.gsti.InformacionPersonal.InformacionPacienteActivity
 import com.example.gsti.R
 import com.example.gsti.SobreNosotros
 import com.example.gsti.menuInicio.InicioFamiliar
-import com.example.gsti.menuInicio.InicioPaciente
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -35,10 +34,9 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
     private val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu) // Asegúrate de que `menu_toolbar` existe
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
         return true
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +53,7 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
         buttonVolverMenu.setOnClickListener {
             val intent = Intent(this, InicioFamiliar::class.java)
             startActivity(intent)
-            finish() // Finaliza esta actividad
+            finish()
         }
 
         // Obtener el email del familiar autenticado
@@ -66,8 +64,6 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
             finish()
         }
     }
-
-
 
     private fun cargarPacienteAsociado(emailFamiliar: String) {
         Log.d("EstadisticasFamiliar", "Iniciando carga para email: $emailFamiliar")
@@ -80,10 +76,11 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
                     val document = task.result
                     if (document != null && document.exists()) {
                         Log.d("EstadisticasFamiliar", "Documento encontrado: ${document.data}")
-                        val nombrePaciente = document.getString("patient")
-                        if (!nombrePaciente.isNullOrEmpty()) {
-                            Log.d("EstadisticasFamiliar", "Paciente asociado: $nombrePaciente")
-                            cargarEstadisticas(nombrePaciente)
+                        val emailPaciente = document.getString("patient")
+                        if (!emailPaciente.isNullOrEmpty()) {
+                            Log.d("EstadisticasFamiliar", "Paciente asociado: $emailPaciente")
+                            cargarDatosPaciente(emailPaciente)
+                            cargarEstadisticas(emailPaciente)
                         } else {
                             showError("No hay paciente asociado a este familiar.")
                         }
@@ -96,11 +93,54 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
                     showError("Error al cargar paciente asociado: ${task.exception?.message}")
                 }
             }
+
         // Configurar el Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
     }
 
+    private fun cargarDatosPaciente(emailPaciente: String) {
+        firestore.collection("Pacientes")
+            .document(emailPaciente)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val document = task.result
+                    if (document != null && document.exists()) {
+                        Log.d("EstadisticasFamiliar", "Datos del paciente: ${document.data}")
+                        val nombre = document.getString("name") ?: "No disponible"
+                        val apellido = document.getString("surname") ?: "No disponible"
+                        val birthday = document.getString("birthday") ?: "No disponible"
+                        val phone = document.getString("phone") ?: "No disponible"
+                        val email = document.getString("email") ?: "No disponible"
+
+                        // Asignar valores a los TextView
+                        findViewById<TextView>(R.id.nombrePacienteTextView).text =
+                            "$nombre $apellido"
+                        findViewById<TextView>(R.id.birthdayPacienteTextView).text =
+                            "Fecha de nacimiento: $birthday"
+                        findViewById<TextView>(R.id.phonePacienteTextView).text =
+                            "Teléfono: $phone"
+                        findViewById<TextView>(R.id.emailPacienteTextView).text =
+                            "Email: $email"
+                    } else {
+                        showError("Datos del paciente no encontrados.")
+                    }
+                } else {
+                    showError("Error al cargar datos del paciente: ${task.exception?.message}")
+                }
+            }
+    }
+
+    private fun cargarEstadisticas(nombrePaciente: String) {
+        setupLineChart(lineChartAtencion)
+        setupLineChart(lineChartMemoria)
+        setupLineChart(lineChartLenguaje)
+
+        cargarDatosAtencion(nombrePaciente)
+        cargarDatosMemoria(nombrePaciente)
+        cargarDatosLenguaje(nombrePaciente)
+    }
 
     private fun setupLineChart(lineChart: LineChart) {
         lineChart.description.isEnabled = false
@@ -108,22 +148,6 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
         lineChart.xAxis.granularity = 1f
         lineChart.axisRight.isEnabled = false
         lineChart.setPinchZoom(true)
-    }
-
-    private fun cargarEstadisticas(nombrePaciente: String) {
-        // Configurar gráficos
-        setupLineChart(lineChartAtencion)
-        setupLineChart(lineChartMemoria)
-        setupLineChart(lineChartLenguaje)
-
-        // Cargar estadísticas de Atención
-        cargarDatosAtencion(nombrePaciente)
-
-        // Cargar estadísticas de Memoria
-        cargarDatosMemoria(nombrePaciente)
-
-        // Cargar estadísticas de Lenguaje
-        cargarDatosLenguaje(nombrePaciente)
     }
 
     private fun cargarDatosAtencion(email: String) {
@@ -155,11 +179,7 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
                         }
 
                         mostrarGrafico(lineChartAtencion, entries, dateLabels, "Progreso de Atención")
-                    } else {
-                        Log.d("EstadisticasFamiliar", "No hay datos de Atención para $email")
                     }
-                } else {
-                    showError("Error al cargar datos de Atención: ${task.exception?.message}")
                 }
             }
     }
@@ -193,11 +213,7 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
                         }
 
                         mostrarGrafico(lineChartMemoria, entries, dateLabels, "Progreso de Memoria")
-                    } else {
-                        Log.d("EstadisticasFamiliar", "No hay datos de Memoria para $email")
                     }
-                } else {
-                    showError("Error al cargar datos de Memoria: ${task.exception?.message}")
                 }
             }
     }
@@ -209,35 +225,28 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
             .document("Lenguaje")
             .collection("Partidas")
             .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val result = task.result
-                    if (!result.isEmpty) {
-                        val entries = ArrayList<Entry>()
-                        val dateLabels = ArrayList<String>()
-                        var index = 0f
+            .addOnSuccessListener { result ->
+                val entries = ArrayList<Entry>()
+                val dateLabels = ArrayList<String>()
 
-                        for (document in result.documents) {
-                            val puntuacion = document.getLong("puntuacion")?.toFloat() ?: 0f
-                            val fecha = document.getDate("fecha")
+                var index = 0f
+                for (document in result) {
+                    val total = document.getLong("total")?.toFloat() ?: 0f
+                    val fecha = document.getDate("fecha")
 
-                            if (fecha != null) {
-                                val formattedDate =
-                                    SimpleDateFormat("dd/MM", Locale.getDefault()).format(fecha)
-                                dateLabels.add(formattedDate)
-                                entries.add(Entry(index, puntuacion))
-                                index++
-                            }
-                        }
-
-                        mostrarGrafico(lineChartLenguaje, entries, dateLabels, "Progreso de Lenguaje")
-                    } else {
-                        Log.d("EstadisticasFamiliar", "No hay datos de Lenguaje para $email")
+                    if (fecha != null) {
+                        val formattedDate = SimpleDateFormat("dd/MM", Locale.getDefault()).format(fecha)
+                        dateLabels.add(formattedDate)
+                        entries.add(Entry(index, total))
+                        index++
                     }
-                } else {
-                    showError("Error al cargar datos de Lenguaje: ${task.exception?.message}")
+                }
+
+                if (entries.isNotEmpty()) {
+                    mostrarGrafico(lineChartLenguaje, entries, dateLabels, "Progreso de Lenguaje")
                 }
             }
+            .addOnFailureListener { e -> e.printStackTrace() }
     }
 
     private fun mostrarGrafico(
@@ -254,8 +263,6 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
 
         val lineData = LineData(lineDataSet)
         lineChart.data = lineData
-
-        // Configurar etiquetas en el eje X
         lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(dateLabels)
         lineChart.invalidate()
     }
@@ -266,7 +273,6 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
         finish()
     }
 
-    // Acciones al seleccionar un ítem del menú
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_principal -> {
@@ -275,13 +281,11 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
                 true
             }
             R.id.menu_informacion_personal -> {
-                // Redirigir a la actividad de información personal
                 val intent = Intent(this, InformacionFamiliarActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.menu_sobre_nosotros -> {
-                // Redirigir a la actividad "Sobre Nosotros"
                 val intent = Intent(this, SobreNosotros::class.java)
                 startActivity(intent)
                 true

@@ -121,7 +121,6 @@ class InformacionFamiliarActivity : AppCompatActivity() {
             R.id.menu_principal -> {
                 // Redirigir al menú principal
                 val intent = Intent(this, InicioFamiliar::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 finish()
                 true
