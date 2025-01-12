@@ -44,11 +44,6 @@ class InicioPaciente : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Acción para "Notificaciones"
-        btnNotificaciones.setOnClickListener {
-            // TODO: Implementar navegación a NotificacionesActivity
-            Toast.makeText(this, "Ir a Notificaciones", Toast.LENGTH_SHORT).show()
-        }
 
         // Verificar el rol del usuario
         val userRole = getUserRole()
