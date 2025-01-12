@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "410648962575",
+    "project_id": "gsti-f0ba6",
+    "storage_bucket": "gsti-f0ba6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410648962575:android:0d5a67d97d91116c6a657a",
+        "android_client_info": {
+          "package_name": "com.example.gsti"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBediT_T0vaARhZTTrc7PTt7MVOEvU1HBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
