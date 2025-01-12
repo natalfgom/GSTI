@@ -37,7 +37,6 @@ class InformacionMedicoActivity : AppCompatActivity() {
         // Configurar el toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) // Habilitar botón de "atrás" si es necesario
 
         // Obtener el email del usuario logueado
         val currentUser = FirebaseAuth.getInstance().currentUser

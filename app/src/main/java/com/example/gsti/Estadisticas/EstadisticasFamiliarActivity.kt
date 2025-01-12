@@ -3,10 +3,16 @@ package com.example.gsti.Estadisticas
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.example.gsti.InformacionPersonal.InformacionFamiliarActivity
+import com.example.gsti.InformacionPersonal.InformacionPacienteActivity
 import com.example.gsti.R
+import com.example.gsti.SobreNosotros
 import com.example.gsti.menuInicio.InicioFamiliar
 import com.example.gsti.menuInicio.InicioPaciente
 import com.github.mikephil.charting.charts.LineChart
@@ -27,6 +33,11 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
     private lateinit var lineChartLenguaje: LineChart
     private val firestore = FirebaseFirestore.getInstance()
     private val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu) // Asegúrate de que `menu_toolbar` existe
+        return true
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +67,8 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
         }
     }
 
+
+
     private fun cargarPacienteAsociado(emailFamiliar: String) {
         Log.d("EstadisticasFamiliar", "Iniciando carga para email: $emailFamiliar")
 
@@ -83,6 +96,9 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
                     showError("Error al cargar paciente asociado: ${task.exception?.message}")
                 }
             }
+        // Configurar el Toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
     }
 
 
@@ -248,5 +264,29 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         Log.e("EstadisticasFamiliar", message)
         finish()
+    }
+
+    // Acciones al seleccionar un ítem del menú
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_principal -> {
+                val intent = Intent(this, InicioFamiliar::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_informacion_personal -> {
+                // Redirigir a la actividad de información personal
+                val intent = Intent(this, InformacionFamiliarActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_sobre_nosotros -> {
+                // Redirigir a la actividad "Sobre Nosotros"
+                val intent = Intent(this, SobreNosotros::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

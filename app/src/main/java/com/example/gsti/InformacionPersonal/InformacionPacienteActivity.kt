@@ -38,7 +38,7 @@ class InformacionPacienteActivity : AppCompatActivity() {
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
         // Obtener el email del paciente (usuario logueado)
         val currentUser = FirebaseAuth.getInstance().currentUser

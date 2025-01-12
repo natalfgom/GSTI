@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.gsti.Estadisticas.EstadisticasFamiliarActivity
 import com.example.gsti.Estadisticas.EstadisticasPacienteActivity
 import com.example.gsti.Estadisticas.ListaPacientesEstadisticasActivity
 import com.example.gsti.InformacionPersonal.InformacionFamiliarActivity
@@ -31,7 +32,6 @@ class InicioFamiliar : AppCompatActivity() {
         // Configurar el Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)  // Botón de "Atrás" si es necesario
 
         // Referencias a botones usando sus IDs
         btnEstadisticas = findViewById(R.id.btnEstadisticas)
@@ -43,7 +43,7 @@ class InicioFamiliar : AppCompatActivity() {
         // Acción para el botón "Estadísticas"
         btnEstadisticas.setOnClickListener {
             if (pacienteAsociado != null) {
-                val intent = Intent(this, EstadisticasPacienteActivity::class.java)
+                val intent = Intent(this, EstadisticasFamiliarActivity::class.java)
                 intent.putExtra("EMAIL_PACIENTE", pacienteAsociado)
                 startActivity(intent)
             } else {

@@ -2,13 +2,20 @@ package com.example.gsti.Estadisticas
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.example.gsti.InformacionPersonal.InformacionMedicoActivity
+import com.example.gsti.InformacionPersonal.InformacionPacienteActivity
 import com.example.gsti.R
+import com.example.gsti.SobreNosotros
 import com.example.gsti.menuInicio.InicioFamiliar
 import com.example.gsti.menuInicio.InicioMedico
+import com.example.gsti.menuInicio.InicioPaciente
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -30,6 +37,11 @@ class EstadisticasPacienteActivity : AppCompatActivity() {
     private lateinit var emailPacienteTextView: TextView
     private val firestore = FirebaseFirestore.getInstance()
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu) // Asegúrate de que `menu_toolbar` existe
+        return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_estadisticas_paciente)
@@ -44,6 +56,10 @@ class EstadisticasPacienteActivity : AppCompatActivity() {
         emailPacienteTextView = findViewById(R.id.emailPacienteTextView)
 
         val buttonVolverMenu: Button = findViewById(R.id.buttonVolverMenu)
+
+        // Configurar el Toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         // Configuración del botón "Volver al Menú"
         buttonVolverMenu.setOnClickListener {
@@ -219,5 +235,29 @@ class EstadisticasPacienteActivity : AppCompatActivity() {
         // Configurar etiquetas en el eje X
         lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(dateLabels)
         lineChart.invalidate()
+    }
+
+    // Acciones al seleccionar un ítem del menú
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_principal -> {
+                val intent = Intent(this, InicioMedico::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_informacion_personal -> {
+                // Redirigir a la actividad de información personal
+                val intent = Intent(this, InformacionMedicoActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_sobre_nosotros -> {
+                // Redirigir a la actividad "Sobre Nosotros"
+                val intent = Intent(this, SobreNosotros::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

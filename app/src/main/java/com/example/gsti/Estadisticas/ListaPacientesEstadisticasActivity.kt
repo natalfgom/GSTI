@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -11,9 +13,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.example.gsti.EstadisticasActivity
+import com.example.gsti.InformacionPersonal.InformacionMedicoActivity
+import com.example.gsti.InformacionPersonal.InformacionPacienteActivity
 import com.example.gsti.R
+import com.example.gsti.SobreNosotros
 import com.example.gsti.configuracionJuegos.ConfiguracionJuegosPaciente
+import com.example.gsti.menuInicio.InicioMedico
+import com.example.gsti.menuInicio.InicioPaciente
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -21,6 +29,11 @@ class ListaPacientesEstadisticasActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
     private val pacientes = mutableListOf<Map<String, String>>() // Lista de pacientes en memoria
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu) // Asegúrate de que `menu_toolbar` existe
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +85,10 @@ class ListaPacientesEstadisticasActivity : AppCompatActivity() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        // Configurar el Toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
     }
 
     // Método para mostrar pacientes en el layout
@@ -111,6 +128,30 @@ class ListaPacientesEstadisticasActivity : AppCompatActivity() {
 
 
             layout.addView(pacienteContainer)
+        }
+    }
+
+    // Acciones al seleccionar un ítem del menú
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_principal -> {
+                val intent = Intent(this, InicioMedico::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_informacion_personal -> {
+                // Redirigir a la actividad de información personal
+                val intent = Intent(this, InformacionMedicoActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_sobre_nosotros -> {
+                // Redirigir a la actividad "Sobre Nosotros"
+                val intent = Intent(this, SobreNosotros::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

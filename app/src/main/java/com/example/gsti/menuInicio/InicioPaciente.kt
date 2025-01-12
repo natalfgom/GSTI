@@ -57,8 +57,7 @@ class InicioPaciente : AppCompatActivity() {
         // Configurar el Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)  // Botón de "Atrás" si es necesario
-    }
+        }
 
     // Obtener el rol del usuario desde SharedPreferences
     private fun getUserRole(): String? {
