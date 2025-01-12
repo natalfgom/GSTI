@@ -1,5 +1,6 @@
 package com.example.gsti.menuInicio
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -9,7 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.gsti.Estadisticas.EstadisticasPacienteActivity
-import com.example.gsti.InformacionPersonalActivity
+import com.example.gsti.InformacionPersonal.InformacionFamiliarActivity
 import com.example.gsti.R
 import com.example.gsti.SobreNosotros
 import com.google.firebase.auth.FirebaseAuth
@@ -17,33 +18,31 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class InicioFamiliar : AppCompatActivity() {
 
-    private val db = FirebaseFirestore.getInstance()
     private lateinit var btnEstadisticas: LinearLayout
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.inicio_familiar) // Referencia al layout
+        setContentView(R.layout.inicio_familiar)
 
-        // Configurar Toolbar
+        // Configurar el Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)  // Botón de "Atrás" si es necesario
 
-        // Vincular el botón de estadísticas
+        // Referencias a botones usando sus IDs
         btnEstadisticas = findViewById(R.id.btnEstadisticas)
 
         // Obtener el paciente asociado del intent
         val pacienteAsociado = intent.getStringExtra("PACIENTE_ASOCIADO")
 
-        // Configurar la acción del botón
+        // Acción para el botón "Estadísticas"
         btnEstadisticas.setOnClickListener {
             if (pacienteAsociado != null) {
-                // Redirigir a Estadísticas del paciente
                 val intent = Intent(this, EstadisticasPacienteActivity::class.java)
                 intent.putExtra("EMAIL_PACIENTE", pacienteAsociado)
                 startActivity(intent)
             } else {
-                // Mostrar un mensaje si no se encontró el paciente asociado
                 Toast.makeText(
                     this,
                     "No se pudo encontrar el paciente asociado.",
@@ -55,7 +54,7 @@ class InicioFamiliar : AppCompatActivity() {
 
     // Inflar el menú en el Toolbar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)  // Inflar el menú desde el archivo XML
+        menuInflater.inflate(R.menu.menu_toolbar, menu)  // Asegúrate de que `menu_toolbar` existe
         return true
     }
 
@@ -69,7 +68,7 @@ class InicioFamiliar : AppCompatActivity() {
             }
             R.id.menu_informacion_personal -> {
                 // Redirigir a la actividad de información personal
-                val intent = Intent(this, InformacionPersonalActivity::class.java)
+                val intent = Intent(this, InformacionFamiliarActivity::class.java)
                 startActivity(intent)
                 true
             }
@@ -79,6 +78,7 @@ class InicioFamiliar : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -131,11 +131,16 @@
             android:name=".juegosPaciente.JuegosPacienteActivity"
             android:exported="true" />
         <activity
+            android:name=".InformacionPersonal.InformacionFamiliarActivity"
+            android:exported="true" />
+
+        <activity
             android:name=".SobreNosotros"
             android:exported="true" />
 
 <!--        Información personal-->
         <activity android:name=".InformacionPersonal.InformacionMedicoActivity" />
+
 
 
         <activity android:name=".InformacionPersonal.InformacionPacienteActivity"

@@ -106,5 +106,8 @@ presenten en pantalla.</string>
     <string name="informacion_personal">Información Personal</string>
     <string name="actualizar">Actualizar</string>
     <string name="confirmar_contrase_a">Confirmar contraseña</string>
+    <string name="phone_hint">Telefono</string>
+    <string name="save_changes">Guardar Cambios</string>
+    <string name="logout">Cerrar Sesión</string>
 
 </resources>

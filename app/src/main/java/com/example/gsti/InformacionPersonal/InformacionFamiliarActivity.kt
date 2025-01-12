@@ -13,11 +13,11 @@ import androidx.appcompat.widget.Toolbar
 import com.example.gsti.AuthActivity
 import com.example.gsti.R
 import com.example.gsti.SobreNosotros
-import com.example.gsti.menuInicio.InicioMedico
+import com.example.gsti.menuInicio.InicioFamiliar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class InformacionMedicoActivity : AppCompatActivity() {
+class InformacionFamiliarActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -32,7 +32,7 @@ class InformacionMedicoActivity : AppCompatActivity() {
         val emailTextView: TextView = findViewById(R.id.emailTextView)
         val phoneEditText: EditText = findViewById(R.id.phoneEditText)
         val saveButton: Button = findViewById(R.id.saveButton)
-        val logoutButton: Button = findViewById(R.id.logoutButton) // Referencia al botón de cerrar sesión
+        val logoutButton: Button = findViewById(R.id.logoutButton) // Botón de cerrar sesión
 
         // Configurar el toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -41,11 +41,11 @@ class InformacionMedicoActivity : AppCompatActivity() {
 
         // Obtener el email del usuario logueado
         val currentUser = FirebaseAuth.getInstance().currentUser
-        val medicoEmail = currentUser?.email
+        val familiarEmail = currentUser?.email
 
-        if (medicoEmail != null) {
-            // Consultar el documento del médico por email
-            db.collection("Medicos").document(medicoEmail).get()
+        if (familiarEmail != null) {
+            // Consultar el documento del familiar por email
+            db.collection("Familiares").document(familiarEmail).get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
                         val name = document.getString("name") ?: "No disponible"
@@ -62,7 +62,7 @@ class InformacionMedicoActivity : AppCompatActivity() {
                         phoneEditText.setText(phone)
                     } else {
                         // Documento no encontrado
-                        nameTextView.text = "No se encontró información del médico."
+                        nameTextView.text = "No se encontró información del familiar."
                         surnameTextView.text = ""
                         birthdayTextView.text = ""
                         emailTextView.text = ""
@@ -85,7 +85,7 @@ class InformacionMedicoActivity : AppCompatActivity() {
                 // Actualizar el teléfono en Firestore
                 val updatedData = mapOf("phone" to updatedPhone)
 
-                db.collection("Medicos").document(medicoEmail!!)
+                db.collection("Familiares").document(familiarEmail!!)
                     .update(updatedData)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Datos actualizados correctamente.", Toast.LENGTH_SHORT).show()
@@ -121,7 +121,7 @@ class InformacionMedicoActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.menu_principal -> {
                 // Redirigir al menú principal
-                val intent = Intent(this, InicioMedico::class.java)
+                val intent = Intent(this, InicioFamiliar::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 finish()
