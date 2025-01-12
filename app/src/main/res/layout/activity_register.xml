@@ -1,218 +1,236 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Campo de correo electrónico -->
-    <EditText
-        android:id="@+id/emailField"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:autofillHints="emailAddress"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <!-- Campo de contraseña -->
-    <EditText
-        android:id="@+id/passwordField"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:hint="@string/passwd"
-        android:inputType="textPassword"
-        android:autofillHints="password"
-        app:layout_constraintTop_toBottomOf="@id/emailField"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        <!-- Campo de correo electrónico -->
+        <EditText
+            android:id="@+id/emailField"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:autofillHints="emailAddress"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
 
-    <!-- Campo de confirmación de contraseña -->
-    <EditText
-        android:id="@+id/confirmPasswordField"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:hint="@string/confirmar_contrase_a"
-        android:inputType="textPassword"
-        android:autofillHints="password"
-        app:layout_constraintTop_toBottomOf="@id/passwordField"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        <!-- Campo de contraseña -->
+        <EditText
+            android:id="@+id/passwordField"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="@string/passwd"
+            android:inputType="textPassword"
+            android:autofillHints="password"
+            app:layout_constraintTop_toBottomOf="@id/emailField"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
 
-    <!-- Campo de nombre -->
-    <EditText
-        android:id="@+id/nameField"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:hint="@string/name"
-        android:inputType="text"
-        android:autofillHints="name"
-        app:layout_constraintTop_toBottomOf="@id/confirmPasswordField"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        <!-- Campo de confirmación de contraseña -->
+        <EditText
+            android:id="@+id/confirmPasswordField"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="@string/confirmar_contrase_a"
+            android:inputType="textPassword"
+            android:autofillHints="password"
+            app:layout_constraintTop_toBottomOf="@id/passwordField"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
 
-    <!-- Campo de apellidos -->
-    <EditText
-        android:id="@+id/surnameField"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:hint="@string/surname"
-        android:inputType="text"
-        android:autofillHints="name"
-        app:layout_constraintTop_toBottomOf="@id/nameField"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        <!-- Campo de nombre -->
+        <EditText
+            android:id="@+id/nameField"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="@string/name"
+            android:inputType="text"
+            android:autofillHints="name"
+            app:layout_constraintTop_toBottomOf="@id/confirmPasswordField"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
 
-    <!-- Campo de fecha de nacimiento -->
-    <EditText
-        android:id="@+id/birthdayField"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:hint="@string/birthday"
-        android:inputType="date"
-        android:autofillHints="birthday"
-        app:layout_constraintTop_toBottomOf="@id/surnameField"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        <!-- Campo de apellidos -->
+        <EditText
+            android:id="@+id/surnameField"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="@string/surname"
+            android:inputType="text"
+            android:autofillHints="name"
+            app:layout_constraintTop_toBottomOf="@id/nameField"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
 
-    <!-- Campo de teléfono -->
-    <EditText
-        android:id="@+id/phoneField"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:hint="@string/telf"
-        android:inputType="phone"
-        android:autofillHints="phone"
-        app:layout_constraintTop_toBottomOf="@id/birthdayField"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        <!-- Campo de fecha de nacimiento -->
+        <EditText
+            android:id="@+id/birthdayField"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="@string/birthday"
+            android:inputType="date"
+            android:autofillHints="birthday"
+            app:layout_constraintTop_toBottomOf="@id/surnameField"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
 
-    <!-- Selector de tipo -->
-    <RadioGroup
-        android:id="@+id/typeGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/phoneField"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal">
+        <!-- Campo de teléfono -->
+        <EditText
+            android:id="@+id/phoneField"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="@string/telf"
+            android:inputType="phone"
+            android:autofillHints="phone"
+            app:layout_constraintTop_toBottomOf="@id/birthdayField"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
 
-        <RadioButton
-            android:id="@+id/radioPaciente"
+        <!-- Selector de tipo -->
+        <RadioGroup
+            android:id="@+id/typeGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/patient" />
+            app:layout_constraintTop_toBottomOf="@id/phoneField"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/radioFamiliar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/family" />
+            <RadioButton
+                android:id="@+id/radioPaciente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/patient" />
 
-        <RadioButton
-            android:id="@+id/radioMedico"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/doctor" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radioFamiliar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/family" />
 
-    <!-- Contenedor dinámico para pacientes -->
-    <LinearLayout
-        android:id="@+id/pacienteContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/typeGroup"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp">
+            <RadioButton
+                android:id="@+id/radioMedico"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/doctor" />
+        </RadioGroup>
 
-        <TextView
-            android:id="@+id/pacienteLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_doctor"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
-
-        <Spinner
-            android:id="@+id/doctorSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <!-- Contenedor dinámico para familiares -->
-    <LinearLayout
-        android:id="@+id/familiarContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/typeGroup"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp">
-
-        <TextView
-            android:id="@+id/familiarLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_patient"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
-
-        <Spinner
-            android:id="@+id/patientSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <!-- Campo para el código de confirmación -->
+        <!-- Contenedor dinámico para pacientes -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/pacienteContainer"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/typeGroup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp">
 
             <TextView
-                android:id="@+id/codeLabel"
+                android:id="@+id/pacienteLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/confirmation_code"
+                android:text="@string/select_doctor"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp" />
 
-            <EditText
-                android:id="@+id/confirmationCodeField"
+            <Spinner
+                android:id="@+id/doctorSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:hint="@string/confirmation_code"
-                android:inputType="numberPassword"
-                android:maxLength="4" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
-    </LinearLayout>
 
-    <!-- Botón de registro -->
-    <Button
-        android:id="@+id/registerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="@string/register"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/typeGroup" />
+        <!-- Contenedor dinámico para familiares -->
+        <LinearLayout
+            android:id="@+id/familiarContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/typeGroup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/familiarLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select_patient"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <Spinner
+                android:id="@+id/patientSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Campo para el código de confirmación -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/codeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/confirmation_code"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp" />
+
+                <EditText
+                    android:id="@+id/confirmationCodeField"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:hint="@string/confirmation_code"
+                    android:inputType="numberPassword"
+                    android:maxLength="4" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Botones de registro y volver -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/familiarContainer">
+
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register" />
+
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Volver" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

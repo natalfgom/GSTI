@@ -41,6 +41,17 @@ class RegisterActivity : AppCompatActivity() {
         val confirmationCodeField: EditText = findViewById(R.id.confirmationCodeField)
         val registerButton: Button = findViewById(R.id.registerButton)
 
+        // Botón para volver al AuthActivity
+        val backButton: Button = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            // Navegar al AuthActivity
+            val intent = Intent(this, AuthActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish() // Cierra la actividad actual
+        }
+
+
         // Mostrar u ocultar campos dinámicos según el rol seleccionado
         typeGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
