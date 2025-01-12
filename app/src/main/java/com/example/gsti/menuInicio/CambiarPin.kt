@@ -25,7 +25,7 @@ class CambiarPin : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_confirmation_code)
 
-        // Inicializar Firebase Authentication y Firestore
+        // Inicializar Firebase Authcation y Firestore
         mAuth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
