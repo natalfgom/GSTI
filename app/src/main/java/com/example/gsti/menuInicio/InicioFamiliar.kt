@@ -28,7 +28,7 @@ class InicioFamiliar : AppCompatActivity() {
         // Configurar el Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)  // Botón de "Atrás" si es necesario
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)  // Botón  "Atrás" si es necesario
 
         // Referencias a botones usando sus IDs
         btnEstadisticas = findViewById(R.id.btnEstadisticas)
