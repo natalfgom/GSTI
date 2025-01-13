@@ -19,6 +19,8 @@ import com.example.gsti.menuInicio.InicioMedico
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.android.gms.tasks.Tasks
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class ConfiguracionJuegosPaciente : AppCompatActivity() {
 
@@ -63,8 +65,18 @@ class ConfiguracionJuegosPaciente : AppCompatActivity() {
                 val nombrePaciente = document.getString("name") ?: "Nombre no disponible"
                 val apellidoPaciente = document.getString("surname") ?: "Apellido no disponible"
                 val emailPaciente = document.getString("email") ?: "Email no disponible"
-                val birthdayPaciente = document.getString("birthday") ?: "Fecha de nacimiento no disponible"
                 val phonePaciente = document.getString("phone") ?: "Teléfono no disponible"
+
+                // Obtener el campo 'birthday' como Timestamp
+                val birthdayTimestamp = document.getTimestamp("birthday")
+
+// Verificar si el valor no es nulo y formatear la fecha
+                val birthdayPaciente = if (birthdayTimestamp != null) {
+                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    sdf.format(birthdayTimestamp.toDate()) // Convertir Timestamp a Date y formatear
+                } else {
+                    "No disponible"
+                }
 
                 // Establecer los datos en los TextViews
                 nombrePacienteTextView.text = "$nombrePaciente $apellidoPaciente"

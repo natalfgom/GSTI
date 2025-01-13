@@ -111,9 +111,19 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
                         Log.d("EstadisticasFamiliar", "Datos del paciente: ${document.data}")
                         val nombre = document.getString("name") ?: "No disponible"
                         val apellido = document.getString("surname") ?: "No disponible"
-                        val birthday = document.getString("birthday") ?: "No disponible"
                         val phone = document.getString("phone") ?: "No disponible"
                         val email = document.getString("email") ?: "No disponible"
+
+                        // Obtener el campo 'birthday' como Timestamp
+                        val birthdayTimestamp = document.getTimestamp("birthday")
+
+// Verificar si el valor no es nulo y formatear la fecha
+                        val birthday = if (birthdayTimestamp != null) {
+                            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                            sdf.format(birthdayTimestamp.toDate()) // Convertir Timestamp a Date y formatear
+                        } else {
+                            "No disponible"
+                        }
 
                         // Asignar valores a los TextView
                         findViewById<TextView>(R.id.nombrePacienteTextView).text =

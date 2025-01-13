@@ -92,9 +92,19 @@ class EstadisticasPacienteActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     val nombre = document.getString("name") ?: "Desconocido"
-                    val birthday = document.getString("birthday") ?: "No especificado"
                     val phone = document.getString("phone") ?: "No especificado"
                     val email = document.getString("email") ?: "No especificado"
+
+                    // Obtener el campo 'birthday' como Timestamp
+                    val birthdayTimestamp = document.getTimestamp("birthday")
+
+// Verificar si el valor no es nulo y formatear la fecha
+                    val birthday = if (birthdayTimestamp != null) {
+                        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                        sdf.format(birthdayTimestamp.toDate()) // Convertir Timestamp a Date y formatear
+                    } else {
+                        "No disponible"
+                    }
 
                     // Mostrar los datos personales en los TextViews
                     nombrePacienteTextView.text = nombre

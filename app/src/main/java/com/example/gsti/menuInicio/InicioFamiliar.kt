@@ -43,7 +43,7 @@ class InicioFamiliar : AppCompatActivity() {
         // Acción para el botón "Estadísticas"
         btnEstadisticas.setOnClickListener {
             if (pacienteAsociado != null) {
-                val intent = Intent(this, EstadisticasFamiliarActivity::class.java)
+                val intent = Intent(this, EstadisticasPacienteActivity::class.java)
                 intent.putExtra("EMAIL_PACIENTE", pacienteAsociado)
                 startActivity(intent)
             } else {
