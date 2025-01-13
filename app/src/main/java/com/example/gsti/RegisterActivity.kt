@@ -5,8 +5,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Timestamp
+import java.text.SimpleDateFormat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -25,9 +30,9 @@ class RegisterActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
 
         // Inicializar vistas
-        val buttonVolverMenu: Button = findViewById(R.id.backButton)
         val emailField: EditText = findViewById(R.id.emailField)
         val passwordField: EditText = findViewById(R.id.passwordField)
+        val confirmPasswordField: EditText = findViewById(R.id.confirmPasswordField)
         val nameField: EditText = findViewById(R.id.nameField)
         val surnameField: EditText = findViewById(R.id.surnameField)
         val birthdayField: EditText = findViewById(R.id.birthdayField)
@@ -40,11 +45,15 @@ class RegisterActivity : AppCompatActivity() {
         val confirmationCodeField: EditText = findViewById(R.id.confirmationCodeField)
         val registerButton: Button = findViewById(R.id.registerButton)
 
-        // Configuración del botón "Volver al Menú"
-        buttonVolverMenu.setOnClickListener {
+
+        // Botón para volver al AuthActivity
+        val backButton: Button = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            // Navegar al AuthActivity
             val intent = Intent(this, AuthActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-            finish() // Finaliza esta actividad
+            finish() // Cierra la actividad actual
         }
 
         // Mostrar u ocultar campos dinámicos según el rol seleccionado
@@ -71,6 +80,7 @@ class RegisterActivity : AppCompatActivity() {
         registerButton.setOnClickListener {
             val email = emailField.text.toString().trim()
             val password = passwordField.text.toString().trim()
+            val confirmPassword = confirmPasswordField.text.toString().trim()
             val name = nameField.text.toString().trim()
             val surname = surnameField.text.toString().trim()
             val birthday = birthdayField.text.toString().trim()
@@ -79,11 +89,43 @@ class RegisterActivity : AppCompatActivity() {
             val type = findViewById<RadioButton>(selectedTypeId)?.text.toString()
 
             // Validar campos básicos
-            if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty() && surname.isNotEmpty() && birthday.isNotEmpty() && phone.isNotEmpty() && type.isNotEmpty()) {
+            if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() &&
+                name.isNotEmpty() && surname.isNotEmpty() && birthday.isNotEmpty() &&
+                phone.isNotEmpty() && type.isNotEmpty()
+            ) {
+
+                // Validar que las contraseñas coincidan
+                if (password != confirmPassword) {
+                    Toast.makeText(this, "Las contraseñas no coinciden.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                // Validar que el número de teléfono sea válido (exactamente 9 dígitos)
+                if (!phone.matches(Regex("\\d{9}"))) {
+                    Toast.makeText(this, "El número de teléfono debe tener 9 dígitos.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                // Validar que la fecha de nacimiento sea válida
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val birthDate: Date
+                try {
+                    birthDate = sdf.parse(birthday) ?: throw Exception("Fecha inválida")
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Formato de fecha incorrecto. Usa dd/MM/yyyy.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val today = Calendar.getInstance().time
+                if (birthDate.after(today)) {
+                    Toast.makeText(this, "La fecha de nacimiento debe ser anterior a hoy.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 val additionalData = hashMapOf<String, Any>(
                     "name" to name,
                     "surname" to surname,
-                    "birthday" to birthday,
+                    "birthday" to Timestamp(birthDate), // Guardar como Timestamp
                     "phone" to phone,
                     "type" to type,
                     "email" to email,
