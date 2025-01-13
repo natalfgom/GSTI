@@ -2,15 +2,11 @@ package com.example.gsti
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.Timestamp
-import java.text.SimpleDateFormat
-import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -21,14 +17,17 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+
+
+
         // Inicializar Firebase Auth y Firestore
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
         // Inicializar vistas
+        val buttonVolverMenu: Button = findViewById(R.id.backButton)
         val emailField: EditText = findViewById(R.id.emailField)
         val passwordField: EditText = findViewById(R.id.passwordField)
-        val confirmPasswordField: EditText = findViewById(R.id.confirmPasswordField)
         val nameField: EditText = findViewById(R.id.nameField)
         val surnameField: EditText = findViewById(R.id.surnameField)
         val birthdayField: EditText = findViewById(R.id.birthdayField)
@@ -41,16 +40,12 @@ class RegisterActivity : AppCompatActivity() {
         val confirmationCodeField: EditText = findViewById(R.id.confirmationCodeField)
         val registerButton: Button = findViewById(R.id.registerButton)
 
-        // Botón para volver al AuthActivity
-        val backButton: Button = findViewById(R.id.backButton)
-        backButton.setOnClickListener {
-            // Navegar al AuthActivity
+        // Configuración del botón "Volver al Menú"
+        buttonVolverMenu.setOnClickListener {
             val intent = Intent(this, AuthActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-            finish() // Cierra la actividad actual
+            finish() // Finaliza esta actividad
         }
-
 
         // Mostrar u ocultar campos dinámicos según el rol seleccionado
         typeGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -58,12 +53,12 @@ class RegisterActivity : AppCompatActivity() {
                 R.id.radioPaciente -> {
                     pacienteContainer.visibility = View.VISIBLE
                     familiarContainer.visibility = View.GONE
-                    loadDoctorsSpinner(doctorSpinner)
+                    loadDoctorsSpinner(doctorSpinner) // Cargar médicos en Spinner
                 }
                 R.id.radioFamiliar -> {
                     pacienteContainer.visibility = View.GONE
                     familiarContainer.visibility = View.VISIBLE
-                    loadPatientsSpinner(patientSpinner)
+                    loadPatientsSpinner(patientSpinner) // Cargar pacientes en Spinner
                 }
                 else -> {
                     pacienteContainer.visibility = View.GONE
@@ -76,7 +71,6 @@ class RegisterActivity : AppCompatActivity() {
         registerButton.setOnClickListener {
             val email = emailField.text.toString().trim()
             val password = passwordField.text.toString().trim()
-            val confirmPassword = confirmPasswordField.text.toString().trim()
             val name = nameField.text.toString().trim()
             val surname = surnameField.text.toString().trim()
             val birthday = birthdayField.text.toString().trim()
@@ -85,43 +79,11 @@ class RegisterActivity : AppCompatActivity() {
             val type = findViewById<RadioButton>(selectedTypeId)?.text.toString()
 
             // Validar campos básicos
-            if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() &&
-                name.isNotEmpty() && surname.isNotEmpty() && birthday.isNotEmpty() &&
-                phone.isNotEmpty() && type.isNotEmpty()
-            ) {
-
-                // Validar que las contraseñas coincidan
-                if (password != confirmPassword) {
-                    Toast.makeText(this, "Las contraseñas no coinciden.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                // Validar que el número de teléfono sea válido (exactamente 9 dígitos)
-                if (!phone.matches(Regex("\\d{9}"))) {
-                    Toast.makeText(this, "El número de teléfono debe tener 9 dígitos.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                // Validar que la fecha de nacimiento sea válida
-                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val birthDate: Date
-                try {
-                    birthDate = sdf.parse(birthday) ?: throw Exception("Fecha inválida")
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Formato de fecha incorrecto. Usa dd/MM/yyyy.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                val today = Calendar.getInstance().time
-                if (birthDate.after(today)) {
-                    Toast.makeText(this, "La fecha de nacimiento debe ser anterior a hoy.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
+            if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty() && surname.isNotEmpty() && birthday.isNotEmpty() && phone.isNotEmpty() && type.isNotEmpty()) {
                 val additionalData = hashMapOf<String, Any>(
                     "name" to name,
                     "surname" to surname,
-                    "birthday" to Timestamp(birthDate), // Guardar como Timestamp
+                    "birthday" to birthday,
                     "phone" to phone,
                     "type" to type,
                     "email" to email,
@@ -169,22 +131,48 @@ class RegisterActivity : AppCompatActivity() {
                                 else -> "Usuarios"
                             }
 
-                            // Guardar datos adicionales en Firestore
-                            firestore.collection(collection).document(email)
-                                .set(additionalData)
-                                .addOnSuccessListener {
-                                    Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                                    finish()
-                                }
-                                .addOnFailureListener { e ->
-                                    Toast.makeText(this, "Error al guardar datos: ${e.message}", Toast.LENGTH_SHORT).show()
-                                }
+                            if (type == getString(R.string.patient)) {
+                                // Guardar en la colección Pacientes y crear subcolección en Médicos
+                                firestore.collection("Pacientes").document(email)
+                                    .set(additionalData)
+                                    .addOnSuccessListener {
+                                        val selectedDoctor = additionalData["doctor"] as String
+                                        firestore.collection("Medicos").document(selectedDoctor)
+                                            .collection("Pacientes")
+                                            .document(email)
+                                            .set(additionalData)
+                                            .addOnSuccessListener {
+                                                Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                                                // Volver al AuthActivity
+                                                val intent = Intent(this, AuthActivity::class.java)
+                                                startActivity(intent)
+                                                finish()
+                                            }
+                                            .addOnFailureListener { e ->
+                                                Toast.makeText(this, "Error al asociar paciente con médico: ${e.message}", Toast.LENGTH_SHORT).show()
+                                            }
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(this, "Error al registrar paciente: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                            } else {
+                                // Guardar para otros roles
+                                firestore.collection(collection).document(email)
+                                    .set(additionalData)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                                        finish()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(this, "Error al guardar datos: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                            }
                         } else {
                             Toast.makeText(this, "Error al registrar: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
             } else {
-                Toast.makeText(this, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -203,7 +191,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun loadPatientsSpinner(spinner: Spinner) {
         firestore.collection("Pacientes").get()
             .addOnSuccessListener { result ->
-                val patients = result.mapNotNull { it.getString("email") }
+                val patients = result.mapNotNull { it.getString("name") }
                 updateSpinnerAdapter(spinner, patients)
             }
             .addOnFailureListener { e ->
