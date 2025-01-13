@@ -42,8 +42,6 @@ class EstadisticasFamiliarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_estadisticas_paciente)
-        Log.d("EstadisticasFamiliar", "Email del usuario actual: $currentUserEmail")
-
 
         // Inicializar los gráficos
         lineChartAtencion = findViewById(R.id.lineChartAtencion)

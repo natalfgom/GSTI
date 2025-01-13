@@ -16,6 +16,8 @@ import com.example.gsti.SobreNosotros
 import com.example.gsti.menuInicio.InicioFamiliar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class InformacionFamiliarActivity : AppCompatActivity() {
 
@@ -49,9 +51,20 @@ class InformacionFamiliarActivity : AppCompatActivity() {
                     if (document.exists()) {
                         val name = document.getString("name") ?: "No disponible"
                         val surname = document.getString("surname") ?: "No disponible"
-                        val birthday = document.getString("birthday") ?: "No disponible"
-                        val email = document.getString("email") ?: "No disponible"
+                       val email = document.getString("email") ?: "No disponible"
                         val phone = document.getString("phone") ?: "No disponible"
+
+                        // Obtener el campo 'birthday' como Timestamp
+                        val birthdayTimestamp = document.getTimestamp("birthday")
+
+// Verificar si el valor no es nulo y formatear la fecha
+                        val birthday = if (birthdayTimestamp != null) {
+                            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                            sdf.format(birthdayTimestamp.toDate()) // Convertir Timestamp a Date y formatear
+                        } else {
+                            "No disponible"
+                        }
+
 
                         // Mostrar los datos en los TextViews
                         nameTextView.text = "Nombre: $name"
