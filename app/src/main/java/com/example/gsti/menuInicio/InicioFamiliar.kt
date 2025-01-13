@@ -37,22 +37,13 @@ class InicioFamiliar : AppCompatActivity() {
         btnEstadisticas = findViewById(R.id.btnEstadisticas)
         btnCambiarPin = findViewById(R.id.btnNotificaciones)
 
-        // Obtener el paciente asociado del intent
-        val pacienteAsociado = intent.getStringExtra("PACIENTE_ASOCIADO")
 
         // Acción para el botón "Estadísticas"
         btnEstadisticas.setOnClickListener {
-            if (pacienteAsociado != null) {
-                val intent = Intent(this, EstadisticasFamiliarActivity::class.java)
-                intent.putExtra("EMAIL_PACIENTE", pacienteAsociado)
-                startActivity(intent)
-            } else {
-                Toast.makeText(
-                    this,
-                    "No se pudo encontrar el paciente asociado.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            startActivity(Intent(this, EstadisticasFamiliarActivity::class.java))
+
+
+
         }
 
         // Botón Estadísticas
