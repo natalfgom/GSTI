@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.gsti.Estadisticas.ListaPacientesEstadisticasActivity
 import com.example.gsti.InformacionPersonal.InformacionMedicoActivity
-import com.example.gsti.InformacionPersonalActivity
 import com.example.gsti.R
 import com.example.gsti.SobreNosotros
 import com.example.gsti.configuracionJuegos.ListaPacientesActivity
