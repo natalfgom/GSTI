@@ -8,6 +8,9 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.gsti.InformacionPersonal.InformacionFamiliarActivity
+import com.example.gsti.InformacionPersonal.InformacionMedicoActivity
+import com.example.gsti.InformacionPersonal.InformacionPacienteActivity
 import com.example.gsti.menuInicio.InicioFamiliar
 import com.example.gsti.menuInicio.InicioMedico
 import com.example.gsti.menuInicio.InicioPaciente
@@ -38,9 +41,7 @@ class SobreNosotros : AppCompatActivity() {
                 true
             }
             R.id.menu_informacion_personal -> {
-                // Redirigir a la actividad de información personal
-                val intent = Intent(this, InformacionPersonalActivity::class.java)
-                startActivity(intent)
+                redirigirAInfoPersonal()
                 true
             }
             R.id.menu_sobre_nosotros -> {
@@ -70,6 +71,32 @@ class SobreNosotros : AppCompatActivity() {
             "familiar" -> {
                 // Redirigir al menú principal del familiar
                 val intent = Intent(this, InicioFamiliar::class.java)
+                startActivity(intent)
+            }
+            else -> {
+                // Mostrar mensaje de error si no se puede determinar el rol
+                Toast.makeText(this, "No se pudo determinar el tipo de usuario.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun redirigirAInfoPersonal() {
+        val userRole = getUserRole()
+
+        when (userRole) {
+            "medico" -> {
+                // Redirigir al menú principal del médico
+                val intent = Intent(this, InformacionMedicoActivity::class.java)
+                startActivity(intent)
+            }
+            "paciente" -> {
+                // Redirigir al menú principal del paciente
+                val intent = Intent(this, InformacionPacienteActivity::class.java)
+                startActivity(intent)
+            }
+            "familiar" -> {
+                // Redirigir al menú principal del familiar
+                val intent = Intent(this, InformacionFamiliarActivity::class.java)
                 startActivity(intent)
             }
             else -> {
